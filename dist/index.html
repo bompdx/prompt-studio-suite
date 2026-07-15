@@ -23,10 +23,10 @@
     .intro { max-width:680px; margin:23px 0 0; color:var(--muted); font-size:clamp(1.05rem,2vw,1.24rem); font-weight:620; line-height:1.65; }
     .section-head { margin:42px 0 16px; } h2 { margin:0; font-size:clamp(1.8rem,4vw,2.8rem); letter-spacing:-.04em; }
     .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
-    .studio-card { position:relative; min-height:160px; display:grid; align-content:space-between; gap:16px; padding:23px; border:1px solid var(--line); border-radius:20px; background:var(--panel); overflow:hidden; transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease; }
+    .studio-card { position:relative; min-height:245px; display:grid; align-content:start; gap:13px; padding:23px; border:1px solid var(--line); border-radius:20px; background:var(--panel); overflow:hidden; transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease; }
     .studio-card::after { content:""; position:absolute; inset:auto 0 0; height:5px; background:linear-gradient(90deg,var(--studio),var(--studio2)); transform:scaleX(.18); transform-origin:left; transition:transform .22s ease; }
     .studio-card:hover { transform:translateY(-4px); border-color:var(--studio); box-shadow:var(--shadow); } .studio-card:hover::after { transform:scaleX(1); }
-    .studio-card strong { max-width:520px; font-size:clamp(1.6rem,3vw,2.45rem); line-height:1; letter-spacing:-.045em; } .card-link { color:var(--studio); font-weight:900; }
+    .studio-card strong { max-width:520px; font-size:clamp(1.6rem,3vw,2.45rem); line-height:1; letter-spacing:-.045em; } .card-copy { color:var(--muted); font-weight:620; line-height:1.55; } .card-link { margin-top:auto; color:var(--studio); font-weight:900; }
     footer { display:flex; justify-content:space-between; gap:16px; padding:28px 4px 0; color:var(--muted); font:700 .75rem/1.4 ui-monospace,SFMono-Regular,Menlo,monospace; }
     @media(max-width:760px) { .shell { width:min(100% - 22px,1240px); padding-top:10px; } .hero,.grid { grid-template-columns:1fr; } .hero { padding:30px 22px; border-radius:22px; } .section-head { display:block; } .section-head p { margin-top:9px; } .studio-card { min-height:230px; } footer { display:block; text-align:center; } footer span { display:block; margin:4px 0; } }
     @media(prefers-reduced-motion:reduce) { *,*::before,*::after { transition-duration:.001ms!important; } }
@@ -37,42 +37,52 @@
   <main><section class="hero"><div><h1>Prompt Studio</h1><p class="intro">Choose a studio to get started.</p></div></section>
   <div class="section-head"><h2>Choose your studio</h2></div><section class="grid" aria-label="Prompt studios"><a class="studio-card" href="paid-traffic-prompt-studio.html" style="--studio:#1f5a7a;--studio2:#d6a11f">
       <strong>Paid Traffic</strong>
+      <span class="card-copy">Built for advertisers, agencies, and founders spending money on ads. Pick a job, answer a few fields, and copy out a finished prompt that plans budgets, writes ads, and diagnoses accounts in ChatGPT, Claude, or any assistant.</span>
       <span class="card-link">Open studio <i aria-hidden="true">→</i></span>
     </a>
 <a class="studio-card" href="coaching-prompt-studio.html" style="--studio:#365f91;--studio2:#d6a11f">
       <strong>Coaching &amp; Consulting</strong>
+      <span class="card-copy">Built for coaches, consultants, and advisors who need sharper offers, better client sessions, and recommendations people can act on. Pick a job, add the facts, and copy the finished prompt into the assistant you use.</span>
       <span class="card-link">Open studio <i aria-hidden="true">→</i></span>
     </a>
 <a class="studio-card" href="content-creators-prompt-studio.html" style="--studio:#8a5a2a;--studio2:#c2452f">
       <strong>Content Creator</strong>
+      <span class="card-copy">Built for YouTubers, podcasters, newsletter writers, and short-form creators who publish on a schedule. Fill in your channel once, pick a workflow, and copy a finished prompt that plans, scripts, and repairs your content with your audience already loaded in.</span>
       <span class="card-link">Open studio <i aria-hidden="true">→</i></span>
     </a>
 <a class="studio-card" href="course-creators-prompt-studio.html" style="--studio:#b3543a;--studio2:#d6a11f">
       <strong>Course Builder</strong>
+      <span class="card-copy">For educators, trainers, and experts turning what they know into courses students finish. Each workflow builds a ready-to-paste prompt for validating demand, designing curriculum, keeping students moving, and filling the next cohort.</span>
       <span class="card-link">Open studio <i aria-hidden="true">→</i></span>
     </a>
 <a class="studio-card" href="ecommerce-prompt-studio.html" style="--studio:#1f7a6d;--studio2:#d6a11f">
       <strong>Ecommerce</strong>
+      <span class="card-copy">For store owners, ecommerce marketers, and the agencies who run their accounts. Pick a workflow, answer a few store-specific questions, and copy a finished prompt that produces product pages, cart recovery flows, and offer plans built on your numbers.</span>
       <span class="card-link">Open studio <i aria-hidden="true">→</i></span>
     </a>
 <a class="studio-card" href="email-marketing-prompt-studio.html" style="--studio:#2f6b3a;--studio2:#d6a11f">
       <strong>Email Marketing</strong>
+      <span class="card-copy">Built for owners and marketers who need emails with a clear job. Plan the campaign, write the message, diagnose the numbers, and save the prompts your team will use again.</span>
       <span class="card-link">Open studio <i aria-hidden="true">→</i></span>
     </a>
 <a class="studio-card" href="launch-campaigns-prompt-studio.html" style="--studio:#c2452f;--studio2:#d6a11f">
       <strong>Launch Campaign</strong>
+      <span class="card-copy">Built for founders, creators, and marketers coordinating a real launch. Turn the offer, dates, proof, and channels into campaign decisions, copy briefs, and a launch manual your team can run.</span>
       <span class="card-link">Open studio <i aria-hidden="true">→</i></span>
     </a>
 <a class="studio-card" href="memberships-prompt-studio.html" style="--studio:#4a6d9e;--studio2:#d6a11f">
       <strong>Membership &amp; Community</strong>
+      <span class="card-copy">Built for membership owners and community builders, paid or free. Every workflow turns your answers into a finished prompt that produces onboarding flows, discussion calendars, renewal emails, and churn diagnoses you can use the same day.</span>
       <span class="card-link">Open studio <i aria-hidden="true">→</i></span>
     </a>
 <a class="studio-card" href="offers-prompt-studio.html" style="--studio:#96351f;--studio2:#d6a11f">
       <strong>Offer &amp; Sales Page</strong>
+      <span class="card-copy">For owners, marketers, and copywriters turning an offer into a page that sells it. Every workflow builds a prompt that produces sales copy, page structure, or a fix list you can use the same day.</span>
       <span class="card-link">Open studio <i aria-hidden="true">→</i></span>
     </a>
 <a class="studio-card" href="social-media-prompt-studio.html" style="--studio:#37718a;--studio2:#d6a11f">
       <strong>Social Media</strong>
+      <span class="card-copy">For marketers, creators, and owner-run brands that post every week. Fill in your business once, pick a workflow, and copy a finished prompt that produces a usable post, script, or plan the same day.</span>
       <span class="card-link">Open studio <i aria-hidden="true">→</i></span>
     </a></section></main>
   <footer><span>Prompt Studio Suite</span></footer>
