@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<!--
+  PROMPT STUDIO ENGINE
+  Built from the micro-app-builder scaffold. One file, no backend,
+  no third-party JavaScript. Data bank injected by build_studio.py
+  at the __STUDIO_DATA__ marker.
+-->
+<html lang="en" data-theme="auto">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ecommerce Prompt Studio</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #16201c;
+      --muted: #607068;
+      --paper: #f2f0e9;
+      --panel: rgba(255, 254, 249, 0.94);
+      --card: #fffefa;
+      --card-strong: #ffffff;
+      --accent: #1f7a6d;
+      --accent-2: #d6a11f;
+      --accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
+      --line: rgba(22, 32, 28, 0.14);
+      --line-strong: rgba(22, 32, 28, 0.25);
+      --shadow: 0 24px 70px rgba(20, 31, 26, 0.10);
+      --shadow-small: 0 8px 24px rgba(20, 31, 26, 0.08);
+      --radius: 20px;
+      --max: 1240px;
+    }
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --ink: #f5f1e8;
+      --muted: #b8c4bd;
+      --paper: #0d1310;
+      --panel: rgba(19, 27, 23, 0.94);
+      --card: #17201b;
+      --card-strong: #1b2620;
+      --line: rgba(245, 241, 232, 0.13);
+      --line-strong: rgba(245, 241, 232, 0.24);
+      --shadow: 0 26px 80px rgba(0, 0, 0, 0.38);
+      --shadow-small: 0 8px 28px rgba(0, 0, 0, 0.28);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Avenir Next, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 2%, color-mix(in srgb, var(--accent) 17%, transparent), transparent 26rem),
+        radial-gradient(circle at 92% 18%, color-mix(in srgb, var(--accent-2) 15%, transparent), transparent 24rem),
+        var(--paper);
+      line-height: 1.5;
+    }
+    body::before {
+      content: ""; position: fixed; inset: 0; pointer-events: none; opacity: 0.28;
+      background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+      background-size: 64px 64px; mask-image: linear-gradient(to bottom, black, transparent 72%); z-index: -1;
+    }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; border: 0; touch-action: manipulation; }
+    button, input, select, textarea { transition: border-color 180ms ease, background 180ms ease, color 180ms ease, box-shadow 180ms ease, transform 180ms ease; }
+    :focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 55%, white); outline-offset: 3px; }
+    .skip-link { position: fixed; left: 16px; top: -80px; z-index: 1000; padding: 10px 14px; border-radius: 10px; background: var(--ink); color: var(--paper); font-weight: 800; }
+    .skip-link:focus { top: 16px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .shell { width: min(100% - 40px, var(--max)); margin: 0 auto; padding: 18px 0 40px; }
+    .topbar { position: sticky; top: 10px; z-index: 40; display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 18px; padding: 8px; border: 1px solid var(--line); border-radius: 18px; background: color-mix(in srgb, var(--panel) 88%, transparent); box-shadow: var(--shadow-small); backdrop-filter: blur(18px); }
+    .brand { display: inline-flex; align-items: center; gap: 11px; padding: 4px 8px 4px 5px; color: var(--ink); }
+    .brand-mark { position: relative; width: 34px; height: 34px; border-radius: 10px; background: var(--accent); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.2); }
+    .brand-mark::before, .brand-mark::after { content: ""; position: absolute; left: 8px; right: 8px; height: 3px; border-radius: 99px; background: white; }
+    .brand-mark::before { top: 10px; box-shadow: 0 6px 0 rgba(255,255,255,0.72); }
+    .brand-mark::after { top: 22px; right: 14px; }
+    .brand-copy { display: grid; line-height: 1.05; }
+    .brand-copy b { font-size: 0.9rem; letter-spacing: -0.01em; }
+    .brand-copy span { margin-top: 4px; color: var(--muted); font: 700 0.68rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; text-transform: uppercase; letter-spacing: 0.09em; }
+    .theme-toggle { display: inline-flex; gap: 4px; padding: 4px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+    .theme-toggle button { min-width: 54px; min-height: 36px; padding: 7px 10px; border-radius: 9px; color: var(--muted); background: transparent; font-weight: 800; font-size: 0.82rem; }
+    html[data-theme="light"] [data-theme-choice="light"], html[data-theme="dark"] [data-theme-choice="dark"] { background: var(--ink); color: var(--paper); }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
+      gap: clamp(24px, 5vw, 64px);
+      align-items: stretch;
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      padding: clamp(26px, 5vw, 64px);
+      overflow: hidden;
+      position: relative;
+    }
+    .hero::after { content: ""; position: absolute; width: 260px; height: 260px; right: -120px; bottom: -150px; border-radius: 50%; border: 42px solid color-mix(in srgb, var(--accent-2) 22%, transparent); }
+    .hero-copy { align-self: center; position: relative; z-index: 1; }
+    .kicker { margin: 0 0 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.12em; font: 900 0.72rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace; }
+    h1 { margin: 0; max-width: 780px; font-size: clamp(2.5rem, 6vw, 5.2rem); line-height: 0.92; letter-spacing: -0.06em; text-wrap: balance; }
+    .subtitle { max-width: 700px; margin: 21px 0 0; color: var(--muted); font-size: clamp(1.02rem, 2vw, 1.2rem); font-weight: 620; line-height: 1.65; }
+    .hero-path { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 24px; color: var(--muted); font: 800 0.78rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .hero-path span { display: inline-flex; align-items: center; min-height: 32px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 9px; background: var(--card); }
+    .hero-path i { color: var(--accent); font-style: normal; }
+    .status-panel { position: relative; z-index: 1; display: grid; align-content: start; gap: 14px; padding: 20px; border: 1px solid var(--line); border-radius: 22px; background: var(--card); box-shadow: var(--shadow-small); }
+    .status-label { display: flex; justify-content: space-between; align-items: center; gap: 10px; color: var(--muted); font: 800 0.7rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; text-transform: uppercase; letter-spacing: 0.1em; }
+    .status-label::after { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 5px var(--accent-soft); }
+    .badge { width: fit-content; padding: 8px 11px; border-radius: 10px; background: var(--ink); color: var(--paper); font-weight: 900; font-size: 0.82rem; }
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .stat { border: 1px solid var(--line); border-radius: 14px; padding: 13px; background: color-mix(in srgb, var(--paper) 70%, var(--card)); }
+    .stat b { display: block; font-size: 1.5rem; letter-spacing: -0.04em; }
+    .stat span { color: var(--muted); font-size: 0.76rem; font-weight: 750; line-height: 1.25; }
+    .layout { display: grid; grid-template-columns: minmax(290px, 0.72fr) minmax(0, 1.45fr); gap: 20px; align-items: start; margin-top: 20px; }
+    .panel { border: 1px solid var(--line); border-radius: 24px; background: var(--panel); box-shadow: var(--shadow-small); padding: clamp(20px, 3vw, 30px); }
+    .form-panel { position: sticky; top: 84px; }
+    .profile-head { display: flex; justify-content: space-between; align-items: start; gap: 18px; }
+    .profile-score { min-width: 64px; text-align: right; color: var(--muted); font: 800 0.72rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .profile-score b { display: block; margin-bottom: 5px; color: var(--ink); font-size: 1rem; }
+    .progress-track { height: 5px; margin: 17px 0 20px; overflow: hidden; border-radius: 99px; background: var(--line); }
+    .progress-fill { width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--accent), var(--accent-2)); transition: width 240ms ease; }
+    .section-title { margin: 0; font-size: clamp(1.35rem, 3vw, 1.8rem); line-height: 1.05; letter-spacing: -0.035em; }
+    .section-note { margin: 9px 0 20px; color: var(--muted); font-weight: 620; }
+    form { display: grid; gap: 15px; }
+    .field { display: grid; gap: 7px; }
+    label { font-weight: 850; font-size: 0.91rem; }
+    .req { color: var(--accent); }
+    .helper { margin: 0; color: var(--muted); font-size: 0.82rem; }
+    input, select, textarea { width: 100%; min-height: 48px; padding: 12px 13px; border: 1px solid var(--line-strong); border-radius: 12px; background: var(--card); color: var(--ink); }
+    input:hover, select:hover, textarea:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+    input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); outline: none; }
+    textarea { min-height: 104px; resize: vertical; }
+    .button-row, .result-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .primary, .secondary, .mini { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 15px; border-radius: 11px; font-weight: 900; }
+    .primary { background: var(--accent); color: white; box-shadow: 0 7px 18px color-mix(in srgb, var(--accent) 26%, transparent); }
+    .primary:hover { filter: brightness(1.06); transform: translateY(-1px); }
+    .secondary, .mini { border: 1px solid var(--line-strong); background: var(--card); color: var(--ink); }
+    .secondary:hover, .mini:hover { border-color: var(--accent); background: var(--accent-soft); }
+    .mini { min-height: 40px; padding: 8px 12px; font-size: 0.86rem; }
+    .mini.primary-mini { background: var(--accent); color: white; border-color: transparent; }
+    button:active { transform: scale(0.98); }
+    .validation { display: none; padding: 11px 12px; border-radius: 14px; background: rgba(180, 46, 46, 0.1); color: #b42e2e; font-weight: 800; }
+    .validation.show { display: block; }
+    .saved-note { color: var(--muted); font-size: 0.85rem; font-weight: 700; margin: 4px 0 0; }
+    .stale-note { display: none; margin-bottom: 14px; padding: 11px 12px; border-radius: 14px; background: color-mix(in srgb, var(--accent-2) 22%, var(--card)); border: 1px solid var(--line); font-weight: 800; }
+    .stale-note.show { display: block; }
+    footer { display: flex; justify-content: space-between; gap: 16px; margin-top: 24px; padding: 12px 4px; color: var(--muted); font: 700 0.75rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .entrance { animation: rise-in 420ms cubic-bezier(.16,1,.3,1) both; }
+    @keyframes rise-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 900px) { .hero, .layout { grid-template-columns: 1fr; } .form-panel { position: static; } }
+    @media (max-width: 640px) { .shell { width: min(100% - 22px, var(--max)); padding-top: 10px; } .topbar { top: 6px; } .brand-copy span { display: none; } .hero { padding: 27px 21px; border-radius: 22px; } h1 { font-size: clamp(2.35rem, 13vw, 3.6rem); } .hero-path i { display: none; } .primary, .secondary { width: 100%; } footer { text-align: center; display: block; } footer span { display: block; margin: 4px 0; } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+    }
+    /* ============ TYPE STYLES START ============ */
+    .workspace-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 18px; }
+    .workspace-label { color: var(--muted); font: 800 0.7rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; text-transform: uppercase; letter-spacing: 0.1em; }
+    .tab-row { display: inline-flex; flex-wrap: wrap; gap: 4px; margin-bottom: 22px; padding: 4px; border: 1px solid var(--line); border-radius: 13px; background: color-mix(in srgb, var(--paper) 65%, transparent); }
+    .tab {
+      min-height: 40px; padding: 8px 14px; border-radius: 9px;
+      background: transparent; color: var(--muted); font-weight: 900;
+    }
+    .tab:hover { color: var(--ink); }
+    .tab.active { background: var(--card-strong); color: var(--ink); box-shadow: var(--shadow-small); }
+    .browse-toolbar { display: grid; grid-template-columns: minmax(220px, 1fr); gap: 12px; margin: 18px 0; }
+    .search-wrap { position: relative; }
+    .search-wrap::before { content: ""; position: absolute; left: 15px; top: 50%; width: 12px; height: 12px; border: 2px solid var(--muted); border-radius: 50%; transform: translateY(-62%); pointer-events: none; }
+    .search-wrap::after { content: ""; position: absolute; left: 27px; top: 29px; width: 7px; height: 2px; border-radius: 2px; background: var(--muted); transform: rotate(45deg); pointer-events: none; }
+    .search-wrap input { padding-left: 43px; }
+    .cat-row { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; }
+    .cat-chip {
+      min-height: 40px; padding: 8px 12px; border-radius: 10px; border: 1px solid var(--line);
+      background: var(--card); color: var(--muted); font-weight: 800; font-size: 0.84rem;
+    }
+    .cat-chip.active { background: var(--accent); color: #fff; border-color: transparent; }
+    .cat-note { margin: 0 0 16px; color: var(--muted); font-weight: 620; }
+    .wf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(235px, 1fr)); gap: 11px; }
+    .wf-card {
+      position: relative; min-height: 184px; text-align: left; display: grid; gap: 8px; align-content: start;
+      border: 1px solid var(--line); border-radius: 16px; padding: 17px;
+      background: var(--card); color: var(--ink); overflow: hidden;
+    }
+    .wf-card::after { content: ""; position: absolute; inset: auto 0 0; height: 3px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 200ms ease; }
+    .wf-card:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); box-shadow: var(--shadow-small); }
+    .wf-card:hover::after { transform: scaleX(1); }
+    .wf-card b { font-size: 1.04rem; letter-spacing: -0.025em; }
+    .wf-card span { color: var(--muted); font-size: 0.86rem; font-weight: 620; }
+    .wf-card .card-no { color: var(--accent); font: 850 0.68rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.08em; }
+    .wf-card .go { align-self: end; margin-top: auto; color: var(--accent); font-weight: 900; font-size: 0.82rem; }
+    .no-results { grid-column: 1 / -1; min-height: 180px; display: grid; place-items: center; padding: 24px; border: 1px dashed var(--line-strong); border-radius: 16px; text-align: center; color: var(--muted); }
+    .detail-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
+    .crumb { min-height: 44px; background: transparent; color: var(--accent); font-weight: 900; padding: 7px 0; }
+    .detail-meta { margin: 0 0 8px; color: var(--accent); font: 850 0.7rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; text-transform: uppercase; letter-spacing: 0.1em; }
+    .result-ready { display: flex; align-items: center; gap: 9px; margin: 22px 0 10px; font-weight: 900; }
+    .result-ready::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 5px var(--accent-soft); }
+    .prompt-box {
+      margin-top: 12px; border: 1px solid var(--line); border-radius: 16px;
+      background: #101713; color: #eaf2ed; padding: 18px; max-height: 460px; overflow: auto; box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+    .prompt-box pre { margin: 0; white-space: pre-wrap; word-break: break-word; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.88rem; line-height: 1.55; }
+    .result-actions { margin-top: 12px; }
+    .adv-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+    .adv-card { min-height: 190px; border: 1px solid var(--line); border-radius: 16px; padding: 17px; background: var(--card); display: grid; gap: 9px; align-content: start; }
+    .adv-card:hover { border-color: color-mix(in srgb, var(--accent) 50%, var(--line)); box-shadow: var(--shadow-small); }
+    .advisor-index { color: var(--accent); font: 850 0.68rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .adv-card b { font-size: 1.05rem; }
+    .adv-card p { margin: 0; color: var(--muted); font-size: 0.9rem; font-weight: 620; }
+    .adv-card .mini { align-self: end; margin-top: auto; }
+    .empty { min-height: 200px; display: grid; place-items: center; text-align: center; border: 1px dashed var(--line); border-radius: 20px; color: var(--muted); padding: 22px; }
+    .empty strong { display: block; color: var(--ink); margin-bottom: 5px; }
+    .manual-item { border: 1px solid var(--line); border-radius: 16px; background: var(--card); padding: 15px 16px; display: grid; gap: 9px; margin-bottom: 10px; }
+    .manual-item-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+    .manual-item-head b { font-size: 1rem; }
+    .manual-item-head span { color: var(--muted); font-size: 0.82rem; font-weight: 700; }
+    .manual-item pre { margin: 0; white-space: pre-wrap; word-break: break-word; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.8rem; line-height: 1.5; max-height: 130px; overflow: auto; color: var(--muted); }
+    .manual-title-field { display: grid; gap: 7px; margin-bottom: 14px; }
+    #printArea { display: none; }
+    @media (max-width: 640px) { .workspace-head { display: block; } .tab-row { display: grid; grid-template-columns: repeat(3, 1fr); width: 100%; } .tab { padding-inline: 7px; } .wf-grid { grid-template-columns: 1fr; } .wf-card { min-height: 0; } }
+    @media print {
+      body * { visibility: hidden; }
+      #printArea, #printArea * { visibility: visible; }
+      #printArea {
+        display: block; position: absolute; inset: 0; padding: 0;
+        color: #111; background: #fff; font-family: Georgia, serif;
+      }
+      #printArea .print-cover { padding: 40vh 0 0; text-align: center; page-break-after: always; }
+      #printArea .print-cover h1 { font-size: 2.2rem; letter-spacing: 0; line-height: 1.2; }
+      #printArea .print-cover p { color: #555; }
+      #printArea .print-prompt { page-break-inside: avoid; page-break-before: always; padding: 24px 0; }
+      #printArea .print-prompt h2 { font-size: 1.2rem; margin: 0 0 4px; }
+      #printArea .print-prompt .print-source { color: #666; font-size: 0.85rem; margin: 0 0 12px; }
+      #printArea .print-prompt pre { white-space: pre-wrap; word-break: break-word; font-family: "Courier New", monospace; font-size: 0.82rem; line-height: 1.5; border: 1px solid #ccc; border-radius: 8px; padding: 14px; }
+    }
+    /* ============ TYPE STYLES END ============ */
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#studioWorkspace">Skip to the studio</a>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand" aria-label="Prompt Studio">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-copy"><b>Prompt Studio</b><span>Prompt workbench</span></span>
+      </div>
+      <div class="theme-toggle" role="group" aria-label="Theme selection">
+        <button type="button" data-theme-choice="light" aria-pressed="false">Light</button>
+        <button type="button" data-theme-choice="dark" aria-pressed="false">Dark</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero entrance" id="hero">
+        <div class="hero-copy">
+          <p class="kicker">Guided prompt system for online stores</p>
+          <h1>Ecommerce Prompt Studio</h1>
+          <p class="subtitle">For store owners, ecommerce marketers, and the agencies who run their accounts. Pick a workflow, answer a few store-specific questions, and copy a finished prompt that produces product pages, cart recovery flows, and offer plans built on your numbers.</p>
+          <div class="hero-path" aria-label="How the studio works">
+            <span>01 Add context</span><i aria-hidden="true">→</i><span>02 Pick a job</span><i aria-hidden="true">→</i><span>03 Copy the prompt</span>
+          </div>
+        </div>
+        <aside class="status-panel">
+          <div class="status-label">Studio contents</div>
+          <div class="badge">48 guided workflows</div>
+          <div class="stat-grid" id="statGrid"></div>
+        </aside>
+      </section>
+
+      <!-- ============ TYPE BODY START ============ -->
+      <div class="layout entrance" id="studioWorkspace">
+        <section class="panel form-panel" aria-labelledby="profileTitle">
+          <div class="profile-head">
+            <div><p class="kicker">Step 1</p><h2 class="section-title" id="profileTitle">Your business profile</h2></div>
+            <div class="profile-score"><b id="profilePercent">0%</b>context</div>
+          </div>
+          <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="profileProgress"></div></div>
+          <p class="section-note">Fill this once. Every workflow and advisor in this studio writes your answers into its prompt.</p>
+          <form id="profileForm" novalidate></form>
+          <p class="saved-note" id="savedNote">Saved on this device as you type.</p>
+        </section>
+
+        <section class="panel">
+          <div class="workspace-head"><div><span class="workspace-label">Your workspace</span><h2 class="section-title" style="margin-top:8px;">Build something useful</h2></div></div>
+          <div class="tab-row" role="tablist">
+            <button class="tab active" type="button" role="tab" aria-selected="true" data-tab="workflows">Workflows</button>
+            <button class="tab" type="button" role="tab" aria-selected="false" data-tab="advisors">Advisors</button>
+            <button class="tab" type="button" role="tab" aria-selected="false" data-tab="manual">Manual <span id="manualCount"></span></button>
+          </div>
+
+          <div id="tab-workflows">
+            <div id="workflowBrowse">
+              <p class="kicker">Step 2</p>
+              <h2 class="section-title">Pick a workflow</h2>
+              <p class="section-note">Each workflow asks for a few specifics, then builds a finished prompt you paste into ChatGPT, Claude, or the assistant you already use.</p>
+              <div class="browse-toolbar"><label class="search-wrap"><span class="sr-only">Search workflows</span><input type="search" id="wfSearch" placeholder="Search all 48 workflows" autocomplete="off" /></label></div>
+              <div class="cat-row" id="catRow"></div>
+              <p class="cat-note" id="catNote"></p>
+              <div class="wf-grid" id="wfGrid"></div>
+            </div>
+
+            <div id="workflowDetail" hidden>
+              <div class="detail-head">
+                <button class="crumb" type="button" id="backToGrid">&larr; All workflows</button>
+              </div>
+              <p class="detail-meta" id="wfMeta"></p>
+              <h2 class="section-title" id="wfTitle"></h2>
+              <p class="section-note" id="wfDescription"></p>
+              <form id="wfForm" novalidate>
+                <div id="wfFields"></div>
+                <div id="wfValidation" class="validation"></div>
+                <div class="button-row">
+                  <button class="primary" type="submit">Build my prompt</button>
+                </div>
+              </form>
+              <div id="wfResultWrap" hidden>
+                <div class="result-ready">Your prompt is ready</div>
+                <div id="staleNote" class="stale-note" role="status">Your inputs changed after this prompt was built. Build it again to refresh it.</div>
+                <div class="prompt-box"><pre id="wfPrompt"></pre></div>
+                <div class="result-actions">
+                  <button class="mini primary-mini" type="button" id="copyPrompt">Copy prompt</button>
+                  <button class="mini" type="button" id="copyOpen">Copy + open ChatGPT</button>
+                  <button class="mini" type="button" id="addToManual">Add to manual</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="tab-advisors" hidden>
+            <p class="kicker">Expert modes</p>
+            <h2 class="section-title">Sit down with an advisor</h2>
+            <p class="section-note">Each advisor prompt sets up a working session: the AI interviews you one question at a time, then delivers its recommendation and stays in the role.</p>
+            <div class="adv-grid" id="advGrid"></div>
+            <div id="advResultWrap" hidden>
+              <h2 class="section-title" id="advResultTitle" style="margin-top:18px;"></h2>
+              <div class="prompt-box"><pre id="advPrompt"></pre></div>
+              <div class="result-actions">
+                <button class="mini primary-mini" type="button" id="advCopy">Copy prompt</button>
+                <button class="mini" type="button" id="advCopyOpen">Copy + open ChatGPT</button>
+                <button class="mini" type="button" id="advAddToManual">Add to manual</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="tab-manual" hidden>
+            <p class="kicker">Your collection</p>
+            <h2 class="section-title">Prompt manual</h2>
+            <p class="section-note">Prompts you save land here. Reorder them, name the manual, then print it to PDF or download it as a file you can share with your team.</p>
+            <div class="manual-title-field field">
+              <label for="manualTitle">Manual title</label>
+              <input type="text" id="manualTitle" placeholder="Example: Q3 launch prompt playbook" />
+            </div>
+            <div id="manualEmpty" class="empty"><div><strong>Nothing saved yet</strong>Build a prompt in Workflows or Advisors, then hit "Add to manual".</div></div>
+            <div id="manualList"></div>
+            <div class="result-actions">
+              <button class="mini primary-mini" type="button" id="printManual">Print / save as PDF</button>
+              <button class="mini" type="button" id="downloadManual">Download as HTML</button>
+              <button class="mini" type="button" id="clearManual">Clear manual</button>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div id="printArea" aria-hidden="true"></div>
+      <!-- ============ TYPE BODY END ============ -->
+    </main>
+
+    <footer><span>Prompt Studio</span><span>Built for focused work. Your profile stays on this device.</span></footer>
+  </div>
+
+  <script>
+    const STUDIO = {"slug": "ecommerce", "title": "Ecommerce Prompt Studio", "kicker": "Guided prompt system for online stores", "subtitle": "For store owners, ecommerce marketers, and the agencies who run their accounts. Pick a workflow, answer a few store-specific questions, and copy a finished prompt that produces product pages, cart recovery flows, and offer plans built on your numbers.", "badge": "48 guided workflows", "accent": "#1f7a6d", "accent2": "#d6a11f", "footer": "Prompt Studio", "profile": [{"id": "store", "label": "Your store and what it sells", "type": "textarea", "required": true, "placeholder": "Example: Shopify store selling handmade leather bags, AOV $140, about 4,000 visitors a month, mostly from Instagram", "helper": "Include your platform, price range, and where traffic comes from. Every prompt in this studio uses this."}, {"id": "buyer", "label": "Your buyer in their own words", "type": "textarea", "required": false, "placeholder": "Example: women 30 to 50 who say things like 'I'm done buying a new bag every year' in reviews and DMs", "helper": "Pull phrasing from reviews, DMs, or support emails if you can."}, {"id": "current-push", "label": "The product or push you're working on right now", "type": "textarea", "required": false, "placeholder": "Example: launching the waxed canvas line in September, need the email list warmed up first", "helper": ""}, {"id": "goal", "label": "Your main goal for the next 90 days", "type": "text", "required": false, "placeholder": "Example: get repeat purchase rate from 18% to 25%", "helper": ""}, {"id": "voice", "label": "Voice or constraints the AI should respect", "type": "text", "required": false, "placeholder": "Example: plainspoken, no exclamation marks, never discount the hero totes", "helper": ""}], "categories": [{"id": "positioning", "title": "Store Positioning", "note": "Who the store is for, why they buy here instead of Amazon, and which products carry the brand."}, {"id": "product-pages", "title": "Product Pages & Copy", "note": "Pages and descriptions that answer the buyer's doubts before the buyer closes the tab."}, {"id": "offers", "title": "Offers & Order Value", "note": "Bundles, upsells, and promotions that raise each order without giving the margin away."}, {"id": "flows", "title": "Email & SMS Flows", "note": "The automated messages that recover carts, welcome new buyers, and bring lapsed ones back."}, {"id": "proof", "title": "Reviews, Proof & Creators", "note": "Reviews, customer stories, and creator content that do the selling for you."}, {"id": "retention", "title": "Checkout & Loyalty", "note": "Fewer abandoned checkouts, fewer returns, and more buyers who come back and refer."}], "workflows": [{"id": "store-positioning-statement", "category": "positioning", "title": "Store Positioning Statement", "description": "Pins down who your store serves, what they get here that a marketplace listing can't give them, and the one line that belongs at the top of your homepage.", "role": "a brand strategist who positions independent stores against marketplace giants and gets judged on whether the homepage line survives both the founder's gut check and a stranger's five-second read", "fields": [{"id": "competitors", "label": "Who buyers compare you to", "type": "text", "required": true, "placeholder": "Example: Bellroy, a few Etsy leather sellers, and the $39 Amazon lookalikes"}, {"id": "edge", "label": "What you do that they don't", "type": "textarea", "required": true, "placeholder": "Example: full-grain leather, hand-stitched in Portland, free stitching repairs for 10 years"}], "task": ["Name the buyer this store actually wins with, in one sentence built from my context, not a demographic label.", "State the one reason that buyer picks this store over each comparison I named, and say which reasons are provable today versus aspirational.", "Write a positioning statement in the format: for [buyer], [store] is the [category] that [difference], because [proof].", "Turn the statement into three homepage headline options: one leading with the buyer's problem, one with the difference, one with the proof.", "List the words and claims my competitors already own that I should stop using."], "rules": ["Every claim in the statement has to trace back to something I told you about the store or the products. Mark anything aspirational as such.", "Headlines stay under 12 words and use no category jargon a first-time visitor would have to decode."], "output": "a positioning statement, three homepage headline options built on it, and a short stop-saying list of words my competitors already own"}, {"id": "brand-story-draft", "category": "positioning", "title": "Brand Story Draft", "description": "Writes your About page as a story buyers repeat to friends, not a founder resume with a headshot.", "role": "a copywriter who writes founder stories for product brands and measures the page by how many visitors click from About to a product, not by how moved the founder feels reading it", "fields": [{"id": "origin", "label": "How the store started", "type": "textarea", "required": true, "placeholder": "Example: started making bags in my garage after the diaper bag I bought fell apart in four months"}, {"id": "refusals", "label": "What you refuse to do", "type": "text", "required": false, "placeholder": "Example: no bonded leather, no drop-shipped hardware, no fake sale countdowns"}], "task": ["Find the single moment in my origin story where the founder's problem and the buyer's problem are the same thing, and build the page around it.", "Write the About page: a headline, the story in 250 to 400 words, and a closing line that hands the reader to a specific product.", "Weave in what the store refuses to do as evidence of the standard, not as a values list.", "Cut anything a visitor couldn't care about within 30 seconds of arriving from an ad."], "rules": ["Write in first person as the founder. No third-person brand narration.", "The story earns exactly one product mention before the closing line. More turns the page into a catalog."], "output": "a complete About page draft with headline, story, and a closing line that points to my bestselling product"}, {"id": "product-line-map", "category": "positioning", "title": "Product Line Map", "description": "Sorts your catalog into entry products, hero products, and margin builders so you know what to advertise, what to bundle, and what to stop restocking.", "role": "a merchandising planner who prunes catalogs for independent stores and answers for margin per order, not SKU count", "fields": [{"id": "catalog", "label": "Your products with prices", "type": "textarea", "required": true, "placeholder": "Example: 3 tote styles $120 to $180, card wallets $45, belts $85, leather care kit $22"}, {"id": "margins", "label": "Rough margin or bestseller data if you have it", "type": "text", "required": false, "placeholder": "Example: totes carry 68% margin and drive 70% of revenue, belts barely move"}], "task": ["Assign every product a job: entry point, hero, margin builder, bundle filler, or cut candidate, with one sentence of reasoning each.", "Name which product should absorb the ad budget and which should never be advertised directly.", "Flag any price gap in the line, like a missing step between the $45 wallet and the $120 tote, and say what belongs there.", "Give the three merchandising moves to make first, ordered by margin impact."], "rules": ["If two products compete for the same job, pick a winner and say what happens to the loser. No ties.", "Recommend a cut only with the revenue it frees up or the confusion it removes named alongside it."], "output": "a table assigning every product a job with reasoning, plus the three merchandising moves to make first"}, {"id": "buyer-trigger-profile", "category": "positioning", "title": "Buyer Trigger Profile", "description": "Builds one ideal-customer profile around the moment that makes them buy: the trigger event, the doubts they carry to the page, and the words they use for both.", "role": "a customer researcher who interviews ecommerce buyers after checkout and gets judged on whether an ad team can write from the profile without a single follow-up question", "fields": [{"id": "best-buyers", "label": "Describe your best repeat buyers", "type": "textarea", "required": true, "placeholder": "Example: professional women who commute, carry a laptop everywhere, and have already burned through two cheap bags"}, {"id": "buyer-quotes", "label": "Things buyers have told you", "type": "textarea", "required": false, "placeholder": "Example: 'I found you after my third Marc Jacobs strap snapped' and 'is this heavy? my last leather bag killed my shoulder'"}], "task": ["Name the trigger event that turns this person from browsing to buying, and what they type into search or notice in their feed at that moment.", "Rank their top three doubts about buying from a store like mine, each paired with the evidence that would settle it.", "Write the profile's self-talk: two or three sentences this buyer would actually say about the problem, in their words, not marketing words.", "List where this buyer spends attention online, specific enough to target: accounts they follow, searches they run, content they save."], "rules": ["Build from the quotes and behavior I gave you. Where you generalize beyond them, mark the line as a guess to verify.", "One profile only. If my context suggests two different buyers, pick the more valuable one and say why."], "output": "a one-page buyer profile with the trigger event, three ranked doubts with their answers, the buyer's own phrases, and where they spend attention online"}, {"id": "purchase-objection-inventory", "category": "positioning", "title": "Purchase Objection Inventory", "description": "Lists every reason a visitor leaves your product page without buying and matches each one to the proof or copy that answers it.", "role": "a conversion copywriter who reads exit surveys and support tickets for online stores and gets paid on add-to-cart rate, not word count", "fields": [{"id": "product", "label": "The product this covers", "type": "text", "required": true, "placeholder": "Example: Harper Tote, $148, our bestseller"}, {"id": "known-objections", "label": "Objections you've already heard", "type": "textarea", "required": false, "placeholder": "Example: 'is $148 worth it for a bag', 'will the strap fit over a winter coat', 'what if the color looks different in person'"}], "task": ["List every objection a ready-to-buy visitor could carry to this page, starting with the ones I gave you and adding the ones stores like mine always face: price justification, sizing, shipping time, returns, and trust in an unknown brand.", "Rank them by how many sales each one likely kills, and say where each strikes: product page, cart, or checkout.", "Match every objection to its best answer: a copy line, a photo, a policy, a review, or a chart, and write the copy where copy is the answer.", "Flag any objection that copy can't fix, like a real shipping-speed gap, and name the operational change it needs instead."], "rules": ["Answer objections with specifics from my store: the actual policy, the actual material, the actual timeline. A reassuring tone with no facts under it counts as unanswered."], "output": "a ranked objection table with where each strikes, the element that answers it, and drafted copy for every objection copy can fix"}, {"id": "customer-journey-map", "category": "positioning", "title": "Customer Journey Map", "description": "Maps the path from first Instagram tap to second order, with the buyer's question and your message at each step.", "role": "a lifecycle marketer who maps buying paths for DTC brands and answers for revenue per visitor across the whole path, not clicks on any one channel", "fields": [{"id": "channels", "label": "Where buyers find you", "type": "text", "required": true, "placeholder": "Example: Instagram ads, Google search for 'leather laptop tote', a few podcast mentions"}, {"id": "repeat-pattern", "label": "How often people come back or reorder", "type": "text", "required": false, "placeholder": "Example: about 20% buy again, usually a wallet 3 to 5 months after a tote"}], "task": ["Lay out the stages from first exposure to second order for my store specifically, using my channels, price point, and repeat pattern.", "For each stage, write the question in the buyer's head and the one message from me that answers it.", "Name the asset that carries each message: an ad, the product page, a flow email, a package insert.", "Mark the stage where my store most likely loses people, based on my numbers, and say what evidence would confirm it.", "Give the single metric to watch per stage so the map turns into a weekly dashboard."], "rules": ["Keep the map to the stages my store actually has. A store with no wholesale or retail channel gets no wholesale stage."], "output": "a stage-by-stage journey map with the buyer's question, my message, the asset that carries it, and the metric to watch at each stage"}, {"id": "competitor-shelf-check", "category": "positioning", "title": "Competitor Shelf Check", "description": "Compares your store against the two or three stores your buyers cross-shop and finds the claims nobody else is making.", "role": "a competitive analyst who audits rival product pages for store owners and gets judged on finding one claim per audit the client can own outright", "fields": [{"id": "competitors", "label": "Competitors and what you know about them", "type": "textarea", "required": true, "placeholder": "Example: Bellroy leads with slim design and 3-year warranty, Portland Leather leads with price drops, the Amazon sellers lead with Prime shipping"}], "task": ["Build a comparison table: each competitor's lead claim, price position, guarantee, and shipping promise, from what I gave you.", "Mark where my store overlaps with each competitor, because overlap means the buyer decides on price.", "Find the claims none of them make that my store could prove: material grade, repair policy, production location, longevity evidence.", "Rank those open claims by how much they'd matter to my buyer, and draft the strongest one as a homepage-ready line."], "rules": ["Work only from what I supplied about each competitor. Anything you'd need to check on their site goes in a homework list for me, not in the table as fact.", "An open claim counts only if I can prove it today. Skip claims that need a product change first."], "output": "a comparison table of lead claims, prices, guarantees, and shipping promises, plus the ranked unclaimed positions and one drafted homepage line"}, {"id": "store-voice-guide", "category": "positioning", "title": "Store Voice Guide", "description": "Turns how you already talk about your products into a short voice guide any freelancer or AI can follow without sanding off the personality.", "role": "a brand voice editor who writes style guides for small ecommerce teams and gets judged on whether a freelancer's first draft sounds like the founder wrote it", "fields": [{"id": "samples", "label": "Paste writing that sounds like you", "type": "textarea", "required": true, "placeholder": "Example: your best product description, an Instagram caption you were proud of, an email you wrote to a customer at 11pm"}], "task": ["Pull the recurring patterns from my samples: sentence length, humor level, how directly products get recommended, what never gets said.", "Write five do rules and five don't rules, each with a real example line from my samples or a close paraphrase.", "Build a word bank: 10 to 15 words and phrases from my samples worth reusing, and 5 to 10 that clash with the voice.", "Write one paragraph of new product copy in the voice, as the calibration test a new writer checks their draft against."], "rules": ["Every rule needs an example. A rule like 'be authentic' with no sample sentence under it gets cut.", "Describe the voice that exists in my samples, not an improved voice you'd prefer."], "output": "a one-page voice guide with five do rules, five don't rules, a word bank pulled from my samples, and one calibration paragraph"}, {"id": "product-page-blueprint", "category": "product-pages", "title": "Product Page Blueprint", "description": "Lays out one product page section by section: what sits above the fold, where the proof goes, and which doubt each block exists to answer.", "role": "a conversion designer who wireframes product pages for stores running paid traffic and answers for mobile add-to-cart rate before anything else", "fields": [{"id": "product", "label": "The product, price, and what makes it worth it", "type": "textarea", "required": true, "placeholder": "Example: Harper Tote, $148, full-grain leather that outlasts three fast-fashion bags, fits a 16 inch laptop"}, {"id": "traffic-source", "label": "Where most page visitors come from", "type": "select", "required": true, "options": ["Paid social ads", "Google search", "Email and SMS list", "Marketplace or referral traffic", "Mixed, no dominant source"]}], "task": ["Design the above-the-fold block for my traffic source: headline, price framing, first image direction, and the buy button context, all sized for a phone screen.", "Lay out the rest of the page in order, giving each section one job and one draft headline: benefits, specifics, proof, comparison, FAQ, guarantee.", "State which objection each section answers, so nothing on the page exists for decoration.", "Place the proof elements where the doubt occurs, not in one reviews ghetto at the bottom.", "List what the page needs that I haven't given you: photos, measurements, review counts, policy details."], "rules": ["Order the sections for a visitor from my traffic source. A cold ad click and a Google searcher arrive with different questions, and the page should open with the right one.", "Every section headline says something specific to this product. Cut any header that could sit on another store's page unchanged."], "output": "a top-to-bottom page outline with each section's job, its drafted headline, the objection it answers, and a missing-assets list"}, {"id": "product-description-set", "category": "product-pages", "title": "Product Description Set", "description": "Writes three lengths of description for one product: the two-line version for collection pages, the full page version, and the 160-character version for feeds and ads.", "role": "an ecommerce copywriter who writes for catalogs of 50-plus SKUs and gets judged on whether the copy answers sizing, material, and care questions before support hears them", "fields": [{"id": "product", "label": "Product details, the more concrete the better", "type": "textarea", "required": true, "placeholder": "Example: Harper Tote, $148, full-grain leather, brass hardware, fits a 16 inch laptop, made to order in 5 days, 1.2 lbs"}, {"id": "main-use", "label": "The main way buyers use it", "type": "text", "required": false, "placeholder": "Example: daily commute bag, office to gym, carried on one shoulder for hours"}], "task": ["Write the full description for the product page: open with the buyer's situation, cover the material and construction facts, and close on the buying reason, 120 to 180 words.", "Write the two-line collection page version that makes this product distinct from its neighbors in the grid.", "Write the 160-character version for product feeds and ad placements, leading with the strongest specific.", "Pull the spec list into a scannable block: dimensions, weight, materials, care, production time."], "rules": ["Every sentence carries a fact about this product. Cut mood-setting lines that would fit any bag, candle, or supplement.", "Answer sizing and fit inside the description itself, not just in the spec block, because buyers skim past tables on phones."], "output": "three description lengths plus a spec block, each labeled with where it goes"}, {"id": "feature-benefit-ladder", "category": "product-pages", "title": "Feature to Benefit Ladder", "description": "Translates every spec on your product into what the buyer gets, so 'full-grain leather' becomes the reason to pay $100 more than the Amazon lookalike.", "role": "a product marketer who rewrites spec sheets into buying reasons and gets judged on whether a distracted shopper could repeat the benefit back an hour later", "fields": [{"id": "features", "label": "The specs and features, as you'd list them", "type": "textarea", "required": true, "placeholder": "Example: full-grain leather, YKK zippers, hand-burnished edges, 1.2 lbs, interior laptop sleeve, made to order"}], "task": ["Build a three-column ladder for every feature: the feature, what it physically does, and why this buyer cares in their words.", "Mark which benefits justify the price gap against cheaper alternatives and which are just nice.", "Pick the two benefits strong enough to lead the product page and write each as a headline.", "Flag any feature that means nothing to a normal buyer and either translate it or recommend dropping it from the page."], "rules": ["The 'why they care' column has to survive the so-what test twice. 'Durable' fails once; 'still working when the third cheap one has died' survives.", "No benefit gets claimed that the feature can't physically cause."], "output": "a feature-benefit ladder for every spec, the two lead benefits written as headlines, and a list of features to translate or drop"}, {"id": "collection-page-copy", "category": "product-pages", "title": "Collection Page Copy", "description": "Writes the header copy and per-product blurbs for one collection page so the page sells the category instead of just listing it.", "role": "an ecommerce copywriter who treats collection pages as the store's aisle signage and gets judged on click-through from collection to product, not on SEO word count", "fields": [{"id": "collection", "label": "The collection and what's in it", "type": "textarea", "required": true, "placeholder": "Example: Work Totes collection, 4 styles $128 to $180, the difference is size and strap length"}, {"id": "shopper-question", "label": "What shoppers on this page are deciding", "type": "text", "required": false, "placeholder": "Example: which size fits a laptop plus lunch, and whether the price gap between styles is justified"}], "task": ["Write the collection header: a title, one or two sentences that tell the shopper who this collection is for and how to choose, and nothing that reads like filler for search engines.", "Write a one-line blurb per product that states its difference from the others, so the grid reads like a decision aid.", "Add a short how-to-choose block if the products differ on an axis shoppers get wrong, like size or material.", "Suggest the display order of products with reasoning: bestseller first, entry price first, or newest first, based on my context."], "rules": ["Each blurb has to differentiate, not describe. If two blurbs could swap products without anyone noticing, rewrite both.", "Header copy stays under 60 words. Shoppers came to see products, not an essay above them."], "output": "collection header copy, a differentiating one-liner per product, an optional how-to-choose block, and a recommended product order with reasoning"}, {"id": "product-comparison-guide", "category": "product-pages", "title": "Product Comparison Guide", "description": "Builds the which-one-should-I-buy guide for shoppers stuck between two or three of your products, so indecision stops ending in a closed tab.", "role": "a merchandising copywriter who writes decision guides for stores with overlapping products and gets judged on whether fence-sitters buy either one instead of neither", "fields": [{"id": "products", "label": "The products buyers get stuck between", "type": "textarea", "required": true, "placeholder": "Example: Harper Tote $148 vs Commuter Tote $128, buyers ask which one fits a laptop plus gym clothes"}], "task": ["Build a comparison table on the axes buyers actually decide on: capacity, weight, price, best use, not a full spec dump.", "Write a 'pick this one if' line for each product that names a specific person or situation.", "Answer the three questions fence-sitters ask about this pair, based on my context, as a short FAQ.", "Write the closing line that tells the still-undecided reader which one most buyers in their situation choose."], "rules": ["Both products have to win somewhere in the guide. A comparison where one product loses every row means the other should be cut, and you should say so.", "Take a position at the end. Guides that close with 'it depends on your needs' send the shopper back to Google."], "output": "a comparison page draft with a decision table, a pick-this-if line per product, a three-question FAQ, and a closing recommendation"}, {"id": "product-faq-bank", "category": "product-pages", "title": "Product FAQ Bank", "description": "Drafts the FAQ section from questions real buyers ask, ordered by how often each question kills a sale instead of alphabetically.", "role": "a support-turned-copy specialist who mines ticket queues for online stores and gets judged on fewer pre-sale support messages per hundred orders", "fields": [{"id": "questions", "label": "Questions buyers actually ask", "type": "textarea", "required": true, "placeholder": "Example: does it fit a 16 inch laptop, how do I clean it, what if the color looks different in person, do you ship to Canada"}, {"id": "policies", "label": "The policies the answers depend on", "type": "text", "required": false, "placeholder": "Example: 30-day returns, buyer pays return shipping, ships worldwide except a few countries"}], "task": ["Sort my questions by sales impact: doubts that block checkout first, logistics second, care and curiosity last.", "Write an answer for each in two to four sentences, leading with the direct answer before any context.", "Add the two or three questions buyers of this product type always have that I didn't list, and answer those too.", "Mark any answer where my policy creates the objection, like paid return shipping on a $148 item, and suggest the softening line or the policy change worth pricing out."], "rules": ["First sentence of every answer resolves the question. No answer opens with background.", "Where a policy detail is missing from my context, write the answer with a [CONFIRM] placeholder instead of inventing the policy."], "output": "an FAQ section ordered by sales impact, with direct answers, added must-have questions, and flags where policy itself is the problem"}, {"id": "proof-placement-plan", "category": "product-pages", "title": "Proof Placement Plan", "description": "Decides which review, stat, or photo goes where on the product page, so proof lands next to the doubt it answers instead of piling up at the bottom.", "role": "a conversion specialist who runs proof-placement tests on product pages and gets judged on add-to-cart lift, not on how impressive the wall of stars looks", "fields": [{"id": "proof-assets", "label": "The proof you have", "type": "textarea", "required": true, "placeholder": "Example: 214 reviews averaging 4.8, a customer photo of the bag after 3 years of daily use, a 2024 magazine mention"}, {"id": "product", "label": "The product page this is for", "type": "text", "required": true, "placeholder": "Example: Harper Tote page, converts at 2.1%, most traffic from Instagram ads"}], "task": ["Match each proof asset to the specific doubt it answers: price worry, durability, sizing, brand trust, shipping anxiety.", "Place each asset at the point on the page where that doubt occurs, from above the fold to the checkout button.", "Pick the single strongest proof element and write the line that presents it near the buy button.", "Identify the doubt none of my proof covers, and name the cheapest way to get that proof: a photo request to past buyers, a review prompt, a simple test."], "rules": ["One proof element per doubt at each location. Stacking three testimonials that all say 'great quality' wastes two of them.", "Present numbers plainly. '214 reviews, 4.8 average' beats any adjective you could wrap around it."], "output": "a placement map pairing each proof asset with its doubt and page position, a drafted buy-button proof line, and the missing-proof gap with the cheapest fix"}, {"id": "product-page-doctor", "category": "product-pages", "title": "Product Page Doctor", "description": "Reads your pasted product page top to bottom and marks the exact lines where a ready-to-buy visitor loses confidence.", "role": "a copy chief who audits product pages for stores running paid traffic and has to defend every suggested change by naming the doubt it removes or the claim it sharpens", "fields": [{"id": "material", "label": "Paste the full product page copy", "type": "textarea", "required": true, "placeholder": "Example: paste everything from the headline to the FAQ, including button text and shipping notes"}, {"id": "page-worry", "label": "What worries you about this page", "type": "text", "required": false, "placeholder": "Example: traffic is fine but add-to-cart sits at 4% and I can't tell why"}], "task": ["Walk the page in reading order and give each section a verdict: keep, tighten, rewrite, or cut, with the reason in one line.", "Name the three weakest blocks, the doubt each one fails to handle, and rewrite all three in full.", "Check the headline and first sentence against the price: does the opening justify what the buy button asks for.", "List what the page never says that a buyer at this price needs: dimensions, materials, shipping time, return terms, whatever is absent.", "Give the one change to make first if I only fix a single thing this week."], "rules": ["Rewrite in the page's existing voice. A plainspoken page shouldn't come back sounding like a launch-day ad.", "Quote the exact line you're flagging before you comment on it, so I can find it without a search."], "output": "a section-by-section markup with verdicts and reasons, full rewrites of the three weakest blocks, a missing-information list, and the single first fix"}, {"id": "bundle-builder", "category": "offers", "title": "Bundle Builder", "description": "Designs two or three bundles from your existing catalog, priced so the buyer sees an obvious deal and you still clear more margin per order than a single-item sale.", "role": "a merchandising strategist who builds bundles for DTC stores and answers for margin per order after the discount, not for units moved", "fields": [{"id": "catalog", "label": "Products with prices, and margins if you know them", "type": "textarea", "required": true, "placeholder": "Example: totes $148 (68% margin), wallets $45 (72%), care kit $22 (80%), belts $85 (60%)"}, {"id": "aov", "label": "Current average order value", "type": "text", "required": true, "placeholder": "Example: $140, most orders are a single tote"}], "task": ["Design two or three bundles where the products belong together in the buyer's life, not just in my inventory: name each bundle after the situation it serves.", "Price each bundle and show the math: combined retail, bundle price, my margin per bundle versus my margin on the likely single-item alternative.", "Write the one-paragraph pitch for each bundle as it would appear on the page, leading with why these items go together.", "Say where each bundle should appear: its own page, the product page of the anchor item, the cart, or a flow email.", "Flag the bundle most likely to cannibalize full-price sales of my hero product, if any, and how to fence it."], "rules": ["Every bundle has to beat the single-item order on margin dollars, not just on revenue. Show that line in the math.", "Anchor each bundle on a product buyers already want. A bundle built to move dead stock gets labeled as a clearance play, not a growth play."], "output": "two or three named bundles with full pricing math, a page-ready pitch paragraph each, placement recommendations, and a cannibalization flag"}, {"id": "discount-alternatives", "category": "offers", "title": "Discount Alternatives", "description": "Gives you promotion ideas that move product without training your list to wait for the next 20% off email.", "role": "a pricing strategist who plans promotions for brands that refuse to discount their hero products and gets judged on full-price sales holding steady in the month after each promo", "fields": [{"id": "promo-goal", "label": "What this promotion needs to do", "type": "select", "required": true, "options": ["Clear slow inventory", "Lift a slow month", "Reward the email list", "Launch a new product", "Hold my own during a sale season"]}, {"id": "discount-history", "label": "Your discounting habits so far", "type": "text", "required": false, "placeholder": "Example: 10% welcome offer, went to 25% last Black Friday and regretted it"}], "task": ["Generate five promotion concepts that fit my goal without a percentage off the hero products: gift with purchase, bundle pricing, free upgrade, early access, tiered thresholds, trade-in credit, whichever fit my store.", "Rank them by margin protected, and show the rough cost per order of each next to what a 20% discount would have cost.", "For the top concept, write the offer statement, the deadline logic that makes it honest, and the announcement angle for email and social.", "Name the failure mode of the top concept and the early signal that it's happening."], "rules": ["Deadlines and limits have to be real: inventory counts, calendar events, production capacity. No countdown theater.", "If my goal is clearing slow inventory, say so plainly in the offer framing. Buyers forgive a clearance; they punish a fake occasion."], "output": "five ranked promotion concepts with cost-per-order math, and a full build-out of the winner: offer statement, deadline logic, announcement angle, and failure signal"}, {"id": "upsell-map", "category": "offers", "title": "Upsell Map", "description": "Places one upsell at each moment it can work (product page, cart, checkout, post-purchase) and matches the right product to each slot.", "role": "an ecommerce operator who configures upsell placements for Shopify stores and answers for revenue per session, backing out any upsell that dents checkout completion", "fields": [{"id": "catalog", "label": "Your products with prices", "type": "textarea", "required": true, "placeholder": "Example: totes $128 to $180, wallets $45, care kit $22, monogramming $15"}, {"id": "current-upsells", "label": "Upsells you run now, if any", "type": "text", "required": false, "placeholder": "Example: a cart pop-up for the care kit, converts around 6%"}], "task": ["Assign one upsell to each slot: product page (upgrade or add-on), cart (low-decision add), checkout (impulse-priced only), and post-purchase (the offer that can't risk the original sale).", "Justify each pairing by price ratio and decision weight: nothing over roughly a third of cart value at checkout, nothing that reopens the buying decision.", "Write the offer copy for each slot in one or two lines, matched to how fast buyers move through that moment.", "Rank the four slots by expected revenue for my store and say which one to build first.", "Define the kill criteria: the checkout-completion drop that means an upsell comes out."], "rules": ["Each slot gets exactly one offer. Two competing add-ons at the cart is how stores turn a $22 yes into a no.", "Post-purchase is the only slot where a bigger-ticket offer is allowed, because the original sale is already safe."], "output": "a four-slot upsell map with the product, the reasoning, and drafted copy per slot, plus a build order and kill criteria"}, {"id": "cross-sell-pairings", "category": "offers", "title": "Cross Sell Pairings", "description": "Pairs the products your buyers already combine and writes the complete-the-set copy that makes each pairing feel obvious instead of pushy.", "role": "a retention merchandiser who studies order combinations for small catalogs and gets judged on attach rate, the percentage of orders that include a second item", "fields": [{"id": "bestsellers", "label": "Your bestsellers and what sometimes rides along", "type": "textarea", "required": true, "placeholder": "Example: Harper Tote is 60% of orders, care kit gets added maybe 1 order in 10, wallets almost never pair"}], "task": ["List the natural pairings in my catalog with the logic for each: used together, bought for the same occasion, protects the first purchase, or completes the look.", "Rank pairings by likely attach rate given my current combination data.", "Write the pairing copy for the top three: one line for the product page, one for the cart, one for the post-purchase email, each stating why the second item belongs with the first.", "Flag any pairing where a small bundle discount would outperform a plain suggestion, and size the discount against the margin I gave you."], "rules": ["Pairing copy names the reason the items go together. 'You may also like' is the line we're replacing, not the line we're writing.", "Never pair two items that compete for the same job; that reads as indecision, not curation."], "output": "a ranked pairing list with logic, three sets of placement copy for the top pairings, and discount flags with sizing"}, {"id": "free-shipping-threshold", "category": "offers", "title": "Free Shipping Threshold", "description": "Works out where to set your free-shipping bar so it pulls orders up instead of giving margin away on orders you'd have gotten anyway.", "role": "an ecommerce operator who sets shipping economics for stores under $5M and answers for contribution margin per order, not for the shipping line in isolation", "fields": [{"id": "order-economics", "label": "AOV and typical order shape", "type": "text", "required": true, "placeholder": "Example: AOV $62, most orders are one item around $55, second item is usually $20 to $45"}, {"id": "shipping-cost", "label": "What shipping actually costs you", "type": "text", "required": true, "placeholder": "Example: $8.40 average per domestic order, $22 international"}, {"id": "margin", "label": "Rough product margin", "type": "text", "required": false, "placeholder": "Example: about 65% across the catalog"}], "task": ["Calculate the candidate thresholds from my numbers: just above AOV, AOV plus my most common add-on price, and the level where absorbed shipping still leaves my target margin.", "Recommend one threshold and show the math: what an average pulled-up order earns me versus what I give away on orders that already cleared the bar.", "Write the cart and site-banner copy that announces the threshold and shows progress toward it.", "Name the two signals that mean the threshold is set wrong: orders bunching just under it, or free-shipping orders eating margin, and what to change in each case."], "rules": ["Show every calculation so I can rerun it when my costs change. A bare recommendation without the math is worth nothing in six months.", "The threshold has to be reachable by adding one real product from my catalog. A bar nobody can hit with one add is just a shipping fee with extra steps."], "output": "a recommended threshold with the math shown, cart and banner copy, and the two wrong-threshold signals with their fixes"}, {"id": "first-order-offer", "category": "offers", "title": "First Order Offer", "description": "Designs the offer that turns a first-time visitor into a buyer without setting a discount expectation your margins will regret for years.", "role": "an acquisition strategist who designs new-customer offers for DTC brands and gets judged on 60-day payback per new buyer, not on popup conversion rate alone", "fields": [{"id": "current-offer", "label": "What you offer new visitors now", "type": "text", "required": true, "placeholder": "Example: 10% off popup for email signup, converts about 3% of visitors"}, {"id": "entry-product", "label": "The product most first orders start with", "type": "text", "required": false, "placeholder": "Example: the $45 card wallet, then about 1 in 5 comes back for a tote"}], "task": ["Evaluate my current first-order offer: what it costs per acquired customer and what habit it trains into my list.", "Design two alternatives that protect price integrity: a gift with first purchase, a threshold-based perk, an entry-product play, or first access, matched to my catalog.", "Pick the winner for my store and write the popup or signup copy: headline, supporting line, button text.", "Write the follow-up rule: what the new subscriber receives if they take the offer but stall before buying."], "rules": ["Cost the offer in margin dollars per redemption, next to what my current discount costs. Gut feel doesn't get a vote.", "The offer has to make sense next to my hero product's price story. A luxury-positioned $148 tote with a 25% intro coupon is arguing with itself."], "output": "an audit of my current offer, two costed alternatives, the winning offer with popup copy, and the stall follow-up rule"}, {"id": "promotion-calendar", "category": "offers", "title": "Promotion Calendar", "description": "Plans your next quarter of promotions around your real inventory and seasons, with enough space between offers that none cannibalizes the next.", "role": "a retention planner who runs promotional calendars for seasonal stores and gets judged on quarterly revenue with list fatigue held flat, measured by unsubscribe rate", "fields": [{"id": "seasonality", "label": "Your seasonal pattern and upcoming dates", "type": "textarea", "required": true, "placeholder": "Example: strong November and December, dead January, Mother's Day is our second peak, new colorway lands in March"}, {"id": "promo-history", "label": "What you've promoted lately", "type": "text", "required": false, "placeholder": "Example: sitewide 15% in November, a bundle push in February that flopped"}], "task": ["Map the next 90 days: my peaks, my dead zones, my product drops, and the calendar moments my buyers already shop.", "Place three to five promotions on that map, each with a product focus, an offer type, and the audience segment it targets.", "Enforce spacing: name the minimum gap between offers to the same segment and adjust the calendar until it holds.", "For the dead zone, pick a non-discount play: a content push, a restock story, a customer-photo campaign, so the list hears from me without a coupon.", "Mark the one promotion to build first and what needs to be ready two weeks before it."], "rules": ["No two discount offers to the same segment inside 30 days. If the calendar needs more revenue moments, vary the offer type instead of the frequency.", "Each promotion names the inventory it depends on. A promo the stockroom can't back is a customer-service incident with a start date."], "output": "a 90-day calendar with three to five placed promotions, spacing rules applied, a non-discount dead-zone play, and the first build with its prep deadline"}, {"id": "sale-event-plan", "category": "offers", "title": "Sale Event Plan", "description": "Builds the full run sheet for one big sale (BFCM, anniversary, end of season) covering the offer structure, the schedule, and every message by day.", "role": "an ecommerce campaign manager who has run Black Friday for stores from $300K to $5M and gets judged on total event margin, not on the day-one revenue screenshot", "fields": [{"id": "event", "label": "The event and its dates", "type": "text", "required": true, "placeholder": "Example: Black Friday through Cyber Monday, sitewide except new arrivals"}, {"id": "offer", "label": "The offer, or what you're considering", "type": "text", "required": true, "placeholder": "Example: 20% sitewide, or maybe a gift-with-purchase over $150 instead"}, {"id": "list-size", "label": "Email and SMS list size", "type": "text", "required": false, "placeholder": "Example: 12,000 email, 2,300 SMS"}], "task": ["Pressure-test my offer: margin cost at realistic volume, what it teaches repeat buyers, and one structure change that would protect margin without shrinking the headline.", "Build the day-by-day run sheet from seven days before launch through two days after close: every email, SMS, site change, and social post with its job.", "Write subject lines and the first line for the three highest-stakes sends: launch, peak-day, and last-call.", "List the operational risks in order of likelihood: inventory depth on the hero, support volume, shipping cutoffs, and the prep step for each.", "Define what gets measured after: total margin, new-versus-returning split, and the follow-up plan for buyers acquired at a discount."], "rules": ["The last-call message states the real end time and the offer never reappears the following week. One resurrection kills every future deadline.", "New-arrival or hero exclusions get named in every send footer, not discovered at checkout."], "output": "a pressure-tested offer, a day-by-day run sheet, drafted copy for the three key sends, a risk list with prep steps, and the post-event measurement plan"}, {"id": "welcome-flow", "category": "flows", "title": "Welcome Flow", "description": "Writes the email sequence a new subscriber gets before their first order, from delivering the signup incentive to the nudge that closes the sale.", "role": "a lifecycle copywriter who builds welcome flows for DTC brands and gets judged on first-order conversion within 14 days of signup, not on open rates", "fields": [{"id": "incentive", "label": "What signing up earns them", "type": "text", "required": true, "placeholder": "Example: 10% off first order, expires in 14 days"}, {"id": "first-product", "label": "The product most first orders start with", "type": "text", "required": false, "placeholder": "Example: the Harper Tote, or the $45 wallet for price-shy subscribers"}], "task": ["Plan a four-to-five email flow with a job per email: deliver the incentive, tell the story that separates this store, handle the top objection, show proof, close with the deadline.", "Write every email in full: subject line, preview text, body, and one call to action each.", "Set the send timing in days and the exit rule that pulls anyone who buys out of the flow immediately.", "Point every call to action at a specific destination: the entry product, the bestseller page, the quiz, not the homepage."], "rules": ["Email one delivers the incentive inside the first two lines. Making a new subscriber hunt for their code is the fastest unsubscribe I know.", "One call to action per email. A welcome email with four links is a newsletter, and nobody signed up for a newsletter."], "output": "a complete welcome flow with subject lines, preview text, full body copy, send timing, exit rule, and a destination per call to action"}, {"id": "cart-recovery-sequence", "category": "flows", "title": "Cart Recovery Sequence", "description": "Writes the abandoned-cart emails and texts that bring back the 70% who left, without playing the discount card in message one.", "role": "a retention marketer who owns cart recovery for DTC brands and gets judged on recovered revenue per send, with a standing penalty for training buyers to abandon on purpose", "fields": [{"id": "cart-shape", "label": "What a typical abandoned cart looks like", "type": "text", "required": true, "placeholder": "Example: one $148 tote, sometimes with the $22 care kit added"}, {"id": "current-recovery", "label": "What you send now, if anything", "type": "text", "required": false, "placeholder": "Example: one Shopify default email at 10 hours, recovers about 4%"}], "task": ["Diagnose the likely abandonment reason at my price point and cart shape: sticker pause, shipping surprise, comparison shopping, or checkout friction, and rank them.", "Build the sequence: three emails and up to two SMS with timing in hours and days, each targeting one abandonment reason in rank order.", "Write every message in full: subject lines and body for email, under-160-character copy for SMS, each linking straight back to the loaded cart.", "Decide if and when a discount appears, and cap it: what it costs per recovered order versus recovering without it.", "Set the stop conditions: purchase, an active support ticket, or sequence end."], "rules": ["Message one contains no discount. It removes a doubt: the return policy, the shipping answer, the photo they didn't scroll to.", "If a discount enters, it enters once, with a real expiry, in the final message. Repeat abandoners who got a code last month get the no-discount track."], "output": "a ranked abandonment diagnosis, a 3-email plus 2-SMS sequence with full copy and timing, a discount decision with cost math, and stop conditions"}, {"id": "browse-abandon-email", "category": "flows", "title": "Browse Abandonment Email", "description": "Writes the email for the shopper who viewed a product twice and never added it to cart, built around the product they kept looking at.", "role": "a lifecycle copywriter who writes behavioral triggers for stores over 10,000 monthly visitors and gets judged on click-to-product rate without creeping anyone out", "fields": [{"id": "browsed-product", "label": "The most-browsed product to build around", "type": "text", "required": true, "placeholder": "Example: the Harper Tote in tan, most viewed page after the homepage"}], "task": ["Write the trigger email: a subject line that references the product category without surveillance vibes, a body that answers the question a twice-viewing shopper is probably stuck on, and one link back to the product.", "Draft one alternate angle: proof-led, using the review count or a customer line instead of the doubt-answer.", "Set the trigger rules: how many views inside what window, the delay before sending, and the suppression list (recent buyers, active carts, anyone already in recovery).", "Write the subject line A/B pair and say what each version tests."], "rules": ["No 'we saw you looking' phrasing anywhere. The email reads like a helpful follow-up, not a security camera.", "This email carries no discount. A browse trigger with a coupon teaches window-shopping for codes."], "output": "a complete browse abandonment email plus one alternate angle, trigger and suppression rules, and an A/B subject pair with the hypothesis behind it"}, {"id": "post-purchase-flow", "category": "flows", "title": "Post Purchase Flow", "description": "Plans the messages between order confirmation and the review ask, so the buyer's excitement doesn't die in a tracking-number vacuum.", "role": "a retention specialist who designs post-purchase journeys for made-to-order brands and gets judged on repeat purchase rate and refund rate together, since either can sink the other", "fields": [{"id": "delivery-window", "label": "Order to doorstep timeline", "type": "text", "required": true, "placeholder": "Example: made to order in 5 days, ships in 2 to 3 more, arrives day 8 to 10"}, {"id": "aftercare", "label": "What buyers need to know after unboxing", "type": "text", "required": false, "placeholder": "Example: the leather feels stiff for the first two weeks, then breaks in"}], "task": ["Map the flow from order confirmation through day 21, matched to my delivery window: confirmation, the making-of or prep note, ship notice, delivery-day check, the aftercare message, and the bridge to the review ask.", "Write each message in full with its channel (email or SMS) and its single job.", "Place the aftercare content where it prevents the most refunds, based on what I told you buyers get wrong.", "Mark where a second-purchase seed can appear without turning the flow into a pitch: a care product, the companion item, nothing more.", "Set timing rules that flex with my delivery window instead of fixed dates."], "rules": ["No selling before the product arrives. The pre-delivery messages exist to make the wait feel intentional, not to stack a second order on an unproven first one.", "The delivery-day message asks nothing. It confirms, congratulates, and hands over the aftercare note. Asks start 48 hours later."], "output": "a message-by-message flow from confirmation through day 21 with channel, timing, full copy, and the marked second-purchase seed"}, {"id": "winback-sequence", "category": "flows", "title": "Winback Sequence", "description": "Writes the sequence for buyers who went dark past your reorder window, with an angle better than 'we miss you'.", "role": "a retention copywriter who runs winback programs for stores with 10,000-plus past buyers and gets judged on reactivated revenue net of the discounts spent to get it", "fields": [{"id": "lapse-definition", "label": "When a buyer counts as lapsed", "type": "text", "required": true, "placeholder": "Example: no order in 9 months, when the typical repeat gap is 4"}, {"id": "what-changed", "label": "What's new since they last bought", "type": "text", "required": false, "placeholder": "Example: two new colorways, faster shipping, a repair program we launched in spring"}], "task": ["Write a three-email winback: first the what's-new angle built from my changes, then the best-of angle around the product their segment bought, then the direct ask with the incentive if we use one.", "Give each email a subject line pair to test and full body copy.", "Set the sequence timing and the sunset rule: what happens to non-responders, and when they stop getting campaigns entirely so they stop dragging deliverability.", "Split the audience if my context supports it: one-time buyers get a different email one than multi-buyers."], "rules": ["No guilt and no 'we miss you' framing. The buyer owes the store nothing; every email leads with what's in it for them.", "The incentive, if any, appears only in email three, and the sunset rule actually executes. A winback list mailed forever is just a spam list with history."], "output": "a three-email winback with subject pairs and full copy, timing, an audience split if warranted, and the sunset rule"}, {"id": "vip-segment-messages", "category": "flows", "title": "VIP Segment Messages", "description": "Defines who counts as a VIP in your store and writes the messages that treat them like it: early access, the plain thank-you, and the one ask reserved for them.", "role": "a customer marketing lead who runs top-buyer programs for niche brands and gets judged on VIP retention and referral output, not on how exclusive the tier sounds", "fields": [{"id": "top-buyers", "label": "What your best buyers look like", "type": "text", "required": true, "placeholder": "Example: about 180 customers with 3+ orders or $400+ lifetime, a few have bought every colorway"}], "task": ["Define the VIP threshold from my numbers so the segment is big enough to matter and small enough to feel real, and state the count it produces.", "Write the early-access email for a launch or restock, making the access itself the offer instead of a discount.", "Write the no-ask thank-you note, short enough to read as personal, with a line only a real buyer of ours would get.", "Write the one ask this segment earns: a referral request, a review on the product they repurchased, or a quick reply-back question, and say which fits my store best.", "Set the cadence cap so VIP treatment stays occasional: how many VIP-only touches per quarter."], "rules": ["VIPs never get discounts as the perk. Discounting your best full-price buyers teaches them their loyalty was overpriced.", "The thank-you sends alone, with no product link anywhere in it. One naked thank-you buys more goodwill than a quarter of campaigns."], "output": "a VIP definition with segment count, three written messages (early access, thank-you, the ask), a recommendation for which ask fits, and a quarterly cadence cap"}, {"id": "sms-message-pack", "category": "flows", "title": "SMS Message Pack", "description": "Writes the short set of texts actually worth sending (back in stock, ship notice, drop alert) in under 160 characters each, with the frequency cap that keeps unsubscribes down.", "role": "an SMS marketer who manages compliance and copy for DTC brands and gets judged on revenue per send against a hard unsubscribe ceiling of 1% per campaign", "fields": [{"id": "sms-status", "label": "Your SMS program today", "type": "select", "required": true, "options": ["No SMS yet, starting from zero", "Collecting numbers, barely sending", "Sending, but unsubscribes hurt", "Active program, want sharper copy"]}, {"id": "moments", "label": "Moments you want to text about", "type": "text", "required": true, "placeholder": "Example: restocks of the tan tote, new colorway drops, shipping updates, Black Friday"}], "task": ["Sort my moments into SMS-worthy and email-instead, using the test: does this lose its value if read three hours later.", "Write the message for each SMS-worthy moment, under 160 characters, with the link and the required opt-out language counted in.", "Set the frequency cap and quiet hours for my list, and the rule for when a moment gets both SMS and email versus SMS alone.", "Write the opt-in confirmation text that sets expectations for exactly what subscribers will receive and how often."], "rules": ["Every text passes the interruption test: worth buzzing a phone at lunch. Anything that fails goes to email, and you say so rather than writing it anyway.", "No cliffhanger texts. The message states what happened and what to do; mystery openers burn trust at ten cents a send."], "output": "a sorted moment list, a written text for each SMS-worthy moment with character counts, frequency and quiet-hour rules, and the opt-in confirmation message"}, {"id": "flow-copy-doctor", "category": "flows", "title": "Flow Copy Doctor", "description": "Reads a pasted email or SMS flow message by message and flags the ones that repeat themselves, bury the link, or reach for a discount too early.", "role": "a retention copy chief who audits automated flows for ecommerce brands and defends every verdict with the revenue mechanics behind it, not taste", "fields": [{"id": "material", "label": "Paste the flow, message by message", "type": "textarea", "required": true, "placeholder": "Example: paste each email with its subject line and send delay, in order, including any SMS in the flow"}, {"id": "flow-goal", "label": "What this flow is supposed to do", "type": "text", "required": false, "placeholder": "Example: cart recovery, currently recovering about 5% of abandons"}], "task": ["Give every message a verdict: keep, cut, merge, or rewrite, each with a one-line reason tied to the flow's job.", "Check the sequence logic: do the messages escalate or just repeat, does the timing match how buyers actually decide at my price point, does any message fight the one before it.", "Rewrite the two weakest messages in full, keeping the flow's existing voice.", "Audit the discount usage: where it appears, whether earlier messages earned it, and what it costs against the recovery it likely adds.", "Give the one structural change worth making before any copy edits."], "rules": ["Quote the exact line you're flagging before commenting on it.", "Judge each message against the single job the flow gave it, not against a generic best-practices list."], "output": "a message-by-message verdict sheet with reasons, two full rewrites, a discount audit, and the single structural change to make first"}, {"id": "review-request-sequence", "category": "proof", "title": "Review Request Sequence", "description": "Times and writes the review ask so it lands after the product proves itself, not while the box is still sitting on the porch.", "role": "a review-program manager who runs post-purchase asks for product brands and gets judged on reviews per hundred orders, with photo reviews counting double", "fields": [{"id": "value-moment", "label": "When the product proves its worth", "type": "text", "required": true, "placeholder": "Example: around week two, once the leather breaks in and buyers start posting photos"}, {"id": "review-rate", "label": "Current review rate if you know it", "type": "text", "required": false, "placeholder": "Example: about 3 reviews per 100 orders, almost none with photos"}], "task": ["Set the ask timing from my value moment, not from the delivery date, and explain the gap you chose.", "Write the primary ask email: a subject line that doesn't say 'feedback', a body that asks one thing, and a link that lands directly on the review form.", "Write the follow-up for non-responders a week later with a changed angle, plus the photo-specific nudge for buyers who already left text reviews.", "Add the routing rule: buyers with an open support ticket get routed to support resolution instead of a review ask.", "Suggest one honest lift for photo reviews, like a next-order perk for any photo review, and state the platform rules that constrain it."], "rules": ["One ask per email. Review plus referral plus survey in one message gets none of the three.", "Never gate by sentiment. Asking only happy buyers to review publicly while routing critics to a form is the kind of practice that gets stores penalized."], "output": "a timed sequence with full copy for the primary ask, follow-up, and photo nudge, a support routing rule, and one compliant photo-review incentive"}, {"id": "review-reply-playbook", "category": "proof", "title": "Review Reply Playbook", "description": "Writes reply templates for the five-star raves, the three-star shrugs, and the one-star problems, each in your voice with an owner-level next step.", "role": "a customer experience lead who answers public reviews for independent brands and gets judged on how replies read to the hundred silent shoppers who see them later", "fields": [{"id": "recent-reviews", "label": "Paste 3 to 5 recent reviews, good and bad", "type": "textarea", "required": true, "placeholder": "Example: 'Gorgeous bag, strap took forever to break in' (4 stars), 'Color was way off from the photos' (2 stars)"}], "task": ["Write reply templates for four situations: the five-star rave, the four-star with a caveat, the three-star shrug, and the one-or-two-star problem, each with bracketed slots for the specifics.", "For the negative template, include the make-it-right move and where the conversation goes private, without begging for a rating change.", "Reply to each of my pasted reviews using the right template, so I can see the system on real material.", "Flag anything in my pasted reviews that recurs and needs a product or page fix, not just a gracious reply."], "rules": ["Replies get written for the future shopper reading over the reviewer's shoulder. Defensiveness loses that reader even when the store is right.", "Every negative reply names the specific issue from the review. A template that opens 'sorry for your experience' without the specifics reads as auto-generated."], "output": "four reply templates with fill-in slots, drafted replies to each pasted review, and a recurring-issue flag list for product or page fixes"}, {"id": "review-language-miner", "category": "proof", "title": "Review Language Miner", "description": "Pulls the exact phrases buyers use in your reviews and sorts them into headline material, objection answers, and product problems that copy can't fix.", "role": "a voice-of-customer researcher who mines review sets for copy teams and gets judged on how many mined lines end up verbatim in ads and pages that outperform", "fields": [{"id": "reviews", "label": "Paste 10 to 30 reviews", "type": "textarea", "required": true, "placeholder": "Example: paste them raw with star ratings if you have them, duplicates and typos included"}], "task": ["Extract the ten strongest verbatim lines and mark why each works: specificity, before-after contrast, objection reversal, or unexpected use case.", "Sort every useful phrase into buckets: headline candidates, objection answers, product page details, ad hooks.", "Count the recurring themes and rank them, so I know if 'breaks in beautifully' shows up nine times or once.", "List the complaints that recur, and split them: which need a copy or photo fix on the page, and which need a product or fulfillment fix nobody should write around.", "Note the vocabulary gap: words buyers use that my site never says, and vice versa."], "rules": ["Keep quotes verbatim, typos included, and mark any trim with brackets. Cleaned-up quotes lose the credibility that makes them worth mining.", "A complaint that appears three or more times gets flagged as a product issue even if a copy fix exists."], "output": "a phrase bank sorted by destination, the top ten verbatim lines with why they work, ranked themes with counts, a split complaint list, and the vocabulary gap"}, {"id": "ugc-creator-brief", "category": "proof", "title": "UGC Creator Brief", "description": "Writes the brief a UGC creator can shoot from without a follow-up call: the angle, the shot list, the lines to hit, and the mistakes that force a reshoot.", "role": "a UGC producer who briefs creators for ecommerce ad accounts and gets judged on usable footage per brief, because every follow-up call and reshoot comes out of the margin", "fields": [{"id": "product", "label": "The product being filmed", "type": "text", "required": true, "placeholder": "Example: Harper Tote in tan, $148"}, {"id": "target-doubt", "label": "The objection this video answers", "type": "text", "required": true, "placeholder": "Example: 'is $148 worth it', answered by showing the bag after a year of daily use"}], "task": ["Write the concept in two sentences a creator reads once and gets: the angle, the setting, and the feeling of the finished clip.", "Build the shot list: hook shot in the first two seconds, the product-in-use shots, the detail close-ups, and the talking moments, with rough timing for a 30-to-45 second cut.", "Script the three lines the creator must hit in their own words, including the one that answers my target doubt, and mark which claims they can't make (results, guarantees, anything unproven).", "List the disqualifiers that force a reshoot: bad audio, reading off-screen, filming the product still in packaging, whatever applies.", "Specify deliverables: aspect ratio, raw footage or edited, number of hook variations."], "rules": ["Lines get scripted as meaning, not word-for-word. A creator reciting copy kills the only reason UGC works.", "The brief includes what the creator gets paid or gifted and the usage rights window, stated plainly, because vague rights terms poison creator relationships."], "output": "a one-page brief with concept, timed shot list, three must-hit lines and banned claims, reshoot disqualifiers, deliverable specs, and the compensation and rights terms"}, {"id": "influencer-outreach-kit", "category": "proof", "title": "Influencer Outreach Kit", "description": "Builds the pitch, the deal structure, and the follow-up for creators whose audience matches your buyer, sized for a store budget instead of a brand-team budget.", "role": "a partnerships manager who runs creator programs for stores spending under $3,000 a month on influencers and gets judged on cost per attributed order, not follower reach", "fields": [{"id": "creator-profile", "label": "The creators you want", "type": "text", "required": true, "placeholder": "Example: what's-in-my-bag and commuter-style creators, 10k to 80k followers, mostly Instagram and TikTok"}, {"id": "budget", "label": "What you can offer", "type": "text", "required": true, "placeholder": "Example: free product plus $150 to $400 per post, or commission at 15%"}], "task": ["Write the first outreach DM or email: short, specific to their content, with the offer stated instead of hidden behind 'let's collaborate'.", "Structure two deal options from my budget: a flat-fee post with usage rights, and a gifted-plus-commission option for creators I can't afford flat, with when to lead with each.", "Write the follow-up message for non-responders at day 5 and the polite close-out at day 12.", "Define the fit checklist before any offer goes out: engagement quality over follower count, audience match to my buyer, and past sponsored posts that didn't read as ad reads.", "Draft the simple terms summary for accepted creators: deliverables, timing, usage rights, disclosure requirements."], "rules": ["The first message proves I watched their content by referencing one specific post. Mass-blast openers get mass-blast ignore rates.", "Every deal includes the disclosure requirement stated plainly. An undisclosed sponsored post is a liability wearing a bag."], "output": "an outreach message with follow-up and close-out, two deal structures with selection logic, a fit checklist, and a plain-language terms summary"}, {"id": "social-proof-ad-set", "category": "proof", "title": "Social Proof Ad Set", "description": "Turns your best reviews and customer photos into three ad concepts where the customer does the talking and the brand stays out of the way.", "role": "a performance creative strategist who builds proof-led ads for DTC accounts and gets judged on thumb-stop rate and cost per purchase, in that order", "fields": [{"id": "proof-assets", "label": "The reviews or customer moments worth an ad", "type": "textarea", "required": true, "placeholder": "Example: 'I've carried this daily for 14 months and it looks better than day one', plus a customer photo of the patina"}], "task": ["Pick the three strongest proof assets and say what doubt each one destroys, because a proof ad works only when it answers something.", "Build one ad concept per asset: the visual direction, the primary text that frames the proof without repeating it, a headline under 8 words, and the call to action.", "Write two hook variations for the strongest concept: one leading with the review line itself, one leading with the doubt it answers.", "State what each ad claims and confirm every claim traces to the actual review or photo, flagging anything that would need permission or substantiation."], "rules": ["The customer's words stay verbatim in the ad, typos optionally cleaned, meaning untouched. Paraphrased proof is just copywriting with a costume on.", "Get usage permission flagged for every customer photo and named review. An ad that has to come down mid-flight costs more than it made."], "output": "three ad concepts each with visual direction, primary text, headline, and CTA, two hook variations for the winner, and a claims-and-permissions checklist"}, {"id": "customer-story-feature", "category": "proof", "title": "Customer Story Feature", "description": "Turns one real buyer into a short story piece for your site or social feed, structured around the problem the product ended rather than praise for the product.", "role": "a brand journalist who writes customer features for product companies and gets judged on whether readers finish the piece and click through to the product it mentions once", "fields": [{"id": "customer-material", "label": "The customer and their story", "type": "textarea", "required": true, "placeholder": "Example: a nurse who bought the crossbody for 12-hour shifts and emailed us a thank-you six months later"}], "task": ["Structure the story in three beats: the situation before, the moment of choosing, and the specific change after, all from the material I gave you.", "Write the feature at two lengths: a 200-to-300 word site version with a headline, and a caption-length version for social.", "Keep the product to one natural mention per version, placed where the story earns it.", "Write the outreach message asking this customer for permission and any missing details, with the two or three questions that would make the story stronger."], "rules": ["Nothing gets invented about the customer. Gaps in the story become questions in the outreach message, not filler in the draft.", "The customer is the protagonist and stays one. The store appears as the tool they picked, not the hero that saved them."], "output": "a site-length feature with headline, a social caption version, and a permission-and-questions outreach message for the customer"}, {"id": "ad-copy-doctor", "category": "proof", "title": "Ad Copy Doctor", "description": "Reads your pasted ad and tells you whether the hook, the proof, or the offer is what's dragging, then rewrites the weak part instead of the whole thing.", "role": "a direct-response copy chief who audits ecommerce ad accounts and has to name which single element failed before touching a word, because rewriting everything hides the lesson", "fields": [{"id": "material", "label": "Paste the ad: primary text, headline, CTA", "type": "textarea", "required": true, "placeholder": "Example: paste the full primary text, the headline, the description line, and the button label"}, {"id": "performance", "label": "How it's performing", "type": "text", "required": false, "placeholder": "Example: $38 cost per purchase against a $25 target, clicks fine, conversions weak"}], "task": ["Diagnose which element fails first, using my performance numbers where I gave them: weak hook shows as low click-through, weak proof or offer shows as clicks without buys, mismatch shows as bounces.", "Grade each element separately: the hook's first line, the proof in the body, the offer clarity, and the CTA, quoting the line behind each grade.", "Rewrite only the failing element, in two variations with different angles.", "Check message match: does the ad's promise survive contact with where the click lands, based on my context.", "State the test plan: what to change, what to hold constant, and the number that decides."], "rules": ["Rewrite one element, not the ad. If everything genuinely fails, say the ad needs a new concept rather than surgery, and give the concept in two sentences.", "Every diagnosis cites either a number I gave you or a quoted line. No verdicts from vibes."], "output": "an element-by-element diagnosis with grades and quoted evidence, two rewrites of the failing element, a message-match check, and a single-variable test plan"}, {"id": "checkout-friction-audit", "category": "retention", "title": "Checkout Friction Audit", "description": "Walks your checkout step by step and lists the fields, surprises, and silences that make a ready buyer bail at the last screen.", "role": "a checkout optimization specialist who audits carts for stores losing buyers between add-to-cart and payment, and answers for completed-checkout rate rather than opinions about design", "fields": [{"id": "checkout-description", "label": "Describe your checkout as a buyer sees it", "type": "textarea", "required": true, "placeholder": "Example: Shopify checkout, shipping cost appears at step 2, no express pay buttons, account creation optional, discount field very visible"}, {"id": "abandon-data", "label": "Checkout numbers if you have them", "type": "text", "required": false, "placeholder": "Example: 61% of started checkouts never finish, worst on mobile"}], "task": ["List every friction point in my described checkout in the order a buyer hits it: surprise costs, required fields, missing payment options, silence about delivery dates, the discount-code field inviting people to leave and hunt.", "Rank the list by likely revenue impact for my store, using my numbers where given.", "Prescribe the fix for each: the setting to change, the line of reassurance copy to add, or the element to remove, with rough effort noted.", "Write the reassurance microcopy for the two highest-impact spots, like the delivery estimate near the shipping choice.", "Define how I verify each fix worked: the before-and-after number and how long to wait before judging."], "rules": ["Every flagged friction ties to a reason a buyer at my price point bails, not to a general best practice. A $30 store and a $300 store lose people at different spots.", "If my description suggests the discount field leaks buyers to coupon sites, the fix gets stated even though it means hiding a feature I paid for."], "output": "a ranked friction list with fixes and effort levels, drafted microcopy for the top two spots, and a verification plan per fix"}, {"id": "trust-microcopy-pack", "category": "retention", "title": "Trust Microcopy Pack", "description": "Writes the small lines that carry big weight: the shipping note, the guarantee text, the returns blurb, and the reassurance that sits under the buy button.", "role": "a UX writer who does trust copy for independent stores, judged on checkout completion because the words next to the button move it more than the words in the banner", "fields": [{"id": "policies", "label": "Your actual policies", "type": "textarea", "required": true, "placeholder": "Example: free returns for 30 days, ships in 5 days, free shipping over $150, 10-year stitching repair"}], "task": ["Write the reassurance line for directly under the add-to-cart button, choosing the single policy that best answers this store's biggest doubt.", "Write the shipping and returns block for the product page in under 50 words, concrete dates and terms only.", "Write the guarantee copy at two lengths: a one-liner for the page and a short paragraph for the FAQ or policy page, both stating exactly what I promise and what the buyer does to claim it.", "Write the cart-page trust line and the checkout-page delivery estimate line.", "Map every line to its exact placement so nothing gets pasted into a random footer."], "rules": ["Every line states a term: a number of days, a who-pays, a how-to-claim. Reassuring adjectives with no terms underneath are what suspicious checkouts already have.", "Nothing gets promised beyond the policies I pasted. If a policy is too weak to reassure anyone, flag it as the real problem instead of writing around it."], "output": "a placed microcopy pack: buy-button line, shipping and returns block, guarantee at two lengths, cart and checkout lines, each mapped to its location"}, {"id": "loyalty-program-design", "category": "retention", "title": "Loyalty Program Design", "description": "Designs a loyalty program sized to your store: what earns points, what points buy, and the math that keeps it from becoming a standing discount with a dashboard.", "role": "a retention economist who designs loyalty programs for stores under $10M and answers for incremental repeat revenue, the orders that wouldn't have happened without the program", "fields": [{"id": "repeat-rate", "label": "Repeat purchase rate if you know it", "type": "text", "required": true, "placeholder": "Example: about 22% buy again within a year, mostly the same product in a new color"}, {"id": "margin-room", "label": "Margin you can spend on rewards", "type": "text", "required": false, "placeholder": "Example: could give up 5% of repeat-order revenue if it clearly drives orders"}], "task": ["Decide whether my store should run points, tiers, or a simple punch-card equivalent, based on my order frequency and catalog, and say why the others fit worse.", "Define what earns credit: purchases first, then at most two non-purchase actions that create real value, like a photo review or a referral.", "Set the reward structure with the math shown: what a point costs me, what redemption level pulls a second order forward, and the breakage assumption.", "Write the program explanation for the site in under 100 words, so a buyer gets it without a diagram.", "Name the two numbers that tell me in 90 days whether the program creates orders or just discounts orders I was getting anyway."], "rules": ["Rewards favor products over percentages where the margin allows: a free care kit costs me less than its perceived value, a 15% code costs face value forever.", "If my repeat rate and order gap suggest a loyalty program can't pay for itself, say so and propose the lighter alternative instead of designing the doomed version."], "output": "a program structure with reasoning, earn and reward rules with the math shown, site-ready explanation copy, and the two 90-day verdict metrics"}, {"id": "unboxing-experience-plan", "category": "retention", "title": "Unboxing Experience Plan", "description": "Plans what's inside the box (the insert, the note, the care card) so the first 30 seconds after opening earn a photo, a review, or a second order.", "role": "a packaging and insert designer for DTC brands who gets judged on measurable actions per hundred boxes: photos posted, QR scans, insert offers redeemed", "fields": [{"id": "current-box", "label": "What buyers get in the box now", "type": "text", "required": true, "placeholder": "Example: the bag in a dust cover, a receipt, nothing else"}, {"id": "per-box-budget", "label": "What you can spend per box", "type": "text", "required": false, "placeholder": "Example: up to $1.50 per order for inserts and extras"}], "task": ["Design the opening sequence: what the buyer sees first, second, third, and the one feeling the sequence should land, grounded in my product and price point.", "Spec each insert within my budget: the care card content, the founder note copy, and one action card with a single ask, written out in full.", "Pick the one action to optimize for (photo, review, or second-order offer) based on my store's current gap, and say why the others wait.", "Give the cheap version and the better version of each element, with cost estimates, so I can start this month.", "Define the measurement: the QR code, the code word, or the tagged-photo count that tells me the box is working."], "rules": ["One ask in the whole box. An insert with a review request, a referral code, and a discount is three inserts failing simultaneously.", "Every element earns its cost at my AOV. A $1.50 insert stack in a $22 order box is generosity the margin didn't approve."], "output": "an opening-sequence plan, written copy for the care card, founder note, and action card, a chosen primary action with reasoning, costed cheap and better versions, and the measurement method"}, {"id": "referral-program-plan", "category": "retention", "title": "Referral Program Plan", "description": "Builds a give-and-get referral offer around the moment your buyers already recommend you, with the ask copy for email and the package insert.", "role": "a growth marketer who builds referral programs for word-of-mouth-heavy brands and gets judged on referred orders per hundred customers, not signups to the program page", "fields": [{"id": "recommend-moment", "label": "When buyers recommend you now", "type": "text", "required": true, "placeholder": "Example: friends ask about the bag directly, buyers tag us in airport photos"}, {"id": "unit-economics", "label": "What a new customer is worth", "type": "text", "required": false, "placeholder": "Example: first order around $140 at 65% margin, 1 in 5 buys again"}], "task": ["Design the give-and-get from my economics: what the referrer gets, what the friend gets, and why both sides beat the standard 10%-off swap for my store.", "Time the ask at my recommend moment: which email or insert carries it, and how long after purchase it fires.", "Write the ask copy for both channels: the email and the package insert card, plus the shareable line the referrer sends, because most referrals die at 'what do I even say'.", "Set the fraud guardrails: self-referral checks, coupon-site leakage, and the cap that keeps a viral edge case from eating margin.", "Define success at 90 days in referred orders and cost per referred order, next to my paid acquisition cost for comparison."], "rules": ["The referrer's reward has to feel like a thank-you, not a commission. Buyers stop recommending the moment it feels like selling their friends.", "The friend's side of the offer leads every piece of copy, because the referrer is deciding what their friend will think of them."], "output": "a give-and-get structure with the economics shown, ask timing, written copy for email, insert, and the shareable message, fraud guardrails, and 90-day success numbers"}, {"id": "product-use-guide", "category": "retention", "title": "Product Use Guide", "description": "Writes the getting-started or care content that heads off your top refund reasons and gives post-purchase emails something to say besides 'how was it'.", "role": "a customer education writer for physical-product brands who gets judged on refund-rate reduction and support tickets avoided, not on how complete the manual looks", "fields": [{"id": "product", "label": "The product this guide covers", "type": "text", "required": true, "placeholder": "Example: the full-grain leather tote line"}, {"id": "failure-points", "label": "Where buyers go wrong", "type": "textarea", "required": true, "placeholder": "Example: they oil the leather too early, panic when it feels stiff in week one, or overload it past the seam rating"}], "task": ["Order my failure points by how often each one ends in a refund or an angry ticket, and lead the guide with the top one.", "Write the guide: what to do in the first week, what's normal and temporary (like stiffness), what to never do, and the fix if something already went wrong.", "Cut it into channel versions: the card that goes in the box, the day-3 post-purchase email, and the page on the site.", "Mark the two lines that belong on the product page itself, because a failure point buyers hit after purchase started as an expectation the page failed to set."], "rules": ["The what's-normal section comes before the care instructions. A buyer who thinks stiff leather means defective leather refunds before they ever oil anything.", "Write to prevent the top failure point even if it makes the product sound less magical. 'Don't oil it for 30 days' saves more orders than a lyrical care ritual."], "output": "a failure-ranked use guide in three channel versions (box card, day-3 email, site page) plus the two expectation-setting lines for the product page"}, {"id": "returns-reduction-plan", "category": "retention", "title": "Returns Reduction Plan", "description": "Traces your top return reasons back to the page, photo, or sizing gap that caused each one and gives you the fix in order of refund dollars saved.", "role": "an operations-minded CRO consultant who treats every return reason as a broken promise somewhere upstream and gets judged on return rate without denting conversion to get there", "fields": [{"id": "return-reasons", "label": "Your return reasons, roughly quantified", "type": "textarea", "required": true, "placeholder": "Example: 40% 'smaller than expected', 25% color didn't match photos, 15% changed mind"}, {"id": "return-rate", "label": "Overall return rate", "type": "text", "required": false, "placeholder": "Example: 9% of orders, worst on the crossbody"}], "task": ["Trace each return reason to its upstream cause: a missing measurement, a studio-lit photo that lies about color, a description that oversold capacity, or a genuine product issue no copy should hide.", "Rank the fixes by refund dollars saved, estimating from my percentages and order values.", "Specify each fix concretely: the exact measurement to add and where, the photo to reshoot and how (on a body, in daylight, next to a common object for scale), the sentence to rewrite.", "Write the copy fixes in full so they ship this week, and list the photo or product fixes as briefs.", "Set the check: which return-reason percentage should drop, by roughly how much, and when to look."], "rules": ["Never prescribe a fix that reduces returns by hiding information; a buyer kept in the dark refunds later and reviews worse. Every fix adds clarity.", "If a reason points to a product defect, say so plainly and stop optimizing copy around it."], "output": "a cause-traced return analysis, fixes ranked by refund dollars, finished copy for the copy fixes, briefs for photo or product fixes, and the follow-up check"}, {"id": "landing-page-doctor", "category": "retention", "title": "Landing Page Doctor", "description": "Reads a pasted landing page against the ad that feeds it and marks where the message breaks between the click and the buy button.", "role": "a conversion copy chief who audits ad-to-page funnels for ecommerce brands and starts every audit from the visitor's last thought before clicking, because the page inherits that thought whether it wants to or not", "fields": [{"id": "material", "label": "Paste the full landing page copy", "type": "textarea", "required": true, "placeholder": "Example: paste headline to final CTA, including button labels and any popup text"}, {"id": "feeding-ad", "label": "Paste the ad sending traffic to it", "type": "textarea", "required": false, "placeholder": "Example: the primary text and headline of the main ad, or the email driving the clicks"}], "task": ["Check message match first: does the page's headline continue the ad's promise, or does the visitor have to re-orient, and quote both lines side by side.", "Walk the page in order and mark each section keep, tighten, rewrite, or cut, with the reason in one line each.", "Find the commitment gaps: places where the page asks for the purchase before it has answered price justification, proof, or risk.", "Rewrite the headline block and the weakest section in full, in the page's existing voice.", "End with the first-fix verdict: the one change worth making before any traffic gets spent on this page again."], "rules": ["If no ad was pasted, audit the page against the traffic source in my context and say which assumptions you're making about the visitor's state of mind.", "Quote the exact line you're flagging every time. Feedback I have to search for is feedback that doesn't get applied."], "output": "a message-match verdict with quoted lines, a section-by-section markup, identified commitment gaps, two full rewrites, and the single first fix"}], "advisors": [{"id": "conversion-diagnostician", "title": "The Conversion Diagnostician", "description": "A diagnostic advisor for stores where the traffic shows up and the orders don't.", "role": "a conversion consultant who has audited hundreds of underperforming stores and starts from the funnel numbers, never from opinions about the design", "focus": "finding where visitors drop between landing and payment, and fixing the biggest leak before touching anything else", "questions": ["traffic volume, overall conversion rate, and where visitors enter the store", "the step-by-step numbers you have: add-to-cart rate, checkout starts, checkout completions", "what changed in the last 90 days: traffic source, pricing, theme, shipping terms", "what a first-time visitor sees above the fold on your top landing page"], "deliverable": "a ranked list of likely leaks with the reasoning, the one fix to make this week, and the number that will confirm whether it worked"}, {"id": "order-value-coach", "title": "The Order Value Coach", "description": "An advisor for stores where every visitor costs more each quarter but each checkout buys the same amount it always did.", "role": "a merchandising advisor who raises average order value without raising prices first, and answers for margin per order after every discount and perk is counted", "focus": "getting more into each order through bundles, thresholds, and add-ons that fit the catalog instead of fighting it", "questions": ["current AOV, your best guess at margin, and the most common single-item order", "the full product list with prices, and which items ever get bought together", "what you've already tried: bundles, free-shipping bars, cart add-ons, and what each did"], "deliverable": "an order-value plan with the two highest-upside moves for your catalog, the margin math behind each, and the sequence to roll them out"}, {"id": "second-order-advisor", "title": "The Second Order Advisor", "description": "An advisor for stores that win the first sale and then watch the customer vanish forever.", "role": "a retention strategist who treats the second purchase as the business model and gets judged on repeat rate at day 90, because a store of one-time buyers is just an ad account with inventory", "focus": "turning one-time buyers into second orders through the post-purchase window, the reorder moment, and the right next product", "questions": ["repeat purchase rate and the typical gap between first and second orders", "what a first order usually contains and what the natural next purchase would be", "everything a buyer hears from you after checkout, message by message", "your margin room for a second-order incentive if one turns out to be needed"], "deliverable": "a second-order plan naming the target window, the next-product path, the messages to add or fix, and the repeat-rate number to watch at day 90"}, {"id": "flow-builder", "title": "The Flow Builder", "description": "An advisor for stores whose email and SMS revenue depends on whatever campaign someone remembered to send that week.", "role": "a lifecycle marketing advisor who builds automated flows for ecommerce brands and gets judged on the share of revenue that arrives while nobody is at the keyboard", "focus": "building or fixing the automated flow stack: welcome, cart recovery, post-purchase, and winback, in the order they'll pay", "questions": ["which flows exist today, what each sends, and roughly what each earns", "list size, how fast it grows, and the split between buyers and never-bought subscribers", "your platform (Klaviyo, Omnisend, whatever you run) and what the last campaign that worked looked like"], "deliverable": "a flow-stack audit with the build-or-fix order, the expected revenue logic behind the sequence, and the first flow to ship with its message outline"}, {"id": "product-drop-planner", "title": "The Product Drop Planner", "description": "An advisor for launching a new product to your existing audience without the launch-day silence that follows a surprise announcement.", "role": "a launch strategist for ecommerce brands who plans drops backward from inventory and list size, and gets judged on sell-through in the first 14 days", "focus": "planning a product drop: the warm-up, the launch window, and the follow-through that clears the inventory you committed to", "questions": ["the product, the price, the inventory committed, and the launch date if one exists", "list size, social following, and how past launches or restocks have gone", "whether this drop targets existing customers, new buyers, or both", "what makes this product different from what your audience already bought"], "deliverable": "a drop plan with the warm-up sequence, launch-window schedule, inventory-to-audience reality check, and the sell-through milestones for the first 14 days"}, {"id": "peak-season-planner", "title": "The Peak Season Planner", "description": "An advisor for the quarter that decides the year, built for stores that make a third of their revenue between October and December.", "role": "a seasonal-commerce operator who has run the fourth quarter for stores of every size and gets judged on total season margin plus how many new buyers still exist as customers in February", "focus": "planning the peak season end to end: inventory bets, the offer calendar, the shipping cutoffs, and the January that follows", "questions": ["last year's peak numbers: revenue, best sellers, what sold out and what didn't move", "this year's inventory position and the bets you've already placed", "your offer plan so far and the deepest discount you're willing to run", "shipping cutoffs from your carriers and how you'll communicate them"], "deliverable": "a peak-season plan with the offer calendar, inventory risk flags, cutoff communication schedule, and the January winback play for the buyers the season brings in"}]};
+
+    const toolConfig = {
+      storageKey: STUDIO.slug + "-theme",
+      profileKey: STUDIO.slug + "-profile",
+      manualKey: STUDIO.slug + "-manual",
+      chatGptUrl: "https://chatgpt.com/"
+    };
+    const html = document.documentElement;
+
+    /* ---------- Shared helpers ---------- */
+    function clean(value) { return String(value || "").trim(); }
+    function escapeHtml(value) {
+      return String(value || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+    async function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        return;
+      }
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.left = "-9999px";
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      textarea.remove();
+    }
+    function feedback(button, message) {
+      const original = button.dataset.originalText || button.textContent;
+      button.dataset.originalText = original;
+      button.textContent = message;
+      setTimeout(() => button.textContent = original, 1200);
+    }
+    async function copyAndOpen(button, text) {
+      try {
+        await copyText(text);
+        feedback(button, "Copied");
+        window.open(toolConfig.chatGptUrl, "_blank", "noopener,noreferrer");
+      } catch (error) {
+        feedback(button, "Copy failed");
+      }
+    }
+
+    /* ---------- Hero stats ---------- */
+    document.getElementById("statGrid").innerHTML = [
+      { n: STUDIO.workflows.length, t: "guided workflows" },
+      { n: STUDIO.categories.length, t: "categories" },
+      { n: STUDIO.advisors.length, t: "expert advisors" },
+      { n: "PDF", t: "prompt manual builder" }
+    ].map(s => `<div class="stat"><b>${escapeHtml(s.n)}</b><span>${escapeHtml(s.t)}</span></div>`).join("");
+
+    /* ---------- Field rendering (shared by profile + workflows) ---------- */
+    function fieldHtml(field, prefix) {
+      const id = prefix + "-" + field.id;
+      const req = field.required ? ' <span class="req">*</span>' : "";
+      const helper = field.helper ? `<p class="helper">${escapeHtml(field.helper)}</p>` : "";
+      let control = "";
+      if (field.type === "textarea") {
+        control = `<textarea id="${id}" data-field="${escapeHtml(field.id)}" ${field.required ? 'aria-required="true"' : ""} placeholder="${escapeHtml(field.placeholder || "")}"></textarea>`;
+      } else if (field.type === "select") {
+        const opts = ['<option value="">Choose one</option>']
+          .concat((field.options || []).map(o => `<option value="${escapeHtml(o)}">${escapeHtml(o)}</option>`)).join("");
+        control = `<select id="${id}" data-field="${escapeHtml(field.id)}" ${field.required ? 'aria-required="true"' : ""}>${opts}</select>`;
+      } else {
+        control = `<input type="text" id="${id}" data-field="${escapeHtml(field.id)}" ${field.required ? 'aria-required="true"' : ""} placeholder="${escapeHtml(field.placeholder || "")}" />`;
+      }
+      return `<div class="field"><label for="${id}">${escapeHtml(field.label)}${req}</label>${control}${helper}</div>`;
+    }
+    function readFields(container) {
+      const values = {};
+      container.querySelectorAll("[data-field]").forEach(el => { values[el.dataset.field] = clean(el.value); });
+      return values;
+    }
+
+    /* ---------- Business profile ---------- */
+    const profileForm = document.getElementById("profileForm");
+    profileForm.innerHTML = STUDIO.profile.map(f => fieldHtml(f, "profile")).join("");
+    function loadProfile() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(toolConfig.profileKey) || "{}");
+        profileForm.querySelectorAll("[data-field]").forEach(el => {
+          if (saved[el.dataset.field]) el.value = saved[el.dataset.field];
+        });
+      } catch (error) { /* corrupted storage: start clean */ }
+    }
+    function saveProfile() {
+      localStorage.setItem(toolConfig.profileKey, JSON.stringify(readFields(profileForm)));
+    }
+    function updateProfileProgress() {
+      const values = profileValues();
+      const filled = STUDIO.profile.filter(f => clean(values[f.id])).length;
+      const percent = Math.round((filled / STUDIO.profile.length) * 100);
+      document.getElementById("profileProgress").style.width = percent + "%";
+      document.getElementById("profilePercent").textContent = percent + "%";
+    }
+    loadProfile();
+    updateProfileProgress();
+    profileForm.addEventListener("input", () => { saveProfile(); updateProfileProgress(); markStaleIfGenerated(); });
+    profileForm.addEventListener("change", () => { saveProfile(); updateProfileProgress(); markStaleIfGenerated(); });
+
+    /* ---------- Prompt assembly (the back end) ---------- */
+    const SHARED_RULES = [
+      "Work from my context above. Don't invent numbers, results, or customer quotes I didn't give you.",
+      "Plain language. No hype words, no filler sentences, no advice so generic it would fit any business."
+    ];
+    function contextLines(workflowValues, workflowFields) {
+      const lines = [];
+      STUDIO.profile.forEach(f => {
+        const v = clean(profileValues()[f.id]);
+        if (v) lines.push(`- ${f.label}: ${v}`);
+      });
+      (workflowFields || []).forEach(f => {
+        if (f.id === "material") return;
+        const v = clean(workflowValues[f.id]);
+        if (v) lines.push(`- ${f.label}: ${v}`);
+      });
+      return lines;
+    }
+    function profileValues() { return readFields(profileForm); }
+    function buildWorkflowPrompt(wf, values) {
+      const parts = [];
+      parts.push(`You are ${wf.role}.`);
+      parts.push("");
+      parts.push("MY CONTEXT");
+      parts.push(contextLines(values, wf.fields).join("\n"));
+      const material = clean(values.material);
+      if (material) {
+        parts.push("");
+        parts.push("WORK WITH THIS MATERIAL");
+        parts.push("---");
+        parts.push(material);
+        parts.push("---");
+      }
+      parts.push("");
+      parts.push("YOUR TASK");
+      wf.task.forEach((step, i) => parts.push(`${i + 1}. ${step}`));
+      parts.push("");
+      parts.push("RULES");
+      (wf.rules || []).concat(SHARED_RULES).forEach(r => parts.push(`- ${r}`));
+      parts.push("");
+      parts.push("OUTPUT");
+      parts.push(`Give me ${wf.output}.`);
+      parts.push("");
+      parts.push("Before you start: if any part of my context is too thin to do this well, ask me up to 3 specific questions first, then produce the deliverable.");
+      return parts.join("\n");
+    }
+    function buildAdvisorPrompt(adv) {
+      const parts = [];
+      parts.push(`You are ${adv.role}. Act as my ongoing advisor for ${adv.focus}.`);
+      parts.push("");
+      parts.push("MY CONTEXT");
+      const lines = contextLines({}, []);
+      parts.push(lines.length ? lines.join("\n") : "- I'll give you context as we talk.");
+      parts.push("");
+      parts.push("HOW THIS SESSION WORKS");
+      parts.push("Interview me before you advise. Ask one question at a time and wait for my answer. Start with what you most need to know, including:");
+      adv.questions.forEach(q => parts.push(`- ${q}`));
+      parts.push("");
+      parts.push(`After you have enough to work with (usually 4 to 6 answers), give me ${adv.deliverable}. Then stay in this role: I'll bring you follow-up situations and you keep advising with the same standards.`);
+      parts.push("");
+      parts.push("RULES");
+      parts.push("- One question per message while interviewing.");
+      parts.push("- Don't invent numbers or facts I didn't give you. If you assume something, say so in one line.");
+      parts.push("- Plain language. No hype, no filler, no generic advice.");
+      return parts.join("\n");
+    }
+
+    /* ---------- Tabs ---------- */
+    const tabs = document.querySelectorAll(".tab");
+    tabs.forEach(tab => tab.addEventListener("click", () => {
+      tabs.forEach(t => { t.classList.toggle("active", t === tab); t.setAttribute("aria-selected", String(t === tab)); });
+      ["workflows", "advisors", "manual"].forEach(name => {
+        document.getElementById("tab-" + name).hidden = tab.dataset.tab !== name;
+      });
+    }));
+
+    /* ---------- Workflow browse ---------- */
+    const catRow = document.getElementById("catRow");
+    const catNote = document.getElementById("catNote");
+    const wfGrid = document.getElementById("wfGrid");
+    const browse = document.getElementById("workflowBrowse");
+    const detail = document.getElementById("workflowDetail");
+    const wfSearch = document.getElementById("wfSearch");
+    let currentCat = STUDIO.categories[0].id;
+    let currentWf = null;
+    let generated = false;
+    let searchTerm = "";
+
+    function renderCats() {
+      catRow.innerHTML = STUDIO.categories.map(c =>
+        `<button type="button" class="cat-chip${!searchTerm && c.id === currentCat ? " active" : ""}" data-cat="${escapeHtml(c.id)}">${escapeHtml(c.title)}</button>`
+      ).join("");
+      const cat = STUDIO.categories.find(c => c.id === currentCat);
+      catNote.textContent = searchTerm ? `Showing matches across all ${STUDIO.categories.length} categories.` : (cat && cat.note ? cat.note : "");
+      catRow.querySelectorAll("[data-cat]").forEach(chip => chip.addEventListener("click", () => {
+        currentCat = chip.dataset.cat;
+        searchTerm = "";
+        wfSearch.value = "";
+        renderCats();
+        renderGrid();
+      }));
+    }
+    function renderGrid() {
+      const matches = STUDIO.workflows.filter(w => searchTerm
+        ? (w.title + " " + w.description).toLowerCase().includes(searchTerm)
+        : w.category === currentCat);
+      if (!matches.length) {
+        wfGrid.innerHTML = `<div class="no-results"><div><strong>No workflow matches that search.</strong><br />Try the artifact you need, such as audit, plan, email, or offer.</div></div>`;
+        return;
+      }
+      wfGrid.innerHTML = matches.map(w =>
+        `<button type="button" class="wf-card" data-wf="${escapeHtml(w.id)}">
+          <span class="card-no">WORKFLOW ${String(STUDIO.workflows.indexOf(w) + 1).padStart(2, "0")}</span>
+          <b>${escapeHtml(w.title)}</b>
+          <span>${escapeHtml(w.description)}</span>
+          <span class="go">Open &rarr;</span>
+        </button>`
+      ).join("");
+      wfGrid.querySelectorAll("[data-wf]").forEach(card => card.addEventListener("click", () => openWorkflow(card.dataset.wf)));
+    }
+    wfSearch.addEventListener("input", () => {
+      searchTerm = clean(wfSearch.value).toLowerCase();
+      renderCats();
+      renderGrid();
+    });
+    renderCats();
+    renderGrid();
+
+    /* ---------- Workflow detail ---------- */
+    const wfFields = document.getElementById("wfFields");
+    const wfForm = document.getElementById("wfForm");
+    const wfValidation = document.getElementById("wfValidation");
+    const wfResultWrap = document.getElementById("wfResultWrap");
+    const wfPromptEl = document.getElementById("wfPrompt");
+    const staleNote = document.getElementById("staleNote");
+
+    function openWorkflow(id) {
+      currentWf = STUDIO.workflows.find(w => w.id === id);
+      generated = false;
+      const category = STUDIO.categories.find(c => c.id === currentWf.category);
+      document.getElementById("wfMeta").textContent = category ? category.title : "Workflow";
+      document.getElementById("wfTitle").textContent = currentWf.title;
+      document.getElementById("wfDescription").textContent = currentWf.description;
+      wfFields.innerHTML = currentWf.fields.map(f => fieldHtml(f, "wf")).join("");
+      wfFields.style.display = "grid";
+      wfFields.style.gap = "15px";
+      wfValidation.classList.remove("show");
+      wfResultWrap.hidden = true;
+      staleNote.classList.remove("show");
+      browse.hidden = true;
+      detail.hidden = false;
+      detail.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    document.getElementById("backToGrid").addEventListener("click", () => {
+      detail.hidden = true;
+      browse.hidden = false;
+      generated = false;
+    });
+
+    function markStaleIfGenerated() {
+      if (generated) {
+        staleNote.classList.add("show");
+        wfPromptEl.style.opacity = "0.55";
+      }
+    }
+    wfForm.addEventListener("input", markStaleIfGenerated);
+    wfForm.addEventListener("change", markStaleIfGenerated);
+
+    wfForm.addEventListener("submit", event => {
+      event.preventDefault();
+      if (!currentWf) return;
+      const missing = [];
+      STUDIO.profile.filter(f => f.required).forEach(f => {
+        if (!clean(profileValues()[f.id])) missing.push(f.label);
+      });
+      const values = readFields(wfFields);
+      currentWf.fields.filter(f => f.required).forEach(f => {
+        if (!clean(values[f.id])) missing.push(f.label);
+      });
+      if (missing.length) {
+        wfValidation.textContent = "Still needed: " + missing.join(", ") + ".";
+        wfValidation.classList.add("show");
+        const firstMissingProfile = STUDIO.profile.find(f => f.required && !clean(profileValues()[f.id]));
+        const firstMissingWorkflow = currentWf.fields.find(f => f.required && !clean(values[f.id]));
+        const target = firstMissingProfile ? document.getElementById("profile-" + firstMissingProfile.id) : (firstMissingWorkflow ? document.getElementById("wf-" + firstMissingWorkflow.id) : null);
+        if (target) target.focus();
+        return;
+      }
+      wfValidation.classList.remove("show");
+      wfPromptEl.textContent = buildWorkflowPrompt(currentWf, values);
+      wfPromptEl.style.opacity = "";
+      wfResultWrap.hidden = false;
+      staleNote.classList.remove("show");
+      generated = true;
+      wfResultWrap.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+
+    document.getElementById("copyPrompt").addEventListener("click", async event => {
+      try { await copyText(wfPromptEl.textContent); feedback(event.target, "Copied"); }
+      catch (error) { feedback(event.target, "Copy failed"); }
+    });
+    document.getElementById("copyOpen").addEventListener("click", event => copyAndOpen(event.target, wfPromptEl.textContent));
+    document.getElementById("addToManual").addEventListener("click", event => {
+      addManualEntry(currentWf.title, "Workflow", wfPromptEl.textContent);
+      feedback(event.target, "Saved to manual");
+    });
+
+    /* ---------- Advisors ---------- */
+    const advGrid = document.getElementById("advGrid");
+    const advResultWrap = document.getElementById("advResultWrap");
+    const advPromptEl = document.getElementById("advPrompt");
+    let currentAdv = null;
+    advGrid.innerHTML = STUDIO.advisors.map((a, i) =>
+      `<div class="adv-card">
+        <span class="advisor-index">ADVISOR ${String(i + 1).padStart(2, "0")}</span>
+        <b>${escapeHtml(a.title)}</b>
+        <p>${escapeHtml(a.description)}</p>
+        <button class="mini primary-mini" type="button" data-adv="${escapeHtml(a.id)}">Start this session</button>
+      </div>`
+    ).join("");
+    advGrid.querySelectorAll("[data-adv]").forEach(btn => btn.addEventListener("click", () => {
+      currentAdv = STUDIO.advisors.find(a => a.id === btn.dataset.adv);
+      document.getElementById("advResultTitle").textContent = currentAdv.title;
+      advPromptEl.textContent = buildAdvisorPrompt(currentAdv);
+      advResultWrap.hidden = false;
+      advResultWrap.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }));
+    document.getElementById("advCopy").addEventListener("click", async event => {
+      try { await copyText(advPromptEl.textContent); feedback(event.target, "Copied"); }
+      catch (error) { feedback(event.target, "Copy failed"); }
+    });
+    document.getElementById("advCopyOpen").addEventListener("click", event => copyAndOpen(event.target, advPromptEl.textContent));
+    document.getElementById("advAddToManual").addEventListener("click", event => {
+      addManualEntry(currentAdv.title, "Advisor", advPromptEl.textContent);
+      feedback(event.target, "Saved to manual");
+    });
+
+    /* ---------- Prompt manual ---------- */
+    const manualList = document.getElementById("manualList");
+    const manualEmpty = document.getElementById("manualEmpty");
+    const manualCount = document.getElementById("manualCount");
+    const manualTitle = document.getElementById("manualTitle");
+    let manual = [];
+    try { manual = JSON.parse(localStorage.getItem(toolConfig.manualKey) || "[]"); } catch (error) { manual = []; }
+    const savedManualTitle = localStorage.getItem(toolConfig.manualKey + "-title");
+    if (savedManualTitle) manualTitle.value = savedManualTitle;
+    manualTitle.addEventListener("input", () => localStorage.setItem(toolConfig.manualKey + "-title", manualTitle.value));
+
+    function saveManual() { localStorage.setItem(toolConfig.manualKey, JSON.stringify(manual)); }
+    function addManualEntry(title, source, text) {
+      manual.push({ id: "m" + (manual.length + 1) + "-" + text.length, title, source, text });
+      saveManual();
+      renderManual();
+    }
+    function renderManual() {
+      manualCount.textContent = manual.length ? "(" + manual.length + ")" : "";
+      manualEmpty.style.display = manual.length ? "none" : "grid";
+      manualList.innerHTML = manual.map((entry, i) =>
+        `<div class="manual-item">
+          <div class="manual-item-head">
+            <b>${i + 1}. ${escapeHtml(entry.title)}</b>
+            <span>${escapeHtml(entry.source)}</span>
+          </div>
+          <pre>${escapeHtml(entry.text)}</pre>
+          <div class="result-actions">
+            <button class="mini" type="button" data-up="${i}">Move up</button>
+            <button class="mini" type="button" data-down="${i}">Move down</button>
+            <button class="mini" type="button" data-copy="${i}">Copy</button>
+            <button class="mini" type="button" data-remove="${i}">Remove</button>
+          </div>
+        </div>`
+      ).join("");
+      manualList.querySelectorAll("[data-up]").forEach(b => b.addEventListener("click", () => {
+        const i = Number(b.dataset.up);
+        if (i > 0) { [manual[i - 1], manual[i]] = [manual[i], manual[i - 1]]; saveManual(); renderManual(); }
+      }));
+      manualList.querySelectorAll("[data-down]").forEach(b => b.addEventListener("click", () => {
+        const i = Number(b.dataset.down);
+        if (i < manual.length - 1) { [manual[i + 1], manual[i]] = [manual[i], manual[i + 1]]; saveManual(); renderManual(); }
+      }));
+      manualList.querySelectorAll("[data-copy]").forEach(b => b.addEventListener("click", async () => {
+        try { await copyText(manual[Number(b.dataset.copy)].text); feedback(b, "Copied"); }
+        catch (error) { feedback(b, "Copy failed"); }
+      }));
+      manualList.querySelectorAll("[data-remove]").forEach(b => b.addEventListener("click", () => {
+        manual.splice(Number(b.dataset.remove), 1);
+        saveManual();
+        renderManual();
+      }));
+    }
+    renderManual();
+
+    function manualDocTitle() { return clean(manualTitle.value) || STUDIO.title + " Prompt Manual"; }
+    function buildPrintArea() {
+      const printArea = document.getElementById("printArea");
+      const cover = document.createElement("div");
+      cover.className = "print-cover";
+      const h1 = document.createElement("h1");
+      h1.textContent = manualDocTitle();
+      const p = document.createElement("p");
+      p.textContent = manual.length + " prompts, built with " + STUDIO.title;
+      cover.append(h1, p);
+      printArea.replaceChildren(cover);
+      manual.forEach((entry, i) => {
+        const block = document.createElement("div");
+        block.className = "print-prompt";
+        const h2 = document.createElement("h2");
+        h2.textContent = (i + 1) + ". " + entry.title;
+        const src = document.createElement("p");
+        src.className = "print-source";
+        src.textContent = entry.source;
+        const pre = document.createElement("pre");
+        pre.textContent = entry.text;
+        block.append(h2, src, pre);
+        printArea.append(block);
+      });
+    }
+    document.getElementById("printManual").addEventListener("click", event => {
+      if (!manual.length) { feedback(event.target, "Manual is empty"); return; }
+      buildPrintArea();
+      window.print();
+    });
+    document.getElementById("downloadManual").addEventListener("click", event => {
+      if (!manual.length) { feedback(event.target, "Manual is empty"); return; }
+      const body = manual.map((entry, i) =>
+        `<section><h2>${escapeHtml((i + 1) + ". " + entry.title)}</h2><p class="src">${escapeHtml(entry.source)}</p><pre>${escapeHtml(entry.text)}</pre></section>`
+      ).join("\n");
+      const doc = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>${escapeHtml(manualDocTitle())}</title>
+<style>body{font-family:Georgia,serif;max-width:760px;margin:40px auto;padding:0 20px;color:#111;}h1{letter-spacing:-0.02em;}.src{color:#666;font-size:0.9rem;}pre{white-space:pre-wrap;word-break:break-word;font-family:"Courier New",monospace;font-size:0.85rem;line-height:1.5;border:1px solid #ccc;border-radius:8px;padding:14px;}section{margin:34px 0;}</style>
+</head><body><h1>${escapeHtml(manualDocTitle())}</h1><p class="src">${manual.length} prompts, built with ${escapeHtml(STUDIO.title)}</p>\n${body}\n</body></html>`;
+      const blob = new Blob([doc], { type: "text/html" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = STUDIO.slug + "-prompt-manual.html";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      feedback(event.target, "Downloaded");
+    });
+    document.getElementById("clearManual").addEventListener("click", event => {
+      if (!manual.length) { feedback(event.target, "Manual is empty"); return; }
+      manual = [];
+      saveManual();
+      renderManual();
+      feedback(event.target, "Cleared");
+    });
+
+    /* ---------- Theme ---------- */
+    function syncThemeButtons(theme) {
+      document.querySelectorAll("[data-theme-choice]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.themeChoice === theme)));
+    }
+    document.querySelectorAll("[data-theme-choice]").forEach(button => {
+      button.addEventListener("click", () => {
+        html.setAttribute("data-theme", button.dataset.themeChoice);
+        localStorage.setItem(toolConfig.storageKey, button.dataset.themeChoice);
+        syncThemeButtons(button.dataset.themeChoice);
+      });
+    });
+    const savedTheme = localStorage.getItem(toolConfig.storageKey);
+    const initialTheme = savedTheme === "light" || savedTheme === "dark" ? savedTheme : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    html.setAttribute("data-theme", initialTheme);
+    syncThemeButtons(initialTheme);
+  </script>
+</body>
+</html>

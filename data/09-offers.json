@@ -1,0 +1,1608 @@
+{
+  "slug": "offers",
+  "title": "Offer & Sales Page Prompt Studio",
+  "kicker": "Guided prompt system for conversion copy",
+  "subtitle": "For owners, marketers, and copywriters turning an offer into a page that sells it. Every workflow builds a prompt that produces sales copy, page structure, or a fix list you can use the same day.",
+  "badge": "48 guided workflows",
+  "accent": "#96351f",
+  "accent2": "#d6a11f",
+  "footer": "Prompt Studio",
+  "profile": [
+    {
+      "id": "offer",
+      "label": "What you sell, the price, and who buys it",
+      "type": "textarea",
+      "required": true,
+      "placeholder": "Example: $89/month meal-planning app for shift workers, sold through a long-form sales page",
+      "helper": "One or two sentences. Every prompt in this studio uses this."
+    },
+    {
+      "id": "buyer-words",
+      "label": "Your buyer in their own words",
+      "type": "textarea",
+      "required": false,
+      "placeholder": "Example: I know what to cook, I just have zero decision energy left after a 12-hour shift",
+      "helper": "Paste a real quote from a review, call, or DM if you have one."
+    },
+    {
+      "id": "current-project",
+      "label": "The page or offer you're working on right now",
+      "type": "textarea",
+      "required": false,
+      "placeholder": "Example: rewriting the sales page for our annual plan before the January price increase",
+      "helper": ""
+    },
+    {
+      "id": "goal",
+      "label": "What this page has to do in the next 90 days",
+      "type": "text",
+      "required": false,
+      "placeholder": "Example: lift sales-page conversion from 1.1% to 2% on cold traffic",
+      "helper": ""
+    },
+    {
+      "id": "voice",
+      "label": "Voice or constraints the copy has to respect",
+      "type": "text",
+      "required": false,
+      "placeholder": "Example: plainspoken, no hype, we never discount and can't promise medical outcomes",
+      "helper": ""
+    }
+  ],
+  "categories": [
+    { "id": "foundation", "title": "Offer Foundation", "note": "Decide what you're selling and why it wins before a headline gets written." },
+    { "id": "buyer", "title": "Buyer Evidence", "note": "Map what your buyer wants, fears, says out loud, and already tried." },
+    { "id": "page", "title": "Page Architecture", "note": "Plan the page section by section and write the blocks that carry the argument." },
+    { "id": "proof", "title": "Proof and Believability", "note": "Turn what you can actually back up into the most believed copy on the page." },
+    { "id": "close", "title": "Price and Close", "note": "Present the price, stack the value honestly, and walk the reader through checkout." },
+    { "id": "improve", "title": "Audit and Rewrite", "note": "Find what's costing conversions on a live page and fix it in the right order." }
+  ],
+  "workflows": [
+    {
+      "id": "offer-direction-memo",
+      "category": "foundation",
+      "title": "Offer Direction Memo",
+      "description": "Pins down the promise, the transformation, the conversion goal, and the honest reason to buy now before anyone writes a headline.",
+      "role": "a direct-response offer strategist who plans sales pages for paid traffic and gets judged on conversion rate, not on how clever the copy sounds",
+      "fields": [
+        {
+          "id": "transformation",
+          "label": "The change your buyer gets",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: dinner decided by 4pm every day instead of a 9pm drive-thru run",
+          "helper": ""
+        },
+        {
+          "id": "action",
+          "label": "The one action the page asks for",
+          "type": "text",
+          "required": true,
+          "placeholder": "Example: start the $1 fourteen-day trial",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "State the core promise in one sentence a stranger would understand on first read.",
+        "Describe the before and after in the buyer's terms: what a normal Tuesday looks like on each side of the purchase.",
+        "Name the single conversion action the page is built around and why a softer ask would leak sales.",
+        "Write the honest reason to buy now, using only real constraints from my context; if there isn't one, say so.",
+        "List the three claims this page will have to prove and what kind of proof each needs."
+      ],
+      "rules": [
+        "If the promise depends on a result I haven't verified with real customers, mark it as unproven and suggest the closest claim I can back up."
+      ],
+      "output": "a one-page offer direction memo with sections for promise, transformation, conversion action, reason to act, and claims that need proof"
+    },
+    {
+      "id": "one-line-offer-bank",
+      "category": "foundation",
+      "title": "One-Line Offer Bank",
+      "description": "Writes the single-sentence version of your offer, tuned separately for the page header, an ad, an email, and a spoken pitch.",
+      "role": "a positioning writer who compresses offers into one sentence for a living and cuts any word the buyer wouldn't use themselves",
+      "fields": [
+        {
+          "id": "differences",
+          "label": "What's true about your offer that competitors can't say",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: menus built around night-shift schedules, not a 6pm family dinner",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Write five one-line versions of the offer, each built on a different anchor: outcome, mechanism, buyer identity, speed, or what it replaces.",
+        "Adapt the strongest line for four placements: sales-page header, paid ad, email subject plus first line, and how I'd say it out loud at an event.",
+        "For each placement, note the one word doing the most work and what breaks if it gets cut.",
+        "Flag any version that promises something my context doesn't support."
+      ],
+      "rules": [
+        "Every line names the buyer or the outcome. Cut any line that could sit on a competitor's homepage without edits."
+      ],
+      "output": "a table of one-line offer statements by placement, with the recommended pick marked and a one-line reason for it"
+    },
+    {
+      "id": "unique-mechanism",
+      "category": "foundation",
+      "title": "Unique Mechanism Brief",
+      "description": "Finds and names the thing inside your offer that explains why it works when the fixes your buyer already tried didn't.",
+      "role": "a direct-response strategist who builds mechanism arguments for skeptical markets and treats an unnamed mechanism as an unfinished offer",
+      "fields": [
+        {
+          "id": "how-it-works",
+          "label": "How your offer actually gets the result",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: we plan meals around the buyer's actual work roster, pulled from their calendar",
+          "helper": ""
+        },
+        {
+          "id": "tried-before",
+          "label": "What your buyer tried before you",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: meal kits that assume you cook at 6pm, Pinterest boards, willpower",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Identify the step, structure, or ingredient in my process that past solutions were missing.",
+        "Explain in plain language why that missing piece caused the old solutions to fail for this buyer.",
+        "Propose three names for the mechanism that describe what it does rather than sounding like a trademark filing.",
+        "Write a short mechanism paragraph for the sales page: the problem with the old way, the missing piece, how my offer supplies it.",
+        "List the proof I'd need to make the mechanism claim stick, based only on assets I mentioned."
+      ],
+      "rules": [
+        "The mechanism must be something my offer genuinely does. If my context doesn't show one, say the offer needs a process difference before it needs a name."
+      ],
+      "output": "a mechanism brief with the named mechanism, the failure story of prior solutions, a page-ready paragraph, and the proof list"
+    },
+    {
+      "id": "value-prop-layers",
+      "category": "foundation",
+      "title": "Value Proposition Layers",
+      "description": "Builds your value case on five levels, from practical result to emotional payoff to lowered risk, so the page can sell more than the feature list.",
+      "role": "a conversion copywriter who maps value propositions for considered purchases and refuses to let a page lean on features alone",
+      "fields": [
+        {
+          "id": "features",
+          "label": "What's included, in plain terms",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: weekly roster-based menus, 15-minute recipes, a grocery list that autofills, cancel anytime",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Translate each included item into the practical result the buyer gets from it.",
+        "Write the emotional layer: what the buyer stops feeling and starts feeling once the practical result shows up.",
+        "Write the confidence layer: why this will work for them specifically, given who they are.",
+        "Write the speed and risk layers: how fast the first result arrives and what protects them if it doesn't.",
+        "Mark which layer should lead the page for this buyer and which belongs near the price."
+      ],
+      "rules": [
+        "Each layer gets its own sentence in buyer language. No layer may restate another one with fancier words."
+      ],
+      "output": "a five-layer value map covering practical, emotional, confidence, speed, and risk, with a page-placement recommendation for each layer"
+    },
+    {
+      "id": "positioning-gap-map",
+      "category": "foundation",
+      "title": "Positioning Gap Map",
+      "description": "Compares your offer against the alternatives your buyer actually weighs and finds the claim nobody else is making.",
+      "role": "a competitive positioning analyst who reads competitor pages the way buyers do and hunts for the sentence no rival can copy",
+      "fields": [
+        {
+          "id": "alternatives",
+          "label": "The alternatives your buyer considers, including doing nothing",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: HelloFresh, a $12 takeout habit, a laminated meal plan from a dietitian in 2023",
+          "helper": ""
+        },
+        {
+          "id": "competitor-claims",
+          "label": "What those alternatives promise, roughly",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: HelloFresh sells variety and convenience; takeout sells zero effort",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "List the promises the alternatives make and group them into the two or three positions already crowded in this market.",
+        "Identify what my offer does that no listed alternative claims, drawing only from my context.",
+        "Write the positioning statement that occupies that open ground in one sentence.",
+        "Stress-test it: name the alternative most likely to copy the claim and what would keep the copy from sticking."
+      ],
+      "rules": [
+        "Positions must come from the alternatives I listed, not from a market you imagine around them."
+      ],
+      "output": "a positioning map showing crowded claims, the open gap, a one-sentence position, and the defense note"
+    },
+    {
+      "id": "angle-bench",
+      "category": "foundation",
+      "title": "Angle Bench",
+      "description": "Generates ten distinct selling angles for your offer and ranks them by how much proof each one demands from you.",
+      "role": "a direct-response creative lead who briefs sales-page tests and kills angles that need proof the client doesn't own",
+      "fields": [
+        {
+          "id": "best-story",
+          "label": "Your strongest customer story or result so far",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: an ER nurse who stopped spending $340 a month on hospital cafeteria food",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Write ten angles, each anchored differently: pain, cost of waiting, identity, contrarian take, story, mechanism, comparison, speed, social norm, or math.",
+        "For each angle, write the opening line a sales page built on it would use.",
+        "Rank the ten by proof burden: what I'd need to show for the angle to hold, using the assets in my context.",
+        "Recommend the lead angle and one backup, with a sentence on which buyer each pulls hardest."
+      ],
+      "rules": [
+        "Angles must differ in approach, not wording. If two angles could open the same page, merge them and write a new one."
+      ],
+      "output": "a ranked bench of ten angles with opening lines, proof-burden notes, and a marked lead and backup"
+    },
+    {
+      "id": "offer-strength-scorecard",
+      "category": "foundation",
+      "title": "Offer Strength Scorecard",
+      "description": "Scores your offer on the six things a cold reader silently checks before the copy gets a chance to matter.",
+      "role": "an offer reviewer who audits promotions before launch budgets get spent and would rather fail an offer on paper than on traffic",
+      "fields": [
+        {
+          "id": "terms",
+          "label": "Price, guarantee, and terms as they stand today",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: $89/month, cancel anytime, no refund on partial months, no trial",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Score the offer from 1 to 5 on promise clarity, believability, urgency honesty, price logic, risk reversal, and ease of saying yes.",
+        "For each score under 4, name the exact change that would raise it and what the change costs me.",
+        "Identify the single weakest element and say whether copy can compensate for it or the offer itself has to change.",
+        "State plainly: write the page now, or fix the offer first."
+      ],
+      "rules": [
+        "Score as a skeptical stranger, not as someone rooting for the offer. A 5 needs a stated reason."
+      ],
+      "output": "a six-line scorecard with scores, fixes, what each fix costs, and a build-or-fix verdict"
+    },
+    {
+      "id": "reason-to-act",
+      "category": "foundation",
+      "title": "Reason to Act",
+      "description": "Builds the honest answer to why now from real constraints you already have, and tells you straight when the page doesn't have one.",
+      "role": "a promotions strategist who builds deadline logic for offers and treats a fake countdown timer as a refund generator",
+      "fields": [
+        {
+          "id": "real-constraints",
+          "label": "Real constraints on your offer, if any",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: price goes to $99 on March 1, we onboard 30 new accounts a month, bonus workshop happens live on the 12th",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Sort my constraints into ones that create genuine time pressure and ones that only sound like they do.",
+        "Write the reason-to-act copy for the strongest real constraint: what changes, when, and what the reader loses by waiting.",
+        "Show where the reason appears on the page: near the fold, at the price, and in the close, with a one-line version for each spot.",
+        "If nothing I listed creates real pressure, say the page has no honest urgency and suggest which constraint I could create for real, like a cohort start date."
+      ],
+      "rules": [
+        "Never manufacture a deadline, a stock limit, or a closing date I didn't give you. An offer with no urgency gets told so directly."
+      ],
+      "output": "urgency copy for three page placements built on one real constraint, or a straight verdict that no honest urgency exists yet"
+    },
+    {
+      "id": "desire-map",
+      "category": "buyer",
+      "title": "Buyer Desire Map",
+      "description": "Maps what your buyer says they want, what they actually want, who they're trying to become, and what they fear this purchase says about them.",
+      "role": "a customer research analyst for direct-response offers who separates what buyers say on surveys from what they type at 1am",
+      "fields": [
+        {
+          "id": "buyer-detail",
+          "label": "Everything you know about this buyer",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: 28-45, hospital and warehouse shift workers, tired of apps built for 9-to-5 families",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Write the surface want: the request the buyer would state out loud.",
+        "Write the driving want underneath it: the felt problem that actually opens the wallet.",
+        "Describe the identity move: who the buyer becomes if this works, and who they fear staying.",
+        "List the fears attached to buying, including what a failed purchase would prove about them.",
+        "Name the trigger moments that push this buyer from tolerating the problem to searching for a fix."
+      ],
+      "rules": [
+        "Ground every layer in the buyer detail I gave. Where you infer, mark the line with (inferred) so I know what to verify."
+      ],
+      "output": "a desire map with surface want, driving want, identity move, fears, and trigger moments, each in the buyer's own vocabulary"
+    },
+    {
+      "id": "voc-mining",
+      "category": "buyer",
+      "title": "Customer Language Mine",
+      "description": "Pulls headline-ready phrases, objections, and desire statements out of raw reviews, survey answers, or call notes you paste in.",
+      "role": "a voice-of-customer researcher who codes interview transcripts for copy teams and believes the best line on a sales page was said by a customer first",
+      "fields": [
+        {
+          "id": "material",
+          "label": "Paste raw customer language",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: paste 10-50 reviews, survey answers, support emails, or sales-call excerpts",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Extract every phrase that describes the problem, the desired result, or a hesitation, keeping the customer's exact wording.",
+        "Group the phrases into themes and rank themes by how often they appear.",
+        "Mark the ten phrases with the most headline potential and say where each could sit: headline, crosshead, bullet, or FAQ.",
+        "List the objections that appear in the material, quoted directly.",
+        "Note what the material never mentions that I probably assume matters."
+      ],
+      "rules": [
+        "Keep quotes verbatim, typos included. Paraphrase kills the evidence."
+      ],
+      "output": "a voice-of-customer report with ranked themes, ten placed headline candidates, quoted objections, and the list of things customers never mention"
+    },
+    {
+      "id": "awareness-map",
+      "category": "buyer",
+      "title": "Awareness Stage Map",
+      "description": "Sorts your traffic into the five awareness stages and writes the first thing the page must say to each one.",
+      "role": "a funnel copywriter who matches message to awareness stage and has watched solution-aware copy die in front of problem-aware traffic",
+      "fields": [
+        {
+          "id": "traffic-source",
+          "label": "Where readers of this page come from",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: cold Facebook ads about late-night takeout guilt, plus a 2,000-person email list",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Estimate how my traffic splits across unaware, problem-aware, solution-aware, product-aware, and most-aware, based on the sources I named.",
+        "For the two biggest stages, write the opening line the page needs so that reader keeps going.",
+        "State which stage this one page should be built for and how to bridge the others in, or whether a stage needs its own page.",
+        "List the copy elements each chosen stage requires before it will believe the offer: education, comparison, proof, or just the deal."
+      ],
+      "rules": [
+        "Tie every stage estimate to a traffic source I named. No stage gets copy advice without a reason it shows up in my traffic."
+      ],
+      "output": "an awareness breakdown with rough percentages, stage-matched opening lines, a primary-stage decision, and required copy elements per stage"
+    },
+    {
+      "id": "objection-inventory",
+      "category": "buyer",
+      "title": "Objection Inventory",
+      "description": "Collects every reason your buyer says no, finds the belief underneath each one, and ranks them by how many sales they block.",
+      "role": "a sales-page strategist who builds objection lists from real buyer behavior and knows the loudest objection is rarely the one killing conversions",
+      "fields": [
+        {
+          "id": "known-objections",
+          "label": "Objections you've heard, word for word if possible",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: I'll just cancel and forget, another subscription, my schedule changes weekly so plans never survive",
+          "helper": ""
+        },
+        {
+          "id": "silent-signals",
+          "label": "Where people drop off or go silent",
+          "type": "text",
+          "required": false,
+          "placeholder": "Example: 60% scroll past the price and leave without clicking FAQ",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "List every objection from my input plus the unstated ones this offer type always carries, marked as assumed.",
+        "For each, name the belief underneath it: what the buyer would have to accept for the objection to dissolve.",
+        "Rank the list by estimated sales blocked, using my drop-off signals where I gave them.",
+        "For the top three, write the one-sentence answer the page should make, and note whether it needs proof, a guarantee, or just clearer copy."
+      ],
+      "rules": [
+        "Answer objections with facts from my context. Where the honest answer is weak, say the offer needs to change instead of the copy."
+      ],
+      "output": "a ranked objection table with the underlying belief, the page's answer, and what backs each answer up"
+    },
+    {
+      "id": "trigger-timeline",
+      "category": "buyer",
+      "title": "Buying Trigger Timeline",
+      "description": "Reconstructs the week your buyer goes from putting up with the problem to paying for a fix, so the page can meet them mid-search.",
+      "role": "a buyer-journey researcher who traces the events before a purchase and plans copy around the moment the search actually starts",
+      "fields": [
+        {
+          "id": "trigger-guess",
+          "label": "What you think sets off the purchase",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: third week of night shifts, jeans feel tight, partner comments on the takeout bags",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Lay out the trigger sequence as a timeline: the buildup, the tipping event, the first search, and the comparison window.",
+        "For each timeline point, write what the buyer is feeling and the exact kind of message that would land there.",
+        "Identify which point my page traffic arrives at and what that means for how fast the page must name the problem.",
+        "Write the two opening lines that meet the buyer at that point, one leading with the tipping event, one with the outcome."
+      ],
+      "rules": [
+        "Build the timeline from my trigger guess and buyer context, and flag any step you added on inference."
+      ],
+      "output": "a four-point trigger timeline with feelings, matched messages, an arrival-point call, and two opening lines to test"
+    },
+    {
+      "id": "failed-fixes-ledger",
+      "category": "buyer",
+      "title": "Failed Fixes Ledger",
+      "description": "Documents everything your buyer already tried, why each attempt fell apart, and how the page uses that history without insulting them.",
+      "role": "a sales-message strategist who builds not-your-fault arguments from real failure patterns instead of flattery",
+      "fields": [
+        {
+          "id": "past-attempts",
+          "label": "What your buyers tried before finding you",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: meal kits (portions wrong for one person), Sunday batch cooking (dead by Wednesday), a nutrition coach at $200/month",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "For each past attempt, name the structural reason it failed for this buyer, not a willpower reason.",
+        "Find the common thread across the failures: the wrong assumption every old solution shared.",
+        "Write the page paragraph that retells this history in second person, ending where my mechanism enters.",
+        "List the phrases to avoid because they'd make the reader feel stupid for having tried those fixes."
+      ],
+      "rules": [
+        "Failures get explained by design flaws in the old solutions. The reader is never the reason the old thing failed."
+      ],
+      "output": "a failure ledger with structural reasons, the shared wrong assumption, a page-ready paragraph, and a list of phrases to avoid"
+    },
+    {
+      "id": "skeptic-profile",
+      "category": "buyer",
+      "title": "Toughest Skeptic Profile",
+      "description": "Profiles the hardest reader your page will face and lists the exact evidence that would move them from arms crossed to card out.",
+      "role": "a conversion strategist who writes for the skeptic in the audience, because copy that converts doubters converts everyone above them",
+      "fields": [
+        {
+          "id": "skeptic-detail",
+          "label": "Your most doubtful buyer and why they doubt",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: a nurse who bought two meal apps already, canceled both by week three, saw no roster feature in either",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Write the skeptic's internal monologue as they hit the page: their first three thoughts, in their voice.",
+        "List the claims on a typical page for this offer that the skeptic dismisses instantly and why.",
+        "Specify the evidence that would actually register: what kind of demo, number, or story, drawn from my available assets.",
+        "Write the one section this page needs specifically for the skeptic and say where it goes."
+      ],
+      "rules": [
+        "If my assets can't satisfy the skeptic on a claim, say which claim to drop rather than which adjective to add."
+      ],
+      "output": "a skeptic profile with the monologue, dismissed claims, an evidence spec, and one page section written for them with placement"
+    },
+    {
+      "id": "primary-reader-call",
+      "category": "buyer",
+      "title": "Primary Reader Decision",
+      "description": "Forces the call on which single buyer this page speaks to when several segments could plausibly buy.",
+      "role": "a messaging strategist who makes one-reader decisions for pages that were converting nobody by addressing everybody",
+      "fields": [
+        {
+          "id": "segments",
+          "label": "The buyer groups who could buy this",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: night-shift nurses, warehouse leads on rotating schedules, new dads doing 5am starts",
+          "helper": ""
+        },
+        {
+          "id": "segment-signals",
+          "label": "What you know about each group's buying so far",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: nurses reply to ads most, warehouse buyers churn least, dads came from one podcast",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Compare the segments on desire intensity, ability to pay, reachability, and how well my current proof fits each.",
+        "Recommend the primary reader and defend the call in three sentences using my signals.",
+        "Show what the headline, hero image direction, and first testimonial slot look like once that reader is chosen.",
+        "Explain how the other segments still buy from a page not aimed at them, and where a secondary nod can sit without diluting the lead."
+      ],
+      "rules": [
+        "Pick one reader. A recommendation to target two segments equally counts as refusing the assignment."
+      ],
+      "output": "a one-reader decision memo with the comparison, the call, three page changes it drives, and the secondary-segment note"
+    },
+    {
+      "id": "page-blueprint",
+      "category": "page",
+      "title": "Sales Page Blueprint",
+      "description": "Plans your page section by section, with the job, the message, and the proof each section carries before any copy gets drafted.",
+      "role": "a sales-page architect who storyboards long-form pages for direct offers and assigns every section one job it can be fired for missing",
+      "fields": [
+        {
+          "id": "page-length",
+          "label": "Rough length you're planning",
+          "type": "select",
+          "required": true,
+          "options": ["Short page, under 1,000 words", "Standard long-form, 1,500 to 3,000 words", "Full letter, 3,000+ words", "Not sure, recommend one"],
+          "helper": ""
+        },
+        {
+          "id": "assets",
+          "label": "Proof and assets you can place on the page",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: 14 written reviews, one 90-second demo video, a before-and-after grocery bill",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Recommend the section order for this offer and traffic, naming each section and its single job.",
+        "For each section, write the core message in one sentence and assign a proof asset from my list where one fits.",
+        "Mark the three sections where readers most often leave for this kind of offer and what keeps them moving.",
+        "Flag sections that common templates include but this page should skip, with the reason.",
+        "If I chose not sure on length, make the length call from my price and traffic context."
+      ],
+      "rules": [
+        "Every proof asset placed must come from my list. Sections without an available proof asset get labeled claim-only so I can see the risk."
+      ],
+      "output": "a numbered section blueprint with each section's job, message, assigned proof, exit-risk flags, and skipped-section notes"
+    },
+    {
+      "id": "above-the-fold",
+      "category": "page",
+      "title": "Above-the-Fold Block",
+      "description": "Writes the headline, subhead, first call to action, and hero proof line that decide whether anyone reads section two.",
+      "role": "a direct-response copywriter who writes page openings for cold traffic, where the fold gets five seconds to earn the scroll",
+      "fields": [
+        {
+          "id": "headline-angle",
+          "label": "The angle this page leads with",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: dinner decided by 4pm no matter what shift you're on",
+          "helper": ""
+        },
+        {
+          "id": "hero-proof",
+          "label": "The strongest proof you can show at the top",
+          "type": "text",
+          "required": false,
+          "placeholder": "Example: 4.8 stars from 212 shift workers",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Write three headline options on my angle: one outcome-led, one specificity-led, one pain-led.",
+        "Write the subhead for each, adding the mechanism or the who-this-is-for that the headline left out.",
+        "Write the first CTA button copy plus the reassurance line under it.",
+        "Place my hero proof and write its one-line caption; if I gave none, mark the slot empty rather than filling it.",
+        "Recommend which of the three blocks to run first and summarize what a stranger takes from a five-second read of it."
+      ],
+      "rules": [
+        "The fold must tell a stranger what this is, who it's for, and why to care without scrolling. If a headline needs the body copy to make sense, rewrite it."
+      ],
+      "output": "three complete fold blocks with headline, subhead, CTA, and proof caption, plus a recommended pick and its five-second read summary"
+    },
+    {
+      "id": "headline-bench",
+      "category": "page",
+      "title": "Headline Bench",
+      "description": "Produces fifteen headlines across five styles and tells you which three earn a test slot and why the rest don't.",
+      "role": "a headline specialist who writes and ranks headline slates for conversion tests and scores clever below clear every time",
+      "fields": [
+        {
+          "id": "core-claim",
+          "label": "The claim the headline must carry",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: shift workers save 5 hours and about $200 a month on food decisions",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Write three headlines each in five styles: outcome, specificity, authority, pain, and curiosity.",
+        "Score each headline on clarity, believability, and pull for my primary reader, 1 to 5 each.",
+        "Pick the top three for testing and write the subhead each would need.",
+        "Point out the headline pattern in this batch most likely to get ignored by this audience and why."
+      ],
+      "rules": [
+        "Curiosity headlines must still name a real subject. A headline that could tease any product gets cut before scoring."
+      ],
+      "output": "a fifteen-headline bench grouped by style with scores, three test picks with subheads, and the pattern warning"
+    },
+    {
+      "id": "lead-story-arc",
+      "category": "page",
+      "title": "Lead Story Arc",
+      "description": "Structures the opening story of your page, the beats, the turn, and the handoff into the offer, from a story you actually have.",
+      "role": "a sales-letter writer who opens pages with story leads and cuts any beat that delays the reader's first yes",
+      "fields": [
+        {
+          "id": "story-raw",
+          "label": "The true story this page could open with",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: our founder fell asleep in a Wendy's drive-thru after a double shift, and that's the night the roster feature got sketched",
+          "helper": ""
+        },
+        {
+          "id": "story-owner",
+          "label": "Whose story this tells",
+          "type": "select",
+          "required": true,
+          "options": ["Mine or my founder's", "A customer's, with permission", "A composite that needs flagging as illustrative"],
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Break my story into beats: the moment, the struggle, the turn, and the discovery, cutting everything that doesn't serve the offer.",
+        "Write the first 150 words of the lead using those beats, in first or second person depending on whose story it is.",
+        "Write the pivot sentence that hands the story to the reader: this is where their version of the story changes.",
+        "Note where the story should get a callback later on the page, at the guarantee or the close."
+      ],
+      "rules": [
+        "Use only the events I gave you. If the story is a composite, the copy must say so on the page."
+      ],
+      "output": "a story-beat outline, a 150-word lead draft, the pivot sentence, and one callback placement"
+    },
+    {
+      "id": "crosshead-pass",
+      "category": "page",
+      "title": "Crosshead Skim Path",
+      "description": "Writes the crossheads so a skimmer who reads nothing else still gets the full argument and reaches the price ready to buy.",
+      "role": "a long-form page editor who tests pages by reading crossheads only, because a third of buyers do exactly that",
+      "fields": [
+        {
+          "id": "section-list",
+          "label": "Your page sections in order",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: hero, problem, story, mechanism, product, testimonials, price, guarantee, FAQ, close",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Write one crosshead per section that advances the argument instead of labeling the section, so no crosshead reads like a category name.",
+        "Read the crossheads back as a sequence and confirm they form a complete case: problem, cause, fix, proof, deal, safety, ask.",
+        "Fix any spot in the sequence where a skimmer would lose the thread or be asked to buy before the case is made.",
+        "Mark the two crossheads that carry the most weight and give one alternate for each."
+      ],
+      "rules": [
+        "Every crosshead makes a statement or a promise. Section labels and single-word headings don't count as crossheads."
+      ],
+      "output": "a full crosshead set in page order, a paraphrase of what the skim-read alone communicates, and alternates for the two heaviest"
+    },
+    {
+      "id": "cta-blocks",
+      "category": "page",
+      "title": "CTA Block Bank",
+      "description": "Writes every call-to-action block on the page, button copy, surrounding lines, and reassurance, matched to how warm the reader is at that scroll depth.",
+      "role": "a conversion copywriter who writes CTA sections for long pages and matches the ask to how much of the case the reader has seen so far",
+      "fields": [
+        {
+          "id": "cta-action",
+          "label": "What clicking actually does",
+          "type": "text",
+          "required": true,
+          "placeholder": "Example: goes to a Stripe checkout, $89/month, card required",
+          "helper": ""
+        },
+        {
+          "id": "cta-count",
+          "label": "How many CTA blocks the page has",
+          "type": "select",
+          "required": false,
+          "options": ["2", "3", "4", "5 or more"],
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Write each CTA block for its position: early blocks assume less conviction, late blocks ask plainly.",
+        "For each block, write the button copy, the lead-in line above it, and the reassurance line below it.",
+        "Vary the button copy across blocks without getting cute: the reader always knows what happens on click.",
+        "Add the friction warning: anything in my checkout action, like card required, that the copy near the button should say before the click does."
+      ],
+      "rules": [
+        "Button copy describes the action or the outcome, never Submit or Learn more. The reassurance line states a fact, not a feeling."
+      ],
+      "output": "a numbered set of CTA blocks in page order, each with lead-in, button copy, reassurance line, and the friction disclosure"
+    },
+    {
+      "id": "faq-builder",
+      "category": "page",
+      "title": "FAQ Objection Section",
+      "description": "Turns your real buyer questions into an FAQ that closes sales instead of parking legal boilerplate at the bottom of the page.",
+      "role": "a sales copywriter who treats the FAQ as the page's second close, because hesitant buyers scroll there before they decide",
+      "fields": [
+        {
+          "id": "real-questions",
+          "label": "Questions buyers actually ask",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: what happens when my roster changes mid-week, can I pause during vacation, is this just another meal-kit thing",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Order my questions by buying impact, opening with the one that blocks the most sales.",
+        "Write each answer to resolve the worry, state the honest limitation if there is one, and end pointed at the purchase.",
+        "Add up to three questions buyers think but rarely type for this kind of offer, marked as added, with answers.",
+        "Identify any question whose honest answer hurts, and recommend fixing the offer term versus wording around it."
+      ],
+      "rules": [
+        "Answers state facts from my context. An answer that dodges the question gets replaced with the honest version, even when it's less flattering."
+      ],
+      "output": "an ordered FAQ section with impact-ranked questions, honest answers that end toward purchase, and flags where the offer itself needs work"
+    },
+    {
+      "id": "length-format-call",
+      "category": "page",
+      "title": "Page Length Verdict",
+      "description": "Decides how long this page should be and what format fits, based on your price, traffic temperature, and how much proof you own.",
+      "role": "a conversion consultant who sizes pages against offers and has cut as many bloated letters as he's extended thin ones",
+      "fields": [
+        {
+          "id": "traffic-temp",
+          "label": "Traffic temperature hitting this page",
+          "type": "select",
+          "required": true,
+          "options": ["Mostly cold ads", "Warm email list", "Mixed cold and warm", "Referral and word of mouth"],
+          "helper": ""
+        },
+        {
+          "id": "proof-depth",
+          "label": "How much proof you own",
+          "type": "select",
+          "required": true,
+          "options": ["Thin: a few reviews", "Moderate: reviews plus one strong story", "Deep: numbers, stories, and demos"],
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Make the length call in words and sections, from my price, traffic temperature, and proof depth.",
+        "Explain the two factors that drove the call and what change would flip it.",
+        "Recommend the format: letter, hybrid page with modules, or short page plus video, and say what my proof depth rules out.",
+        "List what to cut first if the page comes in long, and what never gets cut at this price point."
+      ],
+      "rules": [
+        "One verdict with numbers, not a range wide enough to dodge the call. Hedging across two formats counts as no answer."
+      ],
+      "output": "a length and format verdict with a word count, section count, the two driving factors, and the cut-first list"
+    },
+    {
+      "id": "proof-inventory",
+      "category": "proof",
+      "title": "Proof Asset Inventory",
+      "description": "Catalogs every piece of proof you own, grades each one's believability, and shows which claims on your page still stand bare.",
+      "role": "a copy chief who audits proof before drafts get written and won't let a page make a claim its evidence file can't cash",
+      "fields": [
+        {
+          "id": "proof-list",
+          "label": "Every proof item you have, big or small",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: 212 app-store reviews averaging 4.8, one nurse's grocery receipts, a screenshot of our churn dashboard",
+          "helper": ""
+        },
+        {
+          "id": "page-claims",
+          "label": "The main claims your page makes or will make",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: saves 5 hours a week, works with rotating rosters, cheaper than takeout",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Catalog my proof items by type: numbers, testimonials, demonstrations, credentials, third-party mentions.",
+        "Grade each item's believability to a skeptical stranger and note what would raise the grade, like adding a name, date, or source.",
+        "Match proof to each claim I listed and mark every claim left unsupported.",
+        "For each bare claim, state the options: gather specific new proof, soften the claim, or cut it."
+      ],
+      "rules": [
+        "Work only with proof I listed. Never suggest inventing, projecting, or rounding a number to fill a gap."
+      ],
+      "output": "a graded proof inventory, a claim-to-proof match table, and a decision list for every unsupported claim"
+    },
+    {
+      "id": "testimonial-shaper",
+      "category": "proof",
+      "title": "Testimonial Shaping Pass",
+      "description": "Edits the raw customer quotes you paste in for length and placement while keeping every word theirs, then slots each one where it sells.",
+      "role": "a conversion editor who curates testimonial sections and knows a specific mediocre quote outsells a glowing vague one",
+      "fields": [
+        {
+          "id": "material",
+          "label": "Paste your raw testimonials or reviews",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: paste the full text of 5-30 reviews or quotes, with names or initials where you have permission",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Pick the quotes worth using and say what each proves: a result, an objection answered, a buyer type represented.",
+        "Trim each keeper to its selling core by cutting only, never rewording, and show the before and after.",
+        "Assign each quote a page placement next to the claim it supports, so no testimonial sits in a generic wall.",
+        "Write the short bold lead-in line above each quote, drawn from the quote's own words.",
+        "List what's missing from the set, like no skeptic-turned-buyer quote, so I know what to request from customers next."
+      ],
+      "rules": [
+        "Cutting is allowed, rewording isn't. If a quote needs new words to work, it doesn't get used."
+      ],
+      "output": "a placed testimonial set with trims shown, lead-in lines, the claim each quote supports, and a request list for missing quote types"
+    },
+    {
+      "id": "guarantee-designer",
+      "category": "proof",
+      "title": "Guarantee Design",
+      "description": "Designs the guarantee your economics can survive and writes it so the reader feels the risk move from their side of the table to yours.",
+      "role": "a risk-reversal strategist who designs guarantees for paid offers and checks the refund math before writing a word of promise",
+      "fields": [
+        {
+          "id": "current-terms",
+          "label": "Your current refund or guarantee terms",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: 14-day refund on request, about 3% of buyers use it",
+          "helper": ""
+        },
+        {
+          "id": "cost-reality",
+          "label": "What a refund actually costs you",
+          "type": "text",
+          "required": false,
+          "placeholder": "Example: about $11 in onboarding time plus the Stripe fee",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Assess my current terms: what they promise, what they signal, and where they leave the buyer still holding risk.",
+        "Design two stronger structures I could afford given my refund cost and usage rate, like a longer window, keep-the-bonus, or a conditional results guarantee.",
+        "Write the guarantee copy for the recommended structure with a plain name, what the buyer does to claim it, and zero weasel words.",
+        "Show the placements: the guarantee section, the one-liner near the price, and the mention inside the close."
+      ],
+      "rules": [
+        "Every structure must be one I can honor at my stated refund cost. A guarantee with hidden conditions gets treated as worse than a short honest one."
+      ],
+      "output": "a guarantee assessment, two affordable structures with a recommendation, final guarantee copy, and three placements"
+    },
+    {
+      "id": "credibility-block",
+      "category": "proof",
+      "title": "Credibility Block",
+      "description": "Writes the who-are-you section from your real background so a stranger trusts the source without reading a single brag.",
+      "role": "a bio writer for sales pages who builds authority from relevant specifics and cuts any line that exists to impress rather than reassure",
+      "fields": [
+        {
+          "id": "background",
+          "label": "Your actual background, the relevant bits",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: 11 years as a hospital dietitian, built the first menus on night shift in the break room, no culinary degree",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Pick the two or three facts from my background that answer the reader's real question: why would this person's solution work for me?",
+        "Write the credibility block in 80 to 120 words, first person, leading with the fact most relevant to the buyer's problem.",
+        "Cut or rephrase anything that reads as status display rather than relevance, and show what got cut and why.",
+        "Write the one-line version for the page footer or an ad."
+      ],
+      "rules": [
+        "Relevance beats prestige: a fact that connects to the buyer's problem outranks a bigger fact that doesn't. Missing credentials get acknowledged, not hidden, when the reader will wonder."
+      ],
+      "output": "a credibility block of 80 to 120 words, the cut list with reasons, and a one-line footer version"
+    },
+    {
+      "id": "claim-proof-audit",
+      "category": "proof",
+      "title": "Claim Support Audit",
+      "description": "Goes through your pasted page line by line and marks every claim as proven, provable, or naked, so you fix believability before traffic finds the holes.",
+      "role": "a compliance-minded copy chief who reads pages the way a doubtful buyer and a regulator would, in that order",
+      "fields": [
+        {
+          "id": "material",
+          "label": "Paste the page or section to audit",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: paste your full sales page or the section making the heaviest claims",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Extract every factual claim from the pasted copy, including implied ones like photos suggesting results.",
+        "Mark each claim proven (evidence shown on the page), provable (I likely have evidence that isn't shown), or naked (no support in sight).",
+        "For provable claims, say exactly what to add and where; for naked ones, write the softened version that stays honest or recommend the cut.",
+        "Flag any claim that could draw a complaint or a platform rejection for this offer type."
+      ],
+      "rules": [
+        "Judge only what's on the page. A claim I could prove but didn't show still gets marked, because the reader can't see my files."
+      ],
+      "output": "a claim-by-claim audit table with proven, provable, or naked status, the fix per claim, and a risk-flag list"
+    },
+    {
+      "id": "demo-ideas",
+      "category": "proof",
+      "title": "Demonstration Concepts",
+      "description": "Designs ways to show the product working on the page, in numbers, screenshots, or short video, so the copy can point instead of insist.",
+      "role": "a product marketer who builds show-not-tell moments for sales pages and trades three adjectives for one screenshot every time",
+      "fields": [
+        {
+          "id": "showable",
+          "label": "What you could realistically capture or show",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: a screen recording of a menu regenerating after a roster change, a real grocery bill before and after",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Rank my showable items by how directly each one proves the core promise.",
+        "For the top three, design the demonstration: what gets captured, how long it runs, and the caption that tells the reader what they're seeing.",
+        "Place each demonstration on the page next to the claim it replaces or supports.",
+        "Write the fallback for my strongest claim if none of my showable items covers it: the most concrete verbal proof available from my context."
+      ],
+      "rules": [
+        "Demonstrations use real product behavior and real numbers only. A mocked-up result is a fabricated testimonial with extra steps."
+      ],
+      "output": "three designed demonstrations with capture specs, captions, and page placements, plus one verbal fallback"
+    },
+    {
+      "id": "numbers-presentation",
+      "category": "proof",
+      "title": "Numbers That Hold",
+      "description": "Takes the real figures you supply and presents each one with the context, source, and precision that make a skeptic accept it.",
+      "role": "a direct-response editor who handles statistics on sales pages and knows a sourced 4.6 beats an unsourced 5.0",
+      "fields": [
+        {
+          "id": "figures",
+          "label": "Your real numbers, with where each comes from",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: 212 reviews at 4.8 (App Store, pulled May 3), average member logs 11 meals/week (internal dashboard)",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "For each figure, write the page-ready presentation: the number, its source, and its date or sample size, in one line.",
+        "Flag figures a skeptic would challenge and adjust the framing to what the source honestly supports, like members who log meals instead of all members.",
+        "Rank the figures by persuasive weight for my offer and pick the one that belongs above the fold.",
+        "List the numbers my page wants but I don't have, and which one is worth measuring first."
+      ],
+      "rules": [
+        "Present only figures I supplied, at the precision I supplied them. Rounding up, projecting forward, or dropping the source note is off the table."
+      ],
+      "output": "page-ready one-liners for every figure, skeptic flags with honest reframes, a ranked list, and a numbers wishlist"
+    },
+    {
+      "id": "case-story-builder",
+      "category": "proof",
+      "title": "Case Story Builder",
+      "description": "Turns one customer's real result into a short named story with a beginning, a number, and a turn, ready to sit beside your boldest claim.",
+      "role": "a case-study writer for conversion pages who keeps stories under 200 words because buyers read proof, not literature",
+      "fields": [
+        {
+          "id": "case-facts",
+          "label": "The customer facts you have permission to use",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: Dana M., ICU nurse, cut food spend from $610 to $370/month in 8 weeks, said she stopped dreading 6pm",
+          "helper": ""
+        },
+        {
+          "id": "claim-supported",
+          "label": "The page claim this story should support",
+          "type": "text",
+          "required": true,
+          "placeholder": "Example: cheaper than the takeout habit it replaces",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Structure the facts into a story arc: where the customer started, what they did with my offer, and what changed, with the number as the turn.",
+        "Write the story in under 200 words using only my supplied facts and quotes.",
+        "Write the headline for the story block that leads with the specific result.",
+        "Place the story next to the claim it supports and note whether it needs a photo, first name, or role line to land, based on my stated permission."
+      ],
+      "rules": [
+        "Every fact, name, and quote comes from my input, used within the permission I stated. A gap in the story stays a gap; never bridge it with an invented detail."
+      ],
+      "output": "a case story under 200 words with a headline, its placement next to the claim, and a presentation note based on permissions"
+    },
+    {
+      "id": "pricing-story",
+      "category": "close",
+      "title": "Pricing Story Frame",
+      "description": "Builds the argument that makes your price feel like the reasonable option, anchored to what the problem already costs the buyer.",
+      "role": "a pricing copy strategist who frames prices against the buyer's current spending, because a number standing alone always feels expensive",
+      "fields": [
+        {
+          "id": "price-terms",
+          "label": "Your price and billing terms",
+          "type": "text",
+          "required": true,
+          "placeholder": "Example: $89/month, or $890/year with two months free",
+          "helper": ""
+        },
+        {
+          "id": "problem-cost",
+          "label": "What the problem costs your buyer now, if you know",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: members report $300-500/month on takeout and delivery fees before joining",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Choose the anchor for my price: the cost of the problem, the price of alternatives, or the value of the outcome, using whichever my context supports with real numbers.",
+        "Write the pricing narrative: two or three paragraphs that walk from anchor to price, so the price arrives as the smaller number.",
+        "Write the price-reveal line itself and what sits immediately after it: the guarantee mention or the strongest reassurance I have.",
+        "If my context gives no honest anchor number, say so and frame the price on terms transparency instead: what's included, what it replaces, and when they can leave."
+      ],
+      "rules": [
+        "Anchors use numbers from my context only. Comparing to a made-up competitor charging $500 is fabrication, not framing."
+      ],
+      "output": "a pricing narrative of two to three paragraphs, the price-reveal line with its follow-up, and the anchor logic stated plainly"
+    },
+    {
+      "id": "bonus-stack",
+      "category": "close",
+      "title": "Bonus Stack Logic",
+      "description": "Picks bonuses that each dissolve a named objection instead of padding the offer with digital extras nobody redeems.",
+      "role": "an offer builder who assembles bonus stacks by objection and cuts any bonus that exists just to raise the total-value number",
+      "fields": [
+        {
+          "id": "possible-bonuses",
+          "label": "Bonuses you could actually deliver",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: a 15-minute recipe pack, a live roster-setup call, a printable freezer guide",
+          "helper": ""
+        },
+        {
+          "id": "top-objections",
+          "label": "The objections still standing at the price",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: my schedule changes weekly, I don't want another app to learn",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Match each possible bonus to the objection it dissolves, and cut bonuses that map to no objection.",
+        "Order the surviving stack from broadest objection to narrowest.",
+        "Write the copy block for each bonus: name, what it does, and the objection-tied reason it's included.",
+        "Assign honest value figures only where I charge those prices elsewhere; otherwise present bonuses without price tags.",
+        "Say whether the stack needs one more bonus and exactly which objection it should target."
+      ],
+      "rules": [
+        "A bonus that answers no listed objection gets cut even if it's impressive. Invented value price tags never appear unless I really sell the item at that price."
+      ],
+      "output": "an objection-matched bonus stack with copy blocks, honest value treatment, and a gap recommendation"
+    },
+    {
+      "id": "urgency-copy",
+      "category": "close",
+      "title": "Deadline Copy Pass",
+      "description": "Writes the countdown, deadline, and last-call copy for a real constraint you supply, and refuses the job when there isn't one.",
+      "role": "a launch copywriter who writes deadline sequences for offers with real closes and walks away from evergreen pages dressed up as closing ones",
+      "fields": [
+        {
+          "id": "the-constraint",
+          "label": "The real deadline or limit, exactly as it stands",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: cart closes Sunday 11:59pm Pacific because onboarding calls start Monday",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Verify the constraint is real and specific: a date, a capacity number, or a price change with a stated reason. If it's vague, stop and list what would make it real.",
+        "Write the deadline copy for three page locations: near the fold, at the price, and in the final close.",
+        "Write the reason-why sentence that explains the deadline, because unexplained deadlines read as fake.",
+        "Draft the last-24-hours variant for each location, tightening the copy without adding panic punctuation."
+      ],
+      "rules": [
+        "No invented scarcity, no timers that reset, no almost-sold-out lines without a number behind them. If the constraint I gave is soft, deliver the not-ready verdict instead of softened copy."
+      ],
+      "output": "deadline copy for three placements plus last-24-hours variants, each with the reason-why attached, or a verdict that the constraint isn't real yet"
+    },
+    {
+      "id": "objection-placement",
+      "category": "close",
+      "title": "Objection Placement Map",
+      "description": "Decides where on the page each objection gets answered, in the copy, the proof, the FAQ, or the guarantee, so nothing waits until the reader's already gone.",
+      "role": "a page strategist who choreographs objection handling by scroll position, because an objection answered two sections late converts nobody",
+      "fields": [
+        {
+          "id": "objection-list",
+          "label": "Your objections, ranked if you can",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: 1) price vs takeout, 2) will it survive my rotating roster, 3) another subscription to forget",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Assign each objection its handling method: rewrite the claim, add proof beside it, an FAQ entry, a guarantee mention, or an offer change.",
+        "Place each answer at the scroll position where that objection first forms in the reader's head, and say why there.",
+        "Write the actual answer line or block for the top two objections.",
+        "Identify the one objection copy can't fix and what offer or product change it points to."
+      ],
+      "rules": [
+        "An objection may be answered before the reader consciously has it, but never more than one section after. Late answers get moved, not duplicated."
+      ],
+      "output": "an objection-to-placement map with methods and positions, written answers for the top two, and the copy-can't-fix flag"
+    },
+    {
+      "id": "closing-section",
+      "category": "close",
+      "title": "Final Close Section",
+      "description": "Writes the last stretch of the page, the recap, the honest decision frame, the guarantee restated, and the final ask, without the melodrama endings that leak trust.",
+      "role": "a sales-letter closer who writes final sections that summarize the case and make the ask plainly, then stop",
+      "fields": [
+        {
+          "id": "case-summary",
+          "label": "The three strongest points your page made",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: menus follow your roster, 212 nurses rated it 4.8, costs less than two takeout nights",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Write the recap paragraph that restates my three points as things the reader now knows, not as a feature list.",
+        "Frame the decision honestly: what saying yes starts, and what waiting costs in the buyer's terms from my context.",
+        "Restate the guarantee in one sentence and make the final ask with the exact button action named.",
+        "Run a cut check: remove any line in the close that raises a new claim, because new claims this late create new doubts."
+      ],
+      "rules": [
+        "No two-roads theatrics and no final guilt push. The close may only use points the page already proved."
+      ],
+      "output": "a complete closing section: recap paragraph, honest decision frame, guarantee line, and final CTA block"
+    },
+    {
+      "id": "checkout-confidence",
+      "category": "close",
+      "title": "Checkout Confidence Pass",
+      "description": "Writes the order-page copy, field labels, reassurance lines, and the summary box, so the sale survives the last click.",
+      "role": "a checkout optimizer who treats the order page as the spot most likely to lose a decided buyer over one stray doubt",
+      "fields": [
+        {
+          "id": "checkout-detail",
+          "label": "What your checkout shows and asks for",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: Stripe page, card only, shows $89/month, no order summary, no guarantee mention",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "List what my checkout currently communicates versus what a nervous buyer needs at this step: what they get, what they pay and when, and how they leave.",
+        "Write the order summary box copy: offer name, what's included in shorthand, price with billing terms, and the guarantee one-liner.",
+        "Write the reassurance micro-copy: under the card field, next to the buy button, and the line that answers the biggest known objection one last time.",
+        "Flag anything in my described checkout that contradicts the sales page, like a price shown differently."
+      ],
+      "rules": [
+        "Nothing new gets sold at checkout. Every line either confirms what the page promised or removes a doubt about the transaction itself."
+      ],
+      "output": "a checkout copy kit: order summary box, three placed micro-copy lines, and a contradiction flag list"
+    },
+    {
+      "id": "payment-framing",
+      "category": "close",
+      "title": "Payment Plan Framing",
+      "description": "Decides how to present pay-in-full against installments using your real prices, and writes the copy for whichever split wins.",
+      "role": "a pricing presentation specialist who structures payment choices so the buyer picks fast instead of leaving to think about the math",
+      "fields": [
+        {
+          "id": "payment-options",
+          "label": "The payment options you can offer",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: $890/year or $89/month; could do 3 payments of $315 if it helps",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Lay out my options as the buyer sees them, with the true total of each spelled out.",
+        "Recommend which option to feature and how to order them, with reasoning tied to my price points and buyer.",
+        "Write the copy for the payment choice block: option names, the one-line case for each, and the default selection note.",
+        "Write the honest treatment of any difference, like two months free, only where my numbers actually produce it."
+      ],
+      "rules": [
+        "Totals appear in full for every option; hiding an annual total behind a monthly figure is off the table. Discount language must match the arithmetic exactly."
+      ],
+      "output": "a payment presentation block with the featured option, per-option copy lines, true totals, and the ordering rationale"
+    },
+    {
+      "id": "offer-recap-box",
+      "category": "close",
+      "title": "Offer Recap Box",
+      "description": "Writes the boxed summary beside your final CTA listing everything included, so the buyer's last look confirms the deal instead of raising questions.",
+      "role": "an offer-presentation writer who builds the everything-you-get box and knows it gets read more carefully than the letter above it",
+      "fields": [
+        {
+          "id": "included-list",
+          "label": "Everything the buyer gets, in your words",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: weekly roster menus, grocery autolist, 15-minute recipe library, live setup call, freezer guide bonus",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Rewrite each included item as the result it delivers, keeping the item name where buyers already know it.",
+        "Order the list with the core deliverable first and bonuses last, marked as bonuses.",
+        "Write the box header, the price line with terms, the guarantee one-liner, and the CTA that sits inside or directly under the box.",
+        "Run a cut check: flag any item so minor it makes the stack look padded, and say whether to merge or drop it."
+      ],
+      "rules": [
+        "The box must scan in a few seconds: one line per item, no paragraph creep. Value price tags appear only if I gave real standalone prices."
+      ],
+      "output": "a complete recap box: header, ordered one-line items, price line, guarantee line, CTA, plus the padding flags"
+    },
+    {
+      "id": "page-teardown",
+      "category": "improve",
+      "title": "Full Page Teardown",
+      "description": "Reviews your pasted sales page section by section, scoring what each is supposed to do against what it actually does, and hands back a fix list in order of impact.",
+      "role": "a conversion copy chief who tears down live pages for offer owners and reports what's costing money first, not what's easiest to praise",
+      "fields": [
+        {
+          "id": "material",
+          "label": "Paste the full sales page",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: paste the whole page top to bottom, headline through final CTA, button copy included",
+          "helper": ""
+        },
+        {
+          "id": "known-numbers",
+          "label": "Any performance numbers you have",
+          "type": "text",
+          "required": false,
+          "placeholder": "Example: 1.2% conversion, 55% read past the fold, mostly cold traffic",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Walk the page section by section: name each section's job and score how well the copy does that job, 1 to 5.",
+        "Identify the three highest-impact problems, using my performance numbers to locate the damage where I gave them.",
+        "For each of the three, quote the specific lines at fault and write the fixed version.",
+        "List the smaller issues as ranked one-liners so nothing found gets lost.",
+        "End with the single change to make first and the result it should move."
+      ],
+      "rules": [
+        "Quote the page's own lines when criticizing them; no verdicts without the evidence shown. Rewrites keep my facts and claims exactly as stated, fixing delivery only."
+      ],
+      "output": "a section-scored teardown, three deep-dive fixes with rewritten lines, a ranked minor-issue list, and the do-this-first call"
+    },
+    {
+      "id": "headline-rework",
+      "category": "improve",
+      "title": "Headline Rework Pass",
+      "description": "Diagnoses why your pasted headline block isn't pulling and rebuilds it three ways while keeping every factual claim you made.",
+      "role": "a headline doctor who rewrites underperforming page tops and starts from what the old headline failed to communicate, not from a blank page",
+      "fields": [
+        {
+          "id": "material",
+          "label": "Paste your current headline, subhead, and any fold copy",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: paste the exact fold text as it appears, including the button",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Diagnose the current block: what a five-second stranger takes away, and which of clarity, believability, or relevance breaks first.",
+        "Rebuild it three ways, each keeping my factual claims: one clarity-first, one specificity-first, one buyer-identity-first.",
+        "For each rebuild, note what got cut from the original and why keeping it was costing comprehension.",
+        "Recommend which rebuild to test against the original and the response signal that would settle it."
+      ],
+      "rules": [
+        "The rewrites may sharpen my claims but never enlarge them. If the original headline overclaims, say so before rebuilding smaller."
+      ],
+      "output": "a five-second diagnosis, three rebuilt fold blocks with cut notes, and a test recommendation with its success signal"
+    },
+    {
+      "id": "friction-ranker",
+      "category": "improve",
+      "title": "Conversion Leak Ranking",
+      "description": "Predicts where readers stall or bail on your page, at the hero, the price, or the form, and ranks the leaks by the sales each one costs.",
+      "role": "a CRO analyst who reads pages like scroll maps, predicting drop-off points from copy and layout before the heat map ever loads",
+      "fields": [
+        {
+          "id": "material",
+          "label": "Paste the page copy in order",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: paste the page text top to bottom so scroll position can be estimated",
+          "helper": ""
+        },
+        {
+          "id": "analytics",
+          "label": "Any behavior data you have",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: average scroll 48%, price section heat is cold, FAQ gets 3x the clicks of the CTA",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Mark the likely stall points on the pasted page: where attention dips, where a claim strains belief, where the next step goes unclear.",
+        "Cross-check the predictions against my behavior data where I gave it, and adjust.",
+        "Rank the leaks by estimated sales impact, stating the reasoning for each rank.",
+        "For the top two leaks, prescribe the fix: a copy change, a section move, or a cut, naming the specific lines involved."
+      ],
+      "rules": [
+        "Every predicted leak points to specific lines or positions in my pasted copy. General theory about attention spans doesn't count as a finding."
+      ],
+      "output": "a stall-point map keyed to my page, a ranked leak list with reasoning, and two prescribed fixes naming exact lines"
+    },
+    {
+      "id": "ab-test-queue",
+      "category": "improve",
+      "title": "A/B Test Queue",
+      "description": "Turns your page's open questions into a ranked test queue, each with a hypothesis, a variant, and the number that decides it.",
+      "role": "a conversion testing lead who runs one honest test at a time and ranks the queue by expected lift, not by which idea is most fun",
+      "fields": [
+        {
+          "id": "test-candidates",
+          "label": "What you're considering testing",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: headline vs new angle, $89 vs $79, moving testimonials above the price",
+          "helper": ""
+        },
+        {
+          "id": "traffic-volume",
+          "label": "Monthly visitors and conversions",
+          "type": "text",
+          "required": true,
+          "placeholder": "Example: about 6,000 visits, 70 sales a month",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Turn each candidate into a hypothesis: if we change X, metric Y moves, because of Z from my buyer context.",
+        "Rank the queue by expected impact and by whether my traffic volume can actually resolve the test in under two months.",
+        "For the top test, define the variant precisely, the primary metric, and the rough sample it needs.",
+        "Flag any candidate too small to matter or too tangled to read cleanly, and say what to do with it instead."
+      ],
+      "rules": [
+        "Tests my traffic can't resolve get named as such, not queued politely. One primary metric per test; secondary metrics are observations, not verdicts."
+      ],
+      "output": "a ranked test queue with hypotheses, a fully specified first test with sample guidance, and the not-worth-testing list"
+    },
+    {
+      "id": "rewrite-priorities",
+      "category": "improve",
+      "title": "Rewrite Priority List",
+      "description": "Takes everything you know is wrong with the page and sequences the rewrite so the highest-revenue fixes ship first, not the easiest ones.",
+      "role": "a copy project lead who triages page rewrites for owners with limited hours and defends the order against the temptation to polish",
+      "fields": [
+        {
+          "id": "known-issues",
+          "label": "Everything you suspect is wrong",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: headline feels flat, no proof near the price, FAQ is legal boilerplate, close is weak",
+          "helper": ""
+        },
+        {
+          "id": "time-budget",
+          "label": "Hours you can spend on this",
+          "type": "text",
+          "required": false,
+          "placeholder": "Example: 6 hours over two weekends",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Sort my issues by revenue impact, using the rule that problems before the price reveal usually outrank problems after it.",
+        "Estimate the effort per fix and build the sequence that fits my stated hours, biggest impact first.",
+        "For each scheduled fix, write the one-sentence brief: what changes, what it must preserve, and how to check it worked.",
+        "Name what deliberately stays unfixed this round and why that's the right call at my time budget."
+      ],
+      "rules": [
+        "The sequence must respect my hours; a plan that assumes more time than I have is a wish, not a plan."
+      ],
+      "output": "a sequenced rewrite plan with effort estimates, one-sentence briefs per fix, and the explicitly deferred list"
+    },
+    {
+      "id": "checkout-audit",
+      "category": "improve",
+      "title": "Checkout Copy Audit",
+      "description": "Reviews your pasted checkout or order page for the doubts it plants and the reassurances it forgets, then supplies the missing lines.",
+      "role": "an order-page reviewer who has watched decided buyers abandon over one ambiguous billing line and audits checkouts for exactly those",
+      "fields": [
+        {
+          "id": "material",
+          "label": "Paste your checkout page text",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: paste every visible word on the order page, field labels and button text included",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "List what the pasted checkout communicates and what it leaves the buyer to wonder about: total charged today, renewal terms, how to cancel, and what happens after clicking.",
+        "Flag every line that plants doubt or contradicts a sales-page promise from my context.",
+        "Write the missing reassurance lines with exact placements: near the price, near the card fields, under the button.",
+        "Rank all findings by abandonment risk and mark the first fix."
+      ],
+      "rules": [
+        "Audit only the pasted text; no assumptions about what the design shows. Fixes must state true terms from my context, never softer ones."
+      ],
+      "output": "a checkout audit with the doubt list, contradiction flags, written reassurance lines with placements, and a ranked fix order"
+    },
+    {
+      "id": "message-match-check",
+      "category": "improve",
+      "title": "Message Match Check",
+      "description": "Compares the ad or email that sends traffic against the page that receives it and pinpoints where the promise shifts enough to lose the click.",
+      "role": "a funnel continuity reviewer who reads the ad and the page back to back the way a clicker experiences them, seconds apart",
+      "fields": [
+        {
+          "id": "material",
+          "label": "Paste the ad or email, then the page copy below it",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: paste the ad text, a divider line, then the landing page headline and first sections",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Extract the promise, tone, and specific hooks from the ad or email portion.",
+        "Check the page's fold against each: whether the headline continues the promise, the tone holds, and the hook reappears.",
+        "Mark every mismatch with both lines quoted side by side and rate how jarring each is to a fresh clicker.",
+        "Rewrite the page fold or the ad, whichever is the cheaper fix, to restore the match, and say which side you chose to change and why."
+      ],
+      "rules": [
+        "Match means continuity, not repetition; flag both broken promises and word-for-word duplication that wastes the fold. The rewrite changes one side only."
+      ],
+      "output": "a match report with quoted mismatches and severity ratings, the chosen fix side with reasoning, and the rewritten copy"
+    },
+    {
+      "id": "tighten-pass",
+      "category": "improve",
+      "title": "Tighten Without Losing",
+      "description": "Cuts your pasted copy down, targeting the flab, throat-clearing, and repeated points, while keeping every selling point and claim intact.",
+      "role": "a line editor for sales copy who cuts drafts by a third for a living and has to justify every selling point removed, so none are",
+      "fields": [
+        {
+          "id": "material",
+          "label": "Paste the copy to tighten",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: paste the section or full page that reads long",
+          "helper": ""
+        },
+        {
+          "id": "target",
+          "label": "How much to cut, if you have a target",
+          "type": "text",
+          "required": false,
+          "placeholder": "Example: get this 900-word section under 600",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Inventory the selling points and claims in the pasted copy so nothing on the list disappears in the edit.",
+        "Cut the flab: warm-up sentences, repeated points, hedges, and any line that describes the copy instead of the offer.",
+        "Deliver the tightened version, meeting my stated target where one exists.",
+        "Show the receipts: the inventory checked off against the new version, plus the three biggest cuts with a one-line reason each."
+      ],
+      "rules": [
+        "Cutting and reordering are allowed; adding new claims or changing the meaning of existing ones isn't. If the target can't be hit without losing a selling point, deliver the closest safe length and say which point blocked it."
+      ],
+      "output": "the tightened copy, the selling-point checklist confirmed intact, the word count before and after, and the three biggest cuts explained"
+    }
+  ],
+  "advisors": [
+    {
+      "id": "offer-surgeon",
+      "title": "The Offer Surgeon",
+      "description": "An advisor for offers that get traffic and praise but not enough buyers.",
+      "role": "an offer strategist who has rebuilt hundreds of underperforming offers and starts with the deal itself before touching a word of copy",
+      "focus": "diagnosing whether your offer, price, promise, or risk terms are what's capping conversions",
+      "questions": [
+        "what the offer promises, what it costs, and what the buyer risks if it fails them",
+        "conversion rate now, and the traffic temperature behind that number",
+        "the last three changes you made to the offer and what each did"
+      ],
+      "deliverable": "a diagnosis of the offer's weakest element, the specific change to make, and what to leave alone"
+    },
+    {
+      "id": "page-detective",
+      "title": "The Page Detective",
+      "description": "A diagnostic advisor for live pages that read fine and still don't convert.",
+      "role": "a conversion investigator who works from behavior evidence, scroll depth, click patterns, and exit points, before forming any opinion about the copy",
+      "focus": "finding where and why your live page loses buyers",
+      "questions": [
+        "your conversion rate, and where visitors come from",
+        "what your analytics show about scroll depth and drop-off, even roughly",
+        "what visitors do instead of buying: leave, click the FAQ, or start checkout and stall"
+      ],
+      "deliverable": "a ranked theory of where the page leaks, the evidence behind each rank, and the first fix to test"
+    },
+    {
+      "id": "proof-skeptic",
+      "title": "The Proof Skeptic",
+      "description": "An advisor who pressure-tests every claim on your page before real skeptics do it with their wallets.",
+      "role": "a claims examiner who reads sales pages the way a burned buyer does and separates what you said from what you demonstrated",
+      "focus": "making your page believable line by line without shrinking what makes the offer worth buying",
+      "questions": [
+        "the three biggest claims your page makes right now",
+        "what proof you own for each: numbers, quotes, demonstrations, credentials",
+        "which claim buyers push back on most in calls, DMs, or refund reasons"
+      ],
+      "deliverable": "a believability verdict per claim, the proof to add or the softening to accept, and the claim to cut outright"
+    },
+    {
+      "id": "pricing-counsel",
+      "title": "The Pricing Counsel",
+      "description": "An advisor for the price question you keep reopening: too high, too low, framed wrong, or fine as it stands.",
+      "role": "a pricing advisor for direct offers who works from your margins, refund data, and buyer alternatives instead of gut feel",
+      "focus": "settling how your price should be set, split into payments, and presented on the page",
+      "questions": [
+        "your price, your cost to deliver, and your refund rate",
+        "what buyers pay for the alternatives, including the cost of doing nothing",
+        "what happened the last time you changed the price"
+      ],
+      "deliverable": "a pricing recommendation with the framing to use on the page and the risk each alternative carries"
+    },
+    {
+      "id": "headline-sparring",
+      "title": "The Headline Sparring Partner",
+      "description": "An ongoing sparring partner for headlines, leads, and fold copy, round after round until one earns the traffic.",
+      "role": "a headline coach who has judged thousands of page tops and pushes back line by line instead of praising drafts",
+      "focus": "getting your headline and fold to say the strongest true thing in the fewest words",
+      "questions": [
+        "your current headline and subhead, pasted exactly",
+        "the claim you most want the fold to carry",
+        "who reads it: cold ad traffic, your list, or referrals"
+      ],
+      "deliverable": "a verdict on your current fold, three sharpened rounds of alternatives, and the version to run with the reason why"
+    },
+    {
+      "id": "objection-coach",
+      "title": "The Objection Coach",
+      "description": "An advisor for the sales you lose at maybe: the doubts buyers voice, and the bigger ones they don't.",
+      "role": "an objection specialist who has catalogued why buyers stall across hundreds of offers and treats every unanswered doubt as a line item of lost revenue",
+      "focus": "surfacing the objections blocking your sales and deciding how each gets answered: copy, proof, guarantee, or offer change",
+      "questions": [
+        "the objections you hear word for word, in calls, DMs, or refund requests",
+        "where buyers stall: before clicking, at the price, or in checkout",
+        "what your page currently says to handle the doubts you know about"
+      ],
+      "deliverable": "a ranked objection map, the answer channel for each, and drafted responses for the two costing you most"
+    }
+  ]
+}

@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<!--
+  PROMPT STUDIO ENGINE
+  Built from the micro-app-builder scaffold. One file, no backend,
+  no third-party JavaScript. Data bank injected by build_studio.py
+  at the __STUDIO_DATA__ marker.
+-->
+<html lang="en" data-theme="auto">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Membership & Community Prompt Studio</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #16201c;
+      --muted: #607068;
+      --paper: #f2f0e9;
+      --panel: rgba(255, 254, 249, 0.94);
+      --card: #fffefa;
+      --card-strong: #ffffff;
+      --accent: #4a6d9e;
+      --accent-2: #d6a11f;
+      --accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
+      --line: rgba(22, 32, 28, 0.14);
+      --line-strong: rgba(22, 32, 28, 0.25);
+      --shadow: 0 24px 70px rgba(20, 31, 26, 0.10);
+      --shadow-small: 0 8px 24px rgba(20, 31, 26, 0.08);
+      --radius: 20px;
+      --max: 1240px;
+    }
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --ink: #f5f1e8;
+      --muted: #b8c4bd;
+      --paper: #0d1310;
+      --panel: rgba(19, 27, 23, 0.94);
+      --card: #17201b;
+      --card-strong: #1b2620;
+      --line: rgba(245, 241, 232, 0.13);
+      --line-strong: rgba(245, 241, 232, 0.24);
+      --shadow: 0 26px 80px rgba(0, 0, 0, 0.38);
+      --shadow-small: 0 8px 28px rgba(0, 0, 0, 0.28);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Avenir Next, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 2%, color-mix(in srgb, var(--accent) 17%, transparent), transparent 26rem),
+        radial-gradient(circle at 92% 18%, color-mix(in srgb, var(--accent-2) 15%, transparent), transparent 24rem),
+        var(--paper);
+      line-height: 1.5;
+    }
+    body::before {
+      content: ""; position: fixed; inset: 0; pointer-events: none; opacity: 0.28;
+      background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+      background-size: 64px 64px; mask-image: linear-gradient(to bottom, black, transparent 72%); z-index: -1;
+    }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; border: 0; touch-action: manipulation; }
+    button, input, select, textarea { transition: border-color 180ms ease, background 180ms ease, color 180ms ease, box-shadow 180ms ease, transform 180ms ease; }
+    :focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 55%, white); outline-offset: 3px; }
+    .skip-link { position: fixed; left: 16px; top: -80px; z-index: 1000; padding: 10px 14px; border-radius: 10px; background: var(--ink); color: var(--paper); font-weight: 800; }
+    .skip-link:focus { top: 16px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .shell { width: min(100% - 40px, var(--max)); margin: 0 auto; padding: 18px 0 40px; }
+    .topbar { position: sticky; top: 10px; z-index: 40; display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 18px; padding: 8px; border: 1px solid var(--line); border-radius: 18px; background: color-mix(in srgb, var(--panel) 88%, transparent); box-shadow: var(--shadow-small); backdrop-filter: blur(18px); }
+    .brand { display: inline-flex; align-items: center; gap: 11px; padding: 4px 8px 4px 5px; color: var(--ink); }
+    .brand-mark { position: relative; width: 34px; height: 34px; border-radius: 10px; background: var(--accent); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.2); }
+    .brand-mark::before, .brand-mark::after { content: ""; position: absolute; left: 8px; right: 8px; height: 3px; border-radius: 99px; background: white; }
+    .brand-mark::before { top: 10px; box-shadow: 0 6px 0 rgba(255,255,255,0.72); }
+    .brand-mark::after { top: 22px; right: 14px; }
+    .brand-copy { display: grid; line-height: 1.05; }
+    .brand-copy b { font-size: 0.9rem; letter-spacing: -0.01em; }
+    .brand-copy span { margin-top: 4px; color: var(--muted); font: 700 0.68rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; text-transform: uppercase; letter-spacing: 0.09em; }
+    .theme-toggle { display: inline-flex; gap: 4px; padding: 4px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+    .theme-toggle button { min-width: 54px; min-height: 36px; padding: 7px 10px; border-radius: 9px; color: var(--muted); background: transparent; font-weight: 800; font-size: 0.82rem; }
+    html[data-theme="light"] [data-theme-choice="light"], html[data-theme="dark"] [data-theme-choice="dark"] { background: var(--ink); color: var(--paper); }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
+      gap: clamp(24px, 5vw, 64px);
+      align-items: stretch;
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      padding: clamp(26px, 5vw, 64px);
+      overflow: hidden;
+      position: relative;
+    }
+    .hero::after { content: ""; position: absolute; width: 260px; height: 260px; right: -120px; bottom: -150px; border-radius: 50%; border: 42px solid color-mix(in srgb, var(--accent-2) 22%, transparent); }
+    .hero-copy { align-self: center; position: relative; z-index: 1; }
+    .kicker { margin: 0 0 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.12em; font: 900 0.72rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace; }
+    h1 { margin: 0; max-width: 780px; font-size: clamp(2.5rem, 6vw, 5.2rem); line-height: 0.92; letter-spacing: -0.06em; text-wrap: balance; }
+    .subtitle { max-width: 700px; margin: 21px 0 0; color: var(--muted); font-size: clamp(1.02rem, 2vw, 1.2rem); font-weight: 620; line-height: 1.65; }
+    .hero-path { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 24px; color: var(--muted); font: 800 0.78rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .hero-path span { display: inline-flex; align-items: center; min-height: 32px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 9px; background: var(--card); }
+    .hero-path i { color: var(--accent); font-style: normal; }
+    .status-panel { position: relative; z-index: 1; display: grid; align-content: start; gap: 14px; padding: 20px; border: 1px solid var(--line); border-radius: 22px; background: var(--card); box-shadow: var(--shadow-small); }
+    .status-label { display: flex; justify-content: space-between; align-items: center; gap: 10px; color: var(--muted); font: 800 0.7rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; text-transform: uppercase; letter-spacing: 0.1em; }
+    .status-label::after { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 5px var(--accent-soft); }
+    .badge { width: fit-content; padding: 8px 11px; border-radius: 10px; background: var(--ink); color: var(--paper); font-weight: 900; font-size: 0.82rem; }
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .stat { border: 1px solid var(--line); border-radius: 14px; padding: 13px; background: color-mix(in srgb, var(--paper) 70%, var(--card)); }
+    .stat b { display: block; font-size: 1.5rem; letter-spacing: -0.04em; }
+    .stat span { color: var(--muted); font-size: 0.76rem; font-weight: 750; line-height: 1.25; }
+    .layout { display: grid; grid-template-columns: minmax(290px, 0.72fr) minmax(0, 1.45fr); gap: 20px; align-items: start; margin-top: 20px; }
+    .panel { border: 1px solid var(--line); border-radius: 24px; background: var(--panel); box-shadow: var(--shadow-small); padding: clamp(20px, 3vw, 30px); }
+    .form-panel { position: sticky; top: 84px; }
+    .profile-head { display: flex; justify-content: space-between; align-items: start; gap: 18px; }
+    .profile-score { min-width: 64px; text-align: right; color: var(--muted); font: 800 0.72rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .profile-score b { display: block; margin-bottom: 5px; color: var(--ink); font-size: 1rem; }
+    .progress-track { height: 5px; margin: 17px 0 20px; overflow: hidden; border-radius: 99px; background: var(--line); }
+    .progress-fill { width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--accent), var(--accent-2)); transition: width 240ms ease; }
+    .section-title { margin: 0; font-size: clamp(1.35rem, 3vw, 1.8rem); line-height: 1.05; letter-spacing: -0.035em; }
+    .section-note { margin: 9px 0 20px; color: var(--muted); font-weight: 620; }
+    form { display: grid; gap: 15px; }
+    .field { display: grid; gap: 7px; }
+    label { font-weight: 850; font-size: 0.91rem; }
+    .req { color: var(--accent); }
+    .helper { margin: 0; color: var(--muted); font-size: 0.82rem; }
+    input, select, textarea { width: 100%; min-height: 48px; padding: 12px 13px; border: 1px solid var(--line-strong); border-radius: 12px; background: var(--card); color: var(--ink); }
+    input:hover, select:hover, textarea:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+    input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); outline: none; }
+    textarea { min-height: 104px; resize: vertical; }
+    .button-row, .result-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .primary, .secondary, .mini { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 15px; border-radius: 11px; font-weight: 900; }
+    .primary { background: var(--accent); color: white; box-shadow: 0 7px 18px color-mix(in srgb, var(--accent) 26%, transparent); }
+    .primary:hover { filter: brightness(1.06); transform: translateY(-1px); }
+    .secondary, .mini { border: 1px solid var(--line-strong); background: var(--card); color: var(--ink); }
+    .secondary:hover, .mini:hover { border-color: var(--accent); background: var(--accent-soft); }
+    .mini { min-height: 40px; padding: 8px 12px; font-size: 0.86rem; }
+    .mini.primary-mini { background: var(--accent); color: white; border-color: transparent; }
+    button:active { transform: scale(0.98); }
+    .validation { display: none; padding: 11px 12px; border-radius: 14px; background: rgba(180, 46, 46, 0.1); color: #b42e2e; font-weight: 800; }
+    .validation.show { display: block; }
+    .saved-note { color: var(--muted); font-size: 0.85rem; font-weight: 700; margin: 4px 0 0; }
+    .stale-note { display: none; margin-bottom: 14px; padding: 11px 12px; border-radius: 14px; background: color-mix(in srgb, var(--accent-2) 22%, var(--card)); border: 1px solid var(--line); font-weight: 800; }
+    .stale-note.show { display: block; }
+    footer { display: flex; justify-content: space-between; gap: 16px; margin-top: 24px; padding: 12px 4px; color: var(--muted); font: 700 0.75rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .entrance { animation: rise-in 420ms cubic-bezier(.16,1,.3,1) both; }
+    @keyframes rise-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 900px) { .hero, .layout { grid-template-columns: 1fr; } .form-panel { position: static; } }
+    @media (max-width: 640px) { .shell { width: min(100% - 22px, var(--max)); padding-top: 10px; } .topbar { top: 6px; } .brand-copy span { display: none; } .hero { padding: 27px 21px; border-radius: 22px; } h1 { font-size: clamp(2.35rem, 13vw, 3.6rem); } .hero-path i { display: none; } .primary, .secondary { width: 100%; } footer { text-align: center; display: block; } footer span { display: block; margin: 4px 0; } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+    }
+    /* ============ TYPE STYLES START ============ */
+    .workspace-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 18px; }
+    .workspace-label { color: var(--muted); font: 800 0.7rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; text-transform: uppercase; letter-spacing: 0.1em; }
+    .tab-row { display: inline-flex; flex-wrap: wrap; gap: 4px; margin-bottom: 22px; padding: 4px; border: 1px solid var(--line); border-radius: 13px; background: color-mix(in srgb, var(--paper) 65%, transparent); }
+    .tab {
+      min-height: 40px; padding: 8px 14px; border-radius: 9px;
+      background: transparent; color: var(--muted); font-weight: 900;
+    }
+    .tab:hover { color: var(--ink); }
+    .tab.active { background: var(--card-strong); color: var(--ink); box-shadow: var(--shadow-small); }
+    .browse-toolbar { display: grid; grid-template-columns: minmax(220px, 1fr); gap: 12px; margin: 18px 0; }
+    .search-wrap { position: relative; }
+    .search-wrap::before { content: ""; position: absolute; left: 15px; top: 50%; width: 12px; height: 12px; border: 2px solid var(--muted); border-radius: 50%; transform: translateY(-62%); pointer-events: none; }
+    .search-wrap::after { content: ""; position: absolute; left: 27px; top: 29px; width: 7px; height: 2px; border-radius: 2px; background: var(--muted); transform: rotate(45deg); pointer-events: none; }
+    .search-wrap input { padding-left: 43px; }
+    .cat-row { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; }
+    .cat-chip {
+      min-height: 40px; padding: 8px 12px; border-radius: 10px; border: 1px solid var(--line);
+      background: var(--card); color: var(--muted); font-weight: 800; font-size: 0.84rem;
+    }
+    .cat-chip.active { background: var(--accent); color: #fff; border-color: transparent; }
+    .cat-note { margin: 0 0 16px; color: var(--muted); font-weight: 620; }
+    .wf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(235px, 1fr)); gap: 11px; }
+    .wf-card {
+      position: relative; min-height: 184px; text-align: left; display: grid; gap: 8px; align-content: start;
+      border: 1px solid var(--line); border-radius: 16px; padding: 17px;
+      background: var(--card); color: var(--ink); overflow: hidden;
+    }
+    .wf-card::after { content: ""; position: absolute; inset: auto 0 0; height: 3px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 200ms ease; }
+    .wf-card:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); box-shadow: var(--shadow-small); }
+    .wf-card:hover::after { transform: scaleX(1); }
+    .wf-card b { font-size: 1.04rem; letter-spacing: -0.025em; }
+    .wf-card span { color: var(--muted); font-size: 0.86rem; font-weight: 620; }
+    .wf-card .card-no { color: var(--accent); font: 850 0.68rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.08em; }
+    .wf-card .go { align-self: end; margin-top: auto; color: var(--accent); font-weight: 900; font-size: 0.82rem; }
+    .no-results { grid-column: 1 / -1; min-height: 180px; display: grid; place-items: center; padding: 24px; border: 1px dashed var(--line-strong); border-radius: 16px; text-align: center; color: var(--muted); }
+    .detail-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
+    .crumb { min-height: 44px; background: transparent; color: var(--accent); font-weight: 900; padding: 7px 0; }
+    .detail-meta { margin: 0 0 8px; color: var(--accent); font: 850 0.7rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; text-transform: uppercase; letter-spacing: 0.1em; }
+    .result-ready { display: flex; align-items: center; gap: 9px; margin: 22px 0 10px; font-weight: 900; }
+    .result-ready::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 5px var(--accent-soft); }
+    .prompt-box {
+      margin-top: 12px; border: 1px solid var(--line); border-radius: 16px;
+      background: #101713; color: #eaf2ed; padding: 18px; max-height: 460px; overflow: auto; box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+    .prompt-box pre { margin: 0; white-space: pre-wrap; word-break: break-word; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.88rem; line-height: 1.55; }
+    .result-actions { margin-top: 12px; }
+    .adv-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+    .adv-card { min-height: 190px; border: 1px solid var(--line); border-radius: 16px; padding: 17px; background: var(--card); display: grid; gap: 9px; align-content: start; }
+    .adv-card:hover { border-color: color-mix(in srgb, var(--accent) 50%, var(--line)); box-shadow: var(--shadow-small); }
+    .advisor-index { color: var(--accent); font: 850 0.68rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .adv-card b { font-size: 1.05rem; }
+    .adv-card p { margin: 0; color: var(--muted); font-size: 0.9rem; font-weight: 620; }
+    .adv-card .mini { align-self: end; margin-top: auto; }
+    .empty { min-height: 200px; display: grid; place-items: center; text-align: center; border: 1px dashed var(--line); border-radius: 20px; color: var(--muted); padding: 22px; }
+    .empty strong { display: block; color: var(--ink); margin-bottom: 5px; }
+    .manual-item { border: 1px solid var(--line); border-radius: 16px; background: var(--card); padding: 15px 16px; display: grid; gap: 9px; margin-bottom: 10px; }
+    .manual-item-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+    .manual-item-head b { font-size: 1rem; }
+    .manual-item-head span { color: var(--muted); font-size: 0.82rem; font-weight: 700; }
+    .manual-item pre { margin: 0; white-space: pre-wrap; word-break: break-word; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.8rem; line-height: 1.5; max-height: 130px; overflow: auto; color: var(--muted); }
+    .manual-title-field { display: grid; gap: 7px; margin-bottom: 14px; }
+    #printArea { display: none; }
+    @media (max-width: 640px) { .workspace-head { display: block; } .tab-row { display: grid; grid-template-columns: repeat(3, 1fr); width: 100%; } .tab { padding-inline: 7px; } .wf-grid { grid-template-columns: 1fr; } .wf-card { min-height: 0; } }
+    @media print {
+      body * { visibility: hidden; }
+      #printArea, #printArea * { visibility: visible; }
+      #printArea {
+        display: block; position: absolute; inset: 0; padding: 0;
+        color: #111; background: #fff; font-family: Georgia, serif;
+      }
+      #printArea .print-cover { padding: 40vh 0 0; text-align: center; page-break-after: always; }
+      #printArea .print-cover h1 { font-size: 2.2rem; letter-spacing: 0; line-height: 1.2; }
+      #printArea .print-cover p { color: #555; }
+      #printArea .print-prompt { page-break-inside: avoid; page-break-before: always; padding: 24px 0; }
+      #printArea .print-prompt h2 { font-size: 1.2rem; margin: 0 0 4px; }
+      #printArea .print-prompt .print-source { color: #666; font-size: 0.85rem; margin: 0 0 12px; }
+      #printArea .print-prompt pre { white-space: pre-wrap; word-break: break-word; font-family: "Courier New", monospace; font-size: 0.82rem; line-height: 1.5; border: 1px solid #ccc; border-radius: 8px; padding: 14px; }
+    }
+    /* ============ TYPE STYLES END ============ */
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#studioWorkspace">Skip to the studio</a>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand" aria-label="Prompt Studio">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-copy"><b>Prompt Studio</b><span>Prompt workbench</span></span>
+      </div>
+      <div class="theme-toggle" role="group" aria-label="Theme selection">
+        <button type="button" data-theme-choice="light" aria-pressed="false">Light</button>
+        <button type="button" data-theme-choice="dark" aria-pressed="false">Dark</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero entrance" id="hero">
+        <div class="hero-copy">
+          <p class="kicker">Guided prompt system for community builders</p>
+          <h1>Membership & Community Prompt Studio</h1>
+          <p class="subtitle">Built for membership owners and community builders, paid or free. Every workflow turns your answers into a finished prompt that produces onboarding flows, discussion calendars, renewal emails, and churn diagnoses you can use the same day.</p>
+          <div class="hero-path" aria-label="How the studio works">
+            <span>01 Add context</span><i aria-hidden="true">→</i><span>02 Pick a job</span><i aria-hidden="true">→</i><span>03 Copy the prompt</span>
+          </div>
+        </div>
+        <aside class="status-panel">
+          <div class="status-label">Studio contents</div>
+          <div class="badge">48 guided workflows</div>
+          <div class="stat-grid" id="statGrid"></div>
+        </aside>
+      </section>
+
+      <!-- ============ TYPE BODY START ============ -->
+      <div class="layout entrance" id="studioWorkspace">
+        <section class="panel form-panel" aria-labelledby="profileTitle">
+          <div class="profile-head">
+            <div><p class="kicker">Step 1</p><h2 class="section-title" id="profileTitle">Your business profile</h2></div>
+            <div class="profile-score"><b id="profilePercent">0%</b>context</div>
+          </div>
+          <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="profileProgress"></div></div>
+          <p class="section-note">Fill this once. Every workflow and advisor in this studio writes your answers into its prompt.</p>
+          <form id="profileForm" novalidate></form>
+          <p class="saved-note" id="savedNote">Saved on this device as you type.</p>
+        </section>
+
+        <section class="panel">
+          <div class="workspace-head"><div><span class="workspace-label">Your workspace</span><h2 class="section-title" style="margin-top:8px;">Build something useful</h2></div></div>
+          <div class="tab-row" role="tablist">
+            <button class="tab active" type="button" role="tab" aria-selected="true" data-tab="workflows">Workflows</button>
+            <button class="tab" type="button" role="tab" aria-selected="false" data-tab="advisors">Advisors</button>
+            <button class="tab" type="button" role="tab" aria-selected="false" data-tab="manual">Manual <span id="manualCount"></span></button>
+          </div>
+
+          <div id="tab-workflows">
+            <div id="workflowBrowse">
+              <p class="kicker">Step 2</p>
+              <h2 class="section-title">Pick a workflow</h2>
+              <p class="section-note">Each workflow asks for a few specifics, then builds a finished prompt you paste into ChatGPT, Claude, or the assistant you already use.</p>
+              <div class="browse-toolbar"><label class="search-wrap"><span class="sr-only">Search workflows</span><input type="search" id="wfSearch" placeholder="Search all 48 workflows" autocomplete="off" /></label></div>
+              <div class="cat-row" id="catRow"></div>
+              <p class="cat-note" id="catNote"></p>
+              <div class="wf-grid" id="wfGrid"></div>
+            </div>
+
+            <div id="workflowDetail" hidden>
+              <div class="detail-head">
+                <button class="crumb" type="button" id="backToGrid">&larr; All workflows</button>
+              </div>
+              <p class="detail-meta" id="wfMeta"></p>
+              <h2 class="section-title" id="wfTitle"></h2>
+              <p class="section-note" id="wfDescription"></p>
+              <form id="wfForm" novalidate>
+                <div id="wfFields"></div>
+                <div id="wfValidation" class="validation"></div>
+                <div class="button-row">
+                  <button class="primary" type="submit">Build my prompt</button>
+                </div>
+              </form>
+              <div id="wfResultWrap" hidden>
+                <div class="result-ready">Your prompt is ready</div>
+                <div id="staleNote" class="stale-note" role="status">Your inputs changed after this prompt was built. Build it again to refresh it.</div>
+                <div class="prompt-box"><pre id="wfPrompt"></pre></div>
+                <div class="result-actions">
+                  <button class="mini primary-mini" type="button" id="copyPrompt">Copy prompt</button>
+                  <button class="mini" type="button" id="copyOpen">Copy + open ChatGPT</button>
+                  <button class="mini" type="button" id="addToManual">Add to manual</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="tab-advisors" hidden>
+            <p class="kicker">Expert modes</p>
+            <h2 class="section-title">Sit down with an advisor</h2>
+            <p class="section-note">Each advisor prompt sets up a working session: the AI interviews you one question at a time, then delivers its recommendation and stays in the role.</p>
+            <div class="adv-grid" id="advGrid"></div>
+            <div id="advResultWrap" hidden>
+              <h2 class="section-title" id="advResultTitle" style="margin-top:18px;"></h2>
+              <div class="prompt-box"><pre id="advPrompt"></pre></div>
+              <div class="result-actions">
+                <button class="mini primary-mini" type="button" id="advCopy">Copy prompt</button>
+                <button class="mini" type="button" id="advCopyOpen">Copy + open ChatGPT</button>
+                <button class="mini" type="button" id="advAddToManual">Add to manual</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="tab-manual" hidden>
+            <p class="kicker">Your collection</p>
+            <h2 class="section-title">Prompt manual</h2>
+            <p class="section-note">Prompts you save land here. Reorder them, name the manual, then print it to PDF or download it as a file you can share with your team.</p>
+            <div class="manual-title-field field">
+              <label for="manualTitle">Manual title</label>
+              <input type="text" id="manualTitle" placeholder="Example: Q3 launch prompt playbook" />
+            </div>
+            <div id="manualEmpty" class="empty"><div><strong>Nothing saved yet</strong>Build a prompt in Workflows or Advisors, then hit "Add to manual".</div></div>
+            <div id="manualList"></div>
+            <div class="result-actions">
+              <button class="mini primary-mini" type="button" id="printManual">Print / save as PDF</button>
+              <button class="mini" type="button" id="downloadManual">Download as HTML</button>
+              <button class="mini" type="button" id="clearManual">Clear manual</button>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div id="printArea" aria-hidden="true"></div>
+      <!-- ============ TYPE BODY END ============ -->
+    </main>
+
+    <footer><span>Prompt Studio</span><span>Built for focused work. Your profile stays on this device.</span></footer>
+  </div>
+
+  <script>
+    const STUDIO = {"slug": "memberships", "title": "Membership & Community Prompt Studio", "kicker": "Guided prompt system for community builders", "subtitle": "Built for membership owners and community builders, paid or free. Every workflow turns your answers into a finished prompt that produces onboarding flows, discussion calendars, renewal emails, and churn diagnoses you can use the same day.", "badge": "48 guided workflows", "accent": "#4a6d9e", "accent2": "#d6a11f", "footer": "Prompt Studio", "profile": [{"id": "membership", "label": "Your membership and who joins it", "type": "textarea", "required": true, "placeholder": "Example: $49/month community for freelance bookkeepers, 180 members", "helper": "One or two sentences. Every prompt in this studio uses this."}, {"id": "members", "label": "Your members in their own words", "type": "textarea", "required": false, "placeholder": "Example: 'I'm tired of being the only person who gets what I do all day'", "helper": "Phrases from surveys, DMs, or calls. Leave blank if you don't have them yet."}, {"id": "project", "label": "What you're working on in the community right now", "type": "textarea", "required": false, "placeholder": "Example: rebuilding onboarding before the September enrollment window", "helper": ""}, {"id": "goal", "label": "Your main goal for the next 90 days", "type": "text", "required": false, "placeholder": "Example: cut monthly churn from 9% to 5%", "helper": ""}, {"id": "voice", "label": "Voice or constraints the AI should know", "type": "text", "required": false, "placeholder": "Example: warm and casual, first names, no hustle-culture talk", "helper": ""}], "categories": [{"id": "positioning", "title": "Positioning & Offer", "note": "Decide who the membership is for, what it promises, and what joining costs."}, {"id": "onboarding", "title": "Onboarding & First Wins", "note": "Get new members to a visible win before the second charge hits their card."}, {"id": "programming", "title": "Programming & Participation", "note": "Fill the calendar with prompts, sessions, and rituals members show up for."}, {"id": "retention", "title": "Retention & Renewals", "note": "Spot churn early, re-engage quiet members, and make renewals feel earned."}, {"id": "growth", "title": "Growth & Revenue", "note": "Bring in new members through waitlists, referrals, trials, and upsells."}, {"id": "improvement", "title": "Feedback & Improvement", "note": "Measure community health, mine member feedback, and strengthen what you already send."}], "workflows": [{"id": "community-positioning-memo", "category": "positioning", "title": "Community Positioning Memo", "description": "Nails down who your membership serves, why it exists, and the reason someone joins instead of staying in the free group.", "role": "a membership strategist who has repositioned flat communities and gets judged on whether join-page conversion moves, not on how the mission statement sounds", "fields": [{"id": "alternatives", "label": "What people do instead of joining", "type": "textarea", "required": true, "placeholder": "Example: they stay in the free Slack, watch YouTube tutorials, or buy one-off templates", "helper": ""}, {"id": "promise", "label": "The change members should see in 90 days", "type": "text", "required": false, "placeholder": "Example: first three retainer clients booked", "helper": ""}], "task": ["Write a one-paragraph positioning statement naming who this membership is for, the situation they're in when they join, and the result they should see by day 90.", "List the alternatives my best-fit member already uses and say, for each one, why the membership beats it or where it honestly doesn't.", "Draft the answer to 'why does this community exist' in two sentences a member could repeat to a colleague.", "Name who this membership is not for, in plain terms I could post on the join page."], "rules": ["If my 90-day promise can't be seen or measured, say so and propose a version that can."], "output": "a positioning memo with sections for who it's for, who it's not for, the 90-day promise, why it exists, and how it beats each alternative"}, {"id": "member-profile-cards", "category": "positioning", "title": "Member Profile Cards", "description": "Builds three member profiles with the trigger that made each one pay and the moment each one starts drifting.", "role": "a community researcher who builds member profiles from renewal data and exit surveys, accountable for whether onboarding and programming decisions match real members instead of imagined ones", "fields": [{"id": "knowns", "label": "What you know about current members", "type": "textarea", "required": true, "placeholder": "Example: mostly solo bookkeepers, 2 to 8 years in, joined after a pricing webinar, half never post", "helper": ""}], "task": ["Build three member profiles: the ideal member, the most common member, and the member who joins and churns within 60 days.", "For each profile, name the trigger event that made them pay, what a good first week looks like to them, and the first sign they're drifting.", "Write the sentence each profile would use to describe the membership to a peer, in their words, not marketing words.", "Flag which profile my current onboarding serves best and which one it loses without anyone noticing."], "rules": ["Ground every profile in what I told you about current members. Mark anything you inferred with the word 'assumption'."], "output": "three profile cards, each with join trigger, first-week expectation, drift signal, and a quote in the member's own words"}, {"id": "member-journey-map", "category": "positioning", "title": "Member Journey Map", "description": "Maps the path from day-one signup to belonging and visible results, with the drop-off risk at each stage.", "role": "a retention-focused community designer who maps member journeys for paid communities and answers for month-three retention, not signup numbers", "fields": [{"id": "current", "label": "What happens to a new member today", "type": "textarea", "required": true, "placeholder": "Example: welcome email, an invite to post an intro, then nothing structured until the monthly call", "helper": ""}, {"id": "result", "label": "The visible result members should reach", "type": "text", "required": false, "placeholder": "Example: first client booked through the community job board", "helper": ""}], "task": ["Lay out the member journey in five stages from signup to visible result, naming what the member should feel, do, and get at each stage.", "Mark the stage where my current setup goes silent and estimate what that silence costs in month-two cancellations, flagged as an assumption.", "For each stage, name one owner action or automated touch that moves the member to the next stage.", "Define the moment a member counts as 'belonging' in observable terms: something they do, not something they feel."], "rules": ["Every stage needs one observable behavior that proves the member reached it."], "output": "a five-stage journey map with member state, drop-off risk, and the single touch that advances each stage"}, {"id": "membership-offer-sharpener", "category": "positioning", "title": "Membership Offer Sharpener", "description": "Tightens what the membership includes so the price reads as obvious instead of negotiable.", "role": "an offer editor who has trimmed bloated membership tiers and gets measured on whether members can name what they pay for without checking the sales page", "fields": [{"id": "inclusions", "label": "Everything the membership includes today", "type": "textarea", "required": true, "placeholder": "Example: monthly call, template vault, private forum, quarterly hot seat, a dead book-club channel", "helper": ""}, {"id": "price", "label": "Current price and billing", "type": "text", "required": false, "placeholder": "Example: $49/month or $470/year", "helper": ""}], "task": ["Sort my inclusions into three buckets: things members join for, things members stay for, and things nobody would miss.", "Recommend what to cut, what to keep, and what to rename so the value is legible at a glance.", "Write the offer as a single sentence: outcome first, then the two or three inclusions that carry it.", "Flag any inclusion that creates weekly work for me but sits in the 'nobody would miss' bucket."], "rules": ["Argue for cutting at least one inclusion. If everything survives, explain why in one line each."], "output": "a revised offer sheet with keep, cut, and rename columns plus the one-sentence offer statement"}, {"id": "pricing-decision-brief", "category": "positioning", "title": "Pricing Decision Brief", "description": "Weighs your monthly price against churn, content load, and what members compare you to, then makes a call.", "role": "a pricing advisor for recurring memberships who has raised and lowered community prices and stands behind the revenue result six months out, not the launch-week applause", "fields": [{"id": "numbers", "label": "Your current numbers", "type": "textarea", "required": true, "placeholder": "Example: $49/month, 180 members, about 9% cancel each month, most stay 7 months", "helper": ""}, {"id": "comparison", "label": "What members compare the price to", "type": "text", "required": false, "placeholder": "Example: a $200/month mastermind and free Reddit threads", "helper": ""}], "task": ["Assess whether the current price matches the result the membership delivers, and say plainly if it's underpriced, overpriced, or priced right.", "Model what a price change would need to do to member count to break even, using my numbers and labeling every assumption.", "Recommend one pricing move: raise, hold, add an annual tier, or restructure, with the reason in two sentences.", "Write the two-paragraph note to existing members if the move affects them."], "rules": ["Pick one recommendation. Listing options without a call doesn't count as an answer."], "output": "a one-page pricing brief with the recommendation, break-even math, member note, and the signal that would prove the move wrong"}, {"id": "join-page-outline", "category": "positioning", "title": "Join Page Outline", "description": "Structures your join page so a fence-sitter can see the first week, the price, and the promise without scrolling twice.", "role": "a conversion copywriter who works on membership join pages and gets paid on signup rate, not word count", "fields": [{"id": "objection", "label": "The objection you hear most", "type": "text", "required": true, "placeholder": "Example: 'I'm already in three free groups I never open'", "helper": ""}, {"id": "proof", "label": "Proof you can show", "type": "textarea", "required": false, "placeholder": "Example: two member wins with names, a screenshot of the weekly thread, 14 months average tenure", "helper": ""}], "task": ["Outline the join page top to bottom: headline, promise, what week one looks like, proof, price, FAQ, and the join call to action.", "Write the headline and the week-one section in full, using my proof and promise.", "Answer my most common objection inside the page copy, not in a separate FAQ line.", "List the three FAQ entries that remove the most doubt for a fence-sitter."], "rules": ["Use only the proof I gave you. A proof slot with nothing real to fill it gets marked 'needs proof' instead of filler."], "output": "a section-by-section join page outline with the headline and week-one section written in full"}, {"id": "community-guidelines-draft", "category": "positioning", "title": "Community Guidelines Draft", "description": "Writes rules that protect the culture you want without reading like a terms-of-service page.", "role": "a community operator who has moderated paid groups through spam waves and member conflicts, accountable for keeping discussion active while enforcement stays rare", "fields": [{"id": "culture", "label": "The culture you're protecting", "type": "textarea", "required": true, "placeholder": "Example: generous answers, no pitching in threads, beginners ask without getting talked down to", "helper": ""}, {"id": "problems", "label": "Behavior you've already seen", "type": "text", "required": false, "placeholder": "Example: one member DM-pitching every new joiner", "helper": ""}], "task": ["Write five to eight guidelines, each one sentence, each tied to a behavior members can picture.", "For each guideline, add the enforcement line: what happens on first violation and what happens on repeat.", "Write the pinned-post version in a warm voice, under 150 words.", "Draft the private message I send to someone who breaks the no-pitching rule, firm but keeping the relationship."], "rules": ["No rule that exists only to sound official. If a guideline doesn't map to a behavior I've seen or fear, cut it."], "output": "a guidelines list with enforcement notes, a pinned-post version, and one enforcement DM"}, {"id": "free-vs-paid-call", "category": "positioning", "title": "Free vs Paid Call", "description": "Decides whether your community should be free, paid, or a free front door with a paid core, based on your goal and capacity.", "role": "a community business advisor who has run both free audience groups and paid memberships, judged on whether the model chosen still makes sense a year in", "fields": [{"id": "capacity", "label": "Hours per week you can give this", "type": "text", "required": true, "placeholder": "Example: 5 hours, mostly Tuesday and Thursday", "helper": ""}, {"id": "purpose", "label": "What the community does for your business", "type": "text", "required": false, "placeholder": "Example: feeds my done-for-you bookkeeping service", "helper": ""}], "task": ["Lay out the three models for my situation: fully free, fully paid, and free front door with a paid core.", "Score each model against my weekly capacity, my 90-day goal, and how the community feeds my business.", "Pick one model and defend the pick in a short paragraph, including the main risk.", "List the first three moves to run the chosen model, in order."], "rules": ["Commit to one model. Present the other two only long enough to show why they lose."], "output": "a decision memo with the recommended model, the scoring table, the main risk, and three first moves"}, {"id": "first-week-welcome-flow", "category": "onboarding", "title": "First Week Welcome Flow", "description": "Plans the seven days after signup so a new member posts, connects, and gets one useful thing before day eight.", "role": "an onboarding designer for paid communities who is measured on how many new members are still active at day 30", "fields": [{"id": "tools", "label": "Where onboarding happens", "type": "text", "required": true, "placeholder": "Example: Circle space plus a ConvertKit email sequence", "helper": ""}, {"id": "win", "label": "The first useful thing a member should get", "type": "text", "required": false, "placeholder": "Example: feedback on their pricing page within 48 hours", "helper": ""}], "task": ["Map days one through seven: what the member receives, what they're asked to do, and where each touch happens.", "Design day one so the member takes one small action in under five minutes.", "Place the first-win moment before day four and spell out exactly how the member gets it.", "Write the copy for the day-one touch in full.", "Add one checkpoint where I personally show up, sized to my available hours."], "rules": ["One ask per day, maximum. A new member facing three tasks does none of them."], "output": "a day-by-day welcome flow table with channel, message purpose, member action, and the day-one message written out"}, {"id": "orientation-session-plan", "category": "onboarding", "title": "Orientation Session Plan", "description": "Builds a live or recorded orientation that shows new members where things live and what to do first, in 20 minutes or less.", "role": "a member-education lead who runs orientations for online communities and gets judged on whether attendees post within a week of the session", "fields": [{"id": "format", "label": "Format", "type": "select", "required": true, "options": ["Live monthly call", "Recorded video", "Live plus recording", "Written walkthrough"], "placeholder": "", "helper": ""}, {"id": "spaces", "label": "The spaces members need to know", "type": "textarea", "required": true, "placeholder": "Example: intro thread, weekly wins post, template vault, ask-anything channel", "helper": ""}], "task": ["Structure the orientation into timed segments totaling 20 minutes or less, from welcome to the closing ask.", "Script the opening two minutes word for word.", "Pick the single action attendees commit to before leaving and build the segment that sets it up.", "List what to cut from a typical orientation because nobody retains it on day one."], "rules": ["The tour covers at most four spaces. More than that and members remember none of them."], "output": "a timed orientation agenda with the scripted opening and the closing commitment ask"}, {"id": "activation-email-series", "category": "onboarding", "title": "Activation Email Series", "description": "Writes the short email sequence that moves a new member from paid to posting during their first two weeks.", "role": "an email writer for membership businesses whose sequences get graded on login and first-post rates, not open rates", "fields": [{"id": "count", "label": "How many emails", "type": "select", "required": true, "options": ["3 emails", "4 emails", "5 emails"], "placeholder": "", "helper": ""}, {"id": "stall", "label": "Where new members stall today", "type": "text", "required": true, "placeholder": "Example: they read the welcome email, never set up their profile", "helper": ""}], "task": ["Plan the sequence: send day, job of each email, and the single link or action per email.", "Write every email in full, subject line included, each under 150 words.", "Aim one email directly at the stall point I described.", "End each email with one action, never a list of options."], "rules": ["Every email drives one click into the community. An email that just says welcome again gets rewritten.", "Subject lines name what's inside. No curiosity-gap tricks on people who already paid."], "output": "the full email sequence with send days, subject lines, and body copy ready to paste into my email tool"}, {"id": "first-win-design", "category": "onboarding", "title": "First Win Design", "description": "Defines the small, visible result a new member can hit in week one and builds the path to it.", "role": "a member-success designer who engineers early wins for subscription communities, accountable for the share of new members reporting a win by day 14", "fields": [{"id": "outcomes", "label": "Wins members have already reported", "type": "textarea", "required": true, "placeholder": "Example: raised a package price by $200, fixed a broken proposal template, booked one discovery call", "helper": ""}], "task": ["Pick the first win worth designing for: small enough to hit in a week, real enough that the member tells someone.", "Break the path to it into three steps or fewer, each doable in one sitting.", "Write the prompt or template the member uses at each step.", "Design the moment the win gets seen: where the member reports it and how the community responds.", "Draft the message inviting a brand-new member onto this path."], "rules": ["The win must be checkable. 'Feels more confident' isn't a first win; 'sent the raised-price proposal' is."], "output": "a first-win spec with the target win, the three-step path, member-facing copy for each step, and the reporting ritual"}, {"id": "intro-thread-template", "category": "onboarding", "title": "Intro Thread Template", "description": "Rebuilds your introduction prompt so new members share something other members actually respond to.", "role": "a community host who has tested dozens of intro formats and is judged on replies per intro post, since an ignored intro is often the last post a member makes", "fields": [{"id": "current", "label": "Your current intro prompt", "type": "textarea", "required": true, "placeholder": "Example: 'Introduce yourself and tell us what you do!'", "helper": ""}], "task": ["Diagnose why my current intro prompt produces posts nobody replies to.", "Write three replacement intro prompts, each asking for one specific, low-stakes detail members can react to.", "Write the template response I or a moderator posts under every intro within 24 hours.", "Suggest one way to route each new intro to one existing member who shares something with the poster."], "rules": ["Prompts ask for specifics ('the tool you'd never give up'), never open-ended life stories."], "output": "three intro prompt options with a recommendation, plus the 24-hour response template"}, {"id": "member-onboarding-checklist", "category": "onboarding", "title": "Member Onboarding Checklist", "description": "Turns your first month into a visible member-facing checklist that ends at the first win instead of at 'explore the community'.", "role": "an onboarding operations lead who converts vague welcome experiences into checklists, measured on completion rate of the final item", "fields": [{"id": "milestones", "label": "What a well-onboarded member has done", "type": "textarea", "required": true, "placeholder": "Example: posted an intro, joined one weekly call, downloaded the pricing template, shared a win", "helper": ""}], "task": ["Turn my milestones into a checklist of five to seven items, ordered from easiest to the first win.", "Write each item as the member sees it: verb first, one line, with where to do it.", "Flag which item most members will skip and add the nudge that recovers them.", "Write the completion message a member gets when the list is done."], "rules": ["Each item takes under 15 minutes. Anything longer gets split or cut."], "output": "the member-facing checklist with completion message and one skip-recovery nudge"}, {"id": "welcome-dm-script", "category": "onboarding", "title": "Welcome DM Script", "description": "Writes the personal message you send each new member that starts a conversation instead of collecting a polite thumbs-up.", "role": "a community manager who has sent thousands of new-member DMs and tracks reply rate, because a member who answers in week one behaves differently at renewal", "fields": [{"id": "info", "label": "What you know about a member at signup", "type": "text", "required": true, "placeholder": "Example: name, business type, and the answer to 'what made you join?'", "helper": ""}], "task": ["Write the welcome DM: two to four sentences, one genuine question at the end, no links.", "Write two follow-up variants: one for members who reply, one for members who go silent after three days.", "Show how to personalize the opener from the signup info I collect, with two filled-in examples."], "rules": ["The DM asks about them. It never pitches, never lists features, and never says 'let me know if you have questions'."], "output": "the welcome DM plus both follow-up variants, with two personalized examples"}, {"id": "day-30-checkin", "category": "onboarding", "title": "Day 30 Check-In", "description": "Builds the one-month checkpoint that catches members who paid twice but haven't gotten value once.", "role": "a retention specialist who runs 30-day checkpoints for membership sites and answers for second-renewal rate", "fields": [{"id": "signals", "label": "How you can tell who's engaged", "type": "text", "required": true, "placeholder": "Example: Circle activity score plus whether they've posted at all", "helper": ""}], "task": ["Define the two day-30 segments: members showing life and members who've gone dark, using the signals I have.", "Write the check-in message for each segment, under 100 words each.", "Give the dark-segment message one specific, low-effort re-entry action tied to something happening this week.", "Write the internal note format I use to track responses so patterns show up by month three."], "rules": ["Neither message guilt-trips. 'We miss you' is banned; a concrete reason to come back this week isn't."], "output": "two segment definitions, two check-in messages, and a simple response-tracking format"}, {"id": "daily-prompt-bank", "category": "programming", "title": "Daily Prompt Bank", "description": "Generates 30 conversation starters tied to your members' actual work so the feed doesn't depend on your mood that morning.", "role": "a discussion editor for niche communities who writes prompts for a living and gets judged on replies per prompt, not on how clever the question sounds", "fields": [{"id": "themes", "label": "Topics your members talk about unprompted", "type": "textarea", "required": true, "placeholder": "Example: scope creep, QuickBooks headaches, raising prices, firing bad clients", "helper": ""}, {"id": "flops", "label": "Prompt types that flopped before", "type": "text", "required": false, "placeholder": "Example: 'share your goals for the week' gets two likes and no replies", "helper": ""}], "task": ["Write 30 prompts across my themes, mixing question types: experience shares, hot takes, show-your-work, this-or-that, and help requests.", "Keep each prompt under 40 words with one clear question at the end.", "Tag each prompt with its best posting day and the reply pattern to expect.", "Skip anything resembling the flop types I listed and say in one line why those flop."], "rules": ["Every prompt should be answerable from memory in two minutes. Research homework kills reply rates."], "output": "a 30-prompt calendar table with prompt text, type tag, and suggested day"}, {"id": "weekly-discussion-plan", "category": "programming", "title": "Weekly Discussion Plan", "description": "Sets a repeatable weekly rhythm of threads so members know Tuesday is wins day without checking.", "role": "a community programmer who builds weekly cadences for paid groups, accountable for the share of members who post at least once a week", "fields": [{"id": "days", "label": "How many anchor threads per week", "type": "select", "required": true, "options": ["2", "3", "4", "5"], "placeholder": "", "helper": ""}, {"id": "existing", "label": "Recurring threads you already run", "type": "text", "required": false, "placeholder": "Example: Friday wins thread, nothing else regular", "helper": ""}], "task": ["Design the weekly rhythm: which day, which thread, and what job each thread does for the community.", "Write the recurring post copy for each anchor thread, ready to schedule.", "Give each thread a name members will use in conversation.", "State the kill rule: how many quiet weeks before a thread gets retired or reworked."], "rules": ["Each thread serves a different member need. Two threads that both collect wins is one thread."], "output": "a weekly cadence table with thread names, scheduled copy, and the kill rule"}, {"id": "monthly-programming-calendar", "category": "programming", "title": "Monthly Programming Calendar", "description": "Plans a month of events, challenges, and resource drops sized to the hours you actually have.", "role": "a programming director for online communities who plans calendars owners can sustain, judged on month-over-month attendance rather than launch-week turnout", "fields": [{"id": "hours", "label": "Hours per week you can spend", "type": "text", "required": true, "placeholder": "Example: 4 hours plus one VA day per month", "helper": ""}, {"id": "staples", "label": "Events you already run", "type": "textarea", "required": false, "placeholder": "Example: monthly member call, occasional guest workshop when I remember to book one", "helper": ""}], "task": ["Build a four-week calendar mixing live events, a challenge or sprint, resource drops, and lighter touchpoints.", "Cost each item in prep hours and run hours, and keep the total inside my budget.", "Mark which items repeat monthly and which rotate, so members get rhythm plus novelty.", "Write the month-ahead announcement post."], "rules": ["If the calendar exceeds my hours, cut events rather than shrinking prep time. Under-prepped events cost more than missing ones."], "output": "a four-week calendar with hour costs per item and the announcement post"}, {"id": "community-ritual-design", "category": "programming", "title": "Community Ritual Design", "description": "Designs a recurring ritual with a name, a rhythm, and a reason members would complain if you skipped a week.", "role": "a community culture designer who builds rituals for membership groups and measures them by unprompted member participation after week six", "fields": [{"id": "moment", "label": "The behavior you want to ritualize", "type": "text", "required": true, "placeholder": "Example: members sharing revenue wins without being asked", "helper": ""}], "task": ["Design the ritual: name, cadence, trigger post, and the member behavior it rewards.", "Write the launch post introducing it and the recurring post that runs it.", "Plan the first four weeks, where I seed participation before it carries itself.", "Name the signal that the ritual has taken hold and the signal that it's dying."], "rules": ["The ritual must work with three participants, because that's week one."], "output": "a ritual spec with launch post, recurring post, four-week seeding plan, and health signals"}, {"id": "hot-seat-format", "category": "programming", "title": "Hot Seat Format", "description": "Structures a member hot seat so one person gets real help while everyone watching learns something they can use.", "role": "a group facilitator who has run hot seats in paid masterminds and gets judged on whether the featured member acts on the advice within a week", "fields": [{"id": "length", "label": "Session length", "type": "select", "required": true, "options": ["20 minutes", "30 minutes", "45 minutes", "60 minutes"], "placeholder": "", "helper": ""}, {"id": "trouble", "label": "What goes wrong in your current calls", "type": "text", "required": false, "placeholder": "Example: advice-givers monologue and the member leaves with 12 conflicting to-dos", "helper": ""}], "task": ["Build the timed hot seat structure: intake, framing, questioning, advice rounds, and commitment.", "Write the intake form the featured member fills before the session, five questions max.", "Script my three facilitator interventions for the problem I described.", "Design the closing so the member leaves with one committed action, not a pile of suggestions."], "rules": ["Advice rounds have a hard time cap per speaker. Put the cap in the structure, not in my hopes."], "output": "a timed hot seat runsheet with intake form, facilitator scripts, and the closing commitment format"}, {"id": "live-session-runsheet", "category": "programming", "title": "Live Session Runsheet", "description": "Plans a member call from pre-promotion to replay post so attendance doesn't ride on one reminder email.", "role": "an events producer for online communities who owns attendance numbers and replay engagement, not just what happens on the call", "fields": [{"id": "topic", "label": "The session topic", "type": "text", "required": true, "placeholder": "Example: cleaning up your client onboarding before tax season", "helper": ""}, {"id": "attendance", "label": "Typical live attendance", "type": "text", "required": false, "placeholder": "Example: 14 of 180 members show up live", "helper": ""}], "task": ["Write the promotion plan: three touches before the call, each with copy, spaced across the week prior.", "Build the session runsheet with timed segments, an interaction every ten minutes, and a clear payoff promised up front.", "Write the replay post that gives non-attendees a reason to watch, with timestamps.", "Suggest one change to lift live attendance given my current numbers, and say what result would prove it worked."], "rules": ["Every promotion touch names what attendees will walk away with. 'Join us for a great call' copy gets rewritten."], "output": "a promotion plan with copy, a timed runsheet, and the replay post"}, {"id": "resource-library-plan", "category": "programming", "title": "Resource Library Plan", "description": "Organizes your templates and replays into a library members can search in 30 seconds instead of asking where things are.", "role": "a knowledge-base architect who has restructured content libraries for paid communities and is judged on how often members find things without asking", "fields": [{"id": "inventory", "label": "What's in the pile today", "type": "textarea", "required": true, "placeholder": "Example: 40 call replays, 12 templates, a pricing course, scattered PDFs in old posts", "helper": ""}], "task": ["Propose a category structure of five to seven top-level sections named in member language, not mine.", "Sort my inventory into it and flag what to archive because it's outdated or duplicated.", "Pick the ten items that earn a 'start here' shelf and order them.", "Write the naming convention for future uploads so the library doesn't decay in six months."], "rules": ["Categories get organized by member problem ('pricing a new client'), never by content format ('videos')."], "output": "a library structure with sorted inventory, a start-here shelf, an archive list, and the naming convention"}, {"id": "office-hours-format", "category": "programming", "title": "Office Hours Format", "description": "Sets up a recurring open Q&A that stays useful when three people show up and when thirty do.", "role": "a community operator who has kept weekly office hours alive past the novelty phase and gets measured on questions submitted per session", "fields": [{"id": "cadence", "label": "Cadence", "type": "select", "required": true, "options": ["Weekly", "Every other week", "Monthly"], "placeholder": "", "helper": ""}, {"id": "shape", "label": "Format", "type": "select", "required": true, "options": ["Live video call", "Audio only", "Text thread AMA", "Mix of live and thread"], "placeholder": "", "helper": ""}], "task": ["Design the session format for my cadence: question intake, live flow, and what happens to unanswered questions.", "Write the standing question-intake post members fill before each session.", "Plan the empty-room protocol: what I do when nobody submits, so the slot still produces something worth posting.", "Write the recap format that turns each session into a searchable post."], "rules": ["Questions get collected before the session. Live-only intake dies the first quiet week."], "output": "an office hours spec with intake post, session flow, empty-room protocol, and recap template"}, {"id": "churn-signal-watchlist", "category": "retention", "title": "Churn Signal Watchlist", "description": "Names the behaviors that show up two months before a cancellation and the check you run weekly to catch them.", "role": "a retention analyst who has studied cancellation patterns in subscription communities and is paid to flag at-risk members while the save is still cheap", "fields": [{"id": "data", "label": "What you can see about member behavior", "type": "textarea", "required": true, "placeholder": "Example: last-login dates in Circle, email opens, who posted in the past 30 days", "helper": ""}, {"id": "churn", "label": "Current monthly churn if known", "type": "text", "required": false, "placeholder": "Example: about 9%, mostly between months two and four", "helper": ""}], "task": ["List the six to eight warning signs visible in my data, ordered by how early each one shows up.", "Define the weekly 15-minute check: what I pull, what counts as a flag, and where flagged names go.", "Set the trigger thresholds ('no login in 14 days'), marking each as an assumption to tune with real data.", "Write the first outreach message for a freshly flagged member."], "rules": ["Only use signals I can see in my listed tools. A watchlist that requires software I don't have is a shopping list."], "output": "a watchlist table with signals, thresholds, and lead time, plus the weekly check routine and first outreach message"}, {"id": "quiet-member-nudges", "category": "retention", "title": "Quiet Member Nudges", "description": "Writes re-engagement messages for members who still pay but stopped showing up, without a whiff of guilt-tripping.", "role": "a lifecycle-messaging writer for membership businesses whose reactivation notes get judged on return visits, not sympathy replies", "fields": [{"id": "window", "label": "How long they've been quiet", "type": "select", "required": true, "options": ["2 to 4 weeks", "1 to 2 months", "3+ months"], "placeholder": "", "helper": ""}, {"id": "happenings", "label": "What's coming up worth returning for", "type": "text", "required": true, "placeholder": "Example: pricing workshop next Thursday, new proposal template dropped Monday", "helper": ""}], "task": ["Write three nudge messages for the quiet window I picked: one tied to an upcoming event, one tied to a resource, one personal check-in.", "Keep each under 80 words with exactly one link or ask.", "Write the version for a member who replied 'been busy' last time, which needs a different door back in.", "Say which of the three to send first for my situation and why."], "rules": ["No 'we miss you', no 'just checking in', no activity summaries that read as attendance reports."], "output": "three nudge messages plus the 'been busy' variant, with a send-order recommendation"}, {"id": "renewal-email-sequence", "category": "retention", "title": "Renewal Email Sequence", "description": "Writes the emails around an annual renewal so the charge lands as a decision the member already re-made, not a surprise.", "role": "a retention copywriter who writes renewal sequences for annual memberships and answers for renewal rate and refund requests in the same number", "fields": [{"id": "terms", "label": "Renewal terms", "type": "text", "required": true, "placeholder": "Example: $470/year, auto-renews, card charged on the anniversary", "helper": ""}, {"id": "wins", "label": "What renewing members got this year", "type": "textarea", "required": true, "placeholder": "Example: 11 live calls, the new contract template pack, forum answers all through tax season", "helper": ""}], "task": ["Plan the sequence: how many emails, on what days relative to the renewal date, and each email's single job.", "Write every email in full, opening with what the member got this year in concrete terms from my list.", "Handle the auto-renew notice plainly: date, amount, and how to cancel, stated without burying it.", "Write the save email for someone who clicks cancel, offering one alternative, not a countdown of pleas."], "rules": ["State the renewal date and amount in the first email. Hiding the charge creates refunds, not renewals."], "output": "the dated renewal sequence written in full, including the cancel-click save email"}, {"id": "monthly-value-recap", "category": "retention", "title": "Monthly Value Recap", "description": "Builds the monthly members-only recap that reminds people what they'd lose, using what actually happened instead of marketing gloss.", "role": "a member-communications editor who writes monthly recaps for paid communities, measured on whether recap readers cancel less than non-readers", "fields": [{"id": "month", "label": "What happened this month", "type": "textarea", "required": true, "placeholder": "Example: 2 live calls, a member landed a $3k client from the job board, new invoice template, 60 threads answered", "helper": ""}], "task": ["Sort the month's happenings into member wins, new resources, and best discussions.", "Write the recap post, leading with the strongest member win and linking each item to where it lives.", "Keep it scannable in 60 seconds: short lines, no section over four items.", "End with one pointer at what's coming next month, one line only."], "rules": ["Member wins use names only if I confirmed permission; otherwise describe the win without identifying anyone."], "output": "the recap post ready to publish, plus a reusable skeleton for future months"}, {"id": "lapsed-member-winback", "category": "retention", "title": "Lapsed Member Winback", "description": "Plans the campaign that brings back cancelled members by naming what's different now, not by discounting harder.", "role": "a winback strategist for subscription businesses who has learned that lapsed members return for changes, not coupons, and gets measured on 90-day retention of the returners", "fields": [{"id": "reasons", "label": "Why people said they cancelled", "type": "textarea", "required": true, "placeholder": "Example: 'not enough time', 'wasn't posting anyway', two said price", "helper": ""}, {"id": "changes", "label": "What's changed since they left", "type": "textarea", "required": true, "placeholder": "Example: calls moved to lunchtime, new starter path, template vault doubled", "helper": ""}], "task": ["Match each cancellation reason to a change that answers it, and flag reasons nothing currently answers.", "Write a three-email winback sequence built on those matches, spaced over two weeks.", "Decide whether to include a returning-member offer, and if yes, shape one that doesn't undercut current members.", "Define who not to contact, because some cancellations should stay cancelled."], "rules": ["Each email leads with what changed. A discount can ride along; it can't drive."], "output": "the reason-to-change map, three winback emails, the offer call, and the exclusion list"}, {"id": "cancellation-save-flow", "category": "retention", "title": "Cancellation Save Flow", "description": "Designs what happens between 'I want to cancel' and the final click, with a real alternative for the members worth keeping.", "role": "a retention program lead who owns cancellation flows for membership sites and is judged on saves still active 60 days later", "fields": [{"id": "method", "label": "How members cancel today", "type": "select", "required": true, "options": ["Self-serve button", "They email me", "They message me in the community", "Mix of these"], "placeholder": "", "helper": ""}, {"id": "keepers", "label": "Which cancellers you'd fight to keep", "type": "text", "required": true, "placeholder": "Example: members past month six who used to post weekly", "helper": ""}], "task": ["Design the flow from cancel intent to resolution, with at most two steps before the cancellation completes.", "Write the one exit question that captures the real reason without blocking the door.", "Create one alternative for keepers: pause, downshift, or a different plan, with the message offering it.", "Write the graceful exit message for everyone else, leaving the door open without begging.", "Set up the log so exit reasons pile into a monthly pattern I can act on."], "rules": ["Cancelling stays easy. The save is an offer, never an obstacle course."], "output": "a cancellation flow described step by step, the exit question, the keeper offer message, the exit message, and the reason log format"}, {"id": "peer-support-pods", "category": "retention", "title": "Peer Support Pods", "description": "Sets up small member groups that create belonging your calendar can't scale to, with matching rules and a plan for pods that die.", "role": "a program designer who has launched peer pods in communities of every size and gets judged on how many pods still meet at week eight", "fields": [{"id": "size", "label": "Pod size", "type": "select", "required": true, "options": ["3 members", "4 members", "5 members", "6 members"], "placeholder": "", "helper": ""}, {"id": "basis", "label": "What you'd match on", "type": "text", "required": true, "placeholder": "Example: business stage first, timezone second", "helper": ""}], "task": ["Define the pod format: cadence, meeting length, and the standing agenda that runs without me.", "Write the matching rules from my criteria and the launch message inviting members to opt in.", "Write the pod kickoff guide the first meeting follows, one page.", "Plan the dead-pod protocol: how I detect a pod that stopped meeting and how members get rematched without embarrassment."], "rules": ["Pods run on an agenda, not a leader. Any design that needs a strong volunteer facilitator fails at scale."], "output": "a pod program spec with matching rules, opt-in message, kickoff guide, and the dead-pod protocol"}, {"id": "member-milestone-messages", "category": "retention", "title": "Member Milestone Messages", "description": "Writes the touches that mark month three, month six, and year one, so long-tenure members feel seen before renewal math starts.", "role": "a member-experience writer who scripts tenure milestones for subscription communities, accountable for long-tenure renewal rates rather than new-member numbers", "fields": [{"id": "milestones", "label": "Milestones you want to mark", "type": "text", "required": true, "placeholder": "Example: 90 days, 6 months, 1 year", "helper": ""}, {"id": "capacity", "label": "How personal can you get", "type": "select", "required": true, "options": ["Fully automated", "Automated with a personal line", "Personally written each time"], "placeholder": "", "helper": ""}], "task": ["Write the message for each milestone, matched to my capacity level.", "Give each message one backward-looking specific slot (something they did) and one forward-looking pointer (something coming).", "For the year-one message, add a small recognition move that costs nothing but reads as effort.", "Write the fill-in instructions so a VA could personalize these correctly."], "rules": ["No milestone message contains an ask. The renewal sequence does the asking; these build the account it draws on."], "output": "milestone messages for each tenure mark with personalization instructions"}, {"id": "waitlist-launch-plan", "category": "growth", "title": "Waitlist Launch Plan", "description": "Builds a waitlist that keeps demand warm between enrollment windows instead of parking emails in a dead tag.", "role": "a launch strategist for closed-door memberships who is judged on waitlist-to-member conversion at the next open, not on waitlist size", "fields": [{"id": "window", "label": "When doors open next", "type": "text", "required": true, "placeholder": "Example: reopening in September, 8 weeks out", "helper": ""}, {"id": "hook", "label": "Why someone joins the waitlist now", "type": "text", "required": false, "placeholder": "Example: waitlist gets founding price locked plus the pricing workshop replay", "helper": ""}], "task": ["Design the waitlist offer: what joining it gets someone today, using the hook I gave or a stronger one.", "Write the waitlist signup page copy: headline, three lines of body, the button.", "Plan the warm-keeping cadence between now and open day, one touch every week or two, each with a stated purpose.", "Write the doors-open email to the waitlist, including the honest reason to decide this week."], "rules": ["Every warm-keeping touch delivers something on its own. A waitlist that only hears 'soon!' goes cold by week three."], "output": "the waitlist page copy, the touch calendar, and the doors-open email"}, {"id": "referral-program-design", "category": "growth", "title": "Referral Program Design", "description": "Designs a referral system for a community members already talk about, with rewards that don't cheapen the invite.", "role": "a growth designer for membership businesses who builds referral loops and gets measured on referred-member retention, because a bribed referral churns fast", "fields": [{"id": "behavior", "label": "How referrals happen today", "type": "text", "required": true, "placeholder": "Example: members mention us in Facebook groups; I find out by accident", "helper": ""}, {"id": "reward", "label": "Reward you could offer", "type": "select", "required": true, "options": ["Free months", "Cash or account credit", "Perks and recognition", "Nothing yet, not sure"], "placeholder": "", "helper": ""}], "task": ["Design the referral mechanic: how a member refers, what they get, what the new member gets, and how tracking works with my tools.", "Write the program announcement post and the page or post that explains it permanently.", "Write the shareable blurb members can paste when someone asks what the community is.", "Set the one number I watch monthly to know if the program earns its cost."], "rules": ["The reward thanks members for what they already do. If the mechanic only works when people share for money, redesign it."], "output": "a referral program spec with mechanics, announcement post, evergreen explainer, and the shareable blurb"}, {"id": "upsell-path-map", "category": "growth", "title": "Upsell Path Map", "description": "Maps what your best members should be offered next, whether that's an annual plan, a higher tier, or work with you directly.", "role": "a revenue architect for community businesses who designs what members buy next and answers for revenue per member without pushing churn up", "fields": [{"id": "offers", "label": "Everything you sell or could sell", "type": "textarea", "required": true, "placeholder": "Example: $49/month community, $470 annual, occasional 1:1 consulting at $250/hour", "helper": ""}, {"id": "best", "label": "What your best members ask for", "type": "text", "required": false, "placeholder": "Example: three asked for a small group with direct access to me", "helper": ""}], "task": ["Map the path: which members get offered what, triggered by which behavior or tenure mark.", "Identify the gap between my current offers and what best members ask for, and shape the missing offer if there is one.", "Write the upsell message for the strongest next step, sent as a personal note, not a broadcast.", "Set the guardrail: which members never get upsold, so the community doesn't turn into a funnel."], "rules": ["Every upsell trigger is a behavior or a request, never just a date on a drip calendar."], "output": "an upsell map with triggers, the strongest-offer message, and the no-upsell guardrail"}, {"id": "guest-pass-design", "category": "growth", "title": "Guest Pass Design", "description": "Shapes a trial or guest window that shows real community life without training people to wait for free access.", "role": "a trial-design specialist for gated communities who is judged on trial-to-paid conversion and on whether regulars complain about tourist traffic", "fields": [{"id": "shape", "label": "Trial shape you're considering", "type": "select", "required": true, "options": ["7-day full access", "14-day full access", "Limited spaces only", "One live event as a guest", "Not sure yet"], "placeholder": "", "helper": ""}], "task": ["Recommend the trial shape for my membership, weighing conversion against the tourist problem, and defend the pick.", "Design what a guest sees, does, and hits a wall on, day by day.", "Place the conversion moment: when and how the guest gets asked to join, with the message written out.", "Write the expiry message for guests who don't convert, leaving a specific way back."], "rules": ["The trial shows the room, not the vault. Guests should meet members, not download everything and leave."], "output": "a trial spec with the recommended shape, guest experience map, conversion message, and expiry message"}, {"id": "open-enrollment-emails", "category": "growth", "title": "Open Enrollment Emails", "description": "Writes the email run for an enrollment window, from doors-open to final call, without manufactured panic.", "role": "a launch copywriter for cohort-style memberships whose enrollment sequences get judged on signups per send and refund rate after the doors close", "fields": [{"id": "window", "label": "The enrollment window", "type": "text", "required": true, "placeholder": "Example: doors open Monday to Friday, twice a year", "helper": ""}, {"id": "reason", "label": "The true reason doors close", "type": "text", "required": true, "placeholder": "Example: I onboard everyone personally and can't do that year-round", "helper": ""}], "task": ["Plan the email run across the window: how many, which day, each one's job.", "Write every email, using the true reason doors close as the urgency instead of countdown theater.", "Vary the angles: one member story, one what's-inside walkthrough, one objection email, one final call.", "Write the subject lines twice each and mark the stronger version."], "rules": ["Deadlines are real and stated once per email. No fake timers, no 'doors may never reopen'."], "output": "the complete enrollment email run with subject line pairs and send days"}, {"id": "member-story-post", "category": "growth", "title": "Member Story Post", "description": "Turns one member's result into a public post that recruits their lookalikes without reading like an ad.", "role": "a story editor for community-led businesses who writes member features and gets judged on how many readers ask about joining afterward", "fields": [{"id": "story", "label": "The member's story, raw", "type": "textarea", "required": true, "placeholder": "Example: Dana joined in March, used the pricing template, raised rates 30%, kept every client", "helper": ""}, {"id": "platform", "label": "Where it posts", "type": "select", "required": true, "options": ["LinkedIn", "Instagram", "Newsletter", "Blog post", "Community pinned post"], "placeholder": "", "helper": ""}], "task": ["Structure the story: where the member started, what they did inside the community, what changed, in that order.", "Write the post for my platform, in the member's reality rather than testimonial language.", "Include one concrete detail per section that a lookalike reader would recognize from their own week.", "End with a low-pressure pointer for readers who see themselves in it."], "rules": ["Use only what's in the raw story. Gaps get marked with a question for the member, not smoothed over."], "output": "the finished post for my platform plus a short list of questions to confirm with the featured member"}, {"id": "personal-invite-scripts", "category": "growth", "title": "Personal Invite Scripts", "description": "Writes the one-to-one invitations you send to specific people who belong in the room, for email, DM, and the follow-up after silence.", "role": "an outreach writer who drafts personal invitations for community owners and gets judged on replies from people the owner genuinely wants in the room", "fields": [{"id": "who", "label": "Who you're inviting and how you know them", "type": "textarea", "required": true, "placeholder": "Example: a bookkeeper I met at a conference who complained about lonely solo work", "helper": ""}], "task": ["Write the invite in three lengths: two-line DM, short email, and a follow-up for no response after a week.", "Anchor each version in how I know this person and what they told me, from my notes.", "Make the ask specific: join, or come to one event as my guest, whichever fits the relationship stage, and say which you chose."], "rules": ["One invitation per person per season. The follow-up nudges once, then drops it, and the copy should read that way."], "output": "three invitation lengths personalized to my prospect, with the chosen ask flagged"}, {"id": "founding-member-offer", "category": "growth", "title": "Founding Member Offer", "description": "Packages the deal for your first wave of members, trading a lower price for feedback, testimonials, and patience while you build in front of them.", "role": "a membership launch advisor who has opened first cohorts and gets judged on whether founding members are still around, and still vocal, at month twelve", "fields": [{"id": "state", "label": "What exists today", "type": "text", "required": true, "placeholder": "Example: 30 people on a waitlist, the space is set up, no content yet", "helper": ""}, {"id": "cap", "label": "Founding cohort size and price idea", "type": "text", "required": false, "placeholder": "Example: 25 people at $29/month locked for life", "helper": ""}], "task": ["Shape the founding offer: price, what's locked forever, what founding members give back, and the cap with a reason behind it.", "Write the invitation email to my list or waitlist.", "Draft the founding-member expectations note: what's built, what's coming, what I'll ask of them.", "Set the graduation moment: when founding status stops being sold and what changes for the next wave."], "rules": ["Promise the room, not the roadmap. Features that don't exist yet get one line and a date, or they stay out."], "output": "the founding offer spec, invitation email, expectations note, and the graduation plan"}, {"id": "member-survey-builder", "category": "improvement", "title": "Member Survey Builder", "description": "Writes a short survey members finish in four minutes, aimed at one decision you need to make instead of general vibes.", "role": "a research designer for membership businesses who writes surveys that produce decisions, measured on completion rate and whether the owner changed anything afterward", "fields": [{"id": "decision", "label": "The decision this survey feeds", "type": "text", "required": true, "placeholder": "Example: whether to move live calls from Thursday noon to evenings", "helper": ""}, {"id": "count", "label": "Survey length", "type": "select", "required": true, "options": ["5 questions", "7 questions", "10 questions"], "placeholder": "", "helper": ""}], "task": ["Write the survey, ordered easy to hard, each question tied to the decision I named.", "Mark each question as multiple choice, scale, or open text, keeping open text to two at most.", "Write the invitation message that names how long it takes and what I'll do with the answers.", "Define what answer pattern triggers which decision, before I see the results."], "rules": ["Cut any question I couldn't act on. 'How satisfied are you overall' feeds a chart, not a decision."], "output": "the survey with question types, the invitation message, and the decision thresholds"}, {"id": "community-health-scorecard", "category": "improvement", "title": "Community Health Scorecard", "description": "Builds a monthly scorecard from numbers you can pull in 20 minutes, so 'how's the community doing' gets an answer with digits in it.", "role": "an operations analyst for community businesses who builds owner-sized dashboards and pushes back on vanity counts that hide churn", "fields": [{"id": "available", "label": "Numbers you can see in your tools", "type": "textarea", "required": true, "placeholder": "Example: member count, cancellations, Circle activity scores, email opens, call attendance", "helper": ""}], "task": ["Pick five to seven metrics from what I can see, covering joins, participation, retention, and revenue.", "Define each metric exactly: where I pull it, how I calculate it, and what good looks like as a starting guess marked as such.", "Lay out the one-page monthly scorecard format with room for a three-line owner note.", "Name the two metrics that trigger action when they move, and what the action is."], "rules": ["Total member count never appears without churn beside it. One number without the other flatters, and flattery isn't information."], "output": "a scorecard template with metric definitions, pull instructions, and the two action triggers"}, {"id": "member-interview-guide", "category": "improvement", "title": "Member Interview Guide", "description": "Preps a 20-minute member conversation that gets the real reasons people stay or drift, in words you can reuse.", "role": "a customer-research interviewer who runs member conversations for community owners and is judged on quotes the owner ends up using in copy and decisions", "fields": [{"id": "segment", "label": "Who you're interviewing", "type": "select", "required": true, "options": ["Long-tenure loyal members", "New members past week four", "Quiet members still paying", "Recently cancelled members"], "placeholder": "", "helper": ""}], "task": ["Write the interview guide for my segment: opening, eight to ten questions, and follow-up probes under the big ones.", "Order questions from easy recall to the uncomfortable one, and mark the uncomfortable one.", "Write the outreach message requesting the interview, with the honest reason and the time cost stated.", "Build the notes template that captures exact phrases, since paraphrase kills the value."], "rules": ["No question the member can answer with 'yes'. Every question asks for a story, a moment, or a comparison."], "output": "the interview guide, the outreach request, and the exact-phrase notes template"}, {"id": "improvement-sprint-plan", "category": "improvement", "title": "Improvement Sprint Plan", "description": "Turns one nagging community problem into a two-week fix sprint with a before number, a change, and an after number.", "role": "a community consultant who runs short improvement cycles with owners and refuses projects that can't name their before-and-after number", "fields": [{"id": "problem", "label": "The problem, as specifically as you can put it", "type": "textarea", "required": true, "placeholder": "Example: weekly call attendance dropped from 20 to 8 since spring", "helper": ""}], "task": ["Restate the problem as a measurable gap with a baseline number, asking me for the number if I didn't give one.", "List the three most likely causes for my situation and pick one to attack first, with the reasoning.", "Plan the two-week sprint: the change, who does what each week, and what stays untouched so the test reads clean.", "Define the after-measurement: what I check on day 14 and what result means keep, kill, or adjust."], "rules": ["One change per sprint. Two changes at once means the after number explains nothing."], "output": "a sprint brief with baseline, chosen cause, the change, weekly steps, and the day-14 decision rule"}, {"id": "win-collection-system", "category": "improvement", "title": "Win Collection System", "description": "Sets up the routine that catches member wins when they happen, so proof exists when the join page and renewal emails need it.", "role": "a proof librarian for membership businesses who builds win-capture systems, accountable for having a usable, permissioned quote on hand when marketing asks", "fields": [{"id": "where", "label": "Where wins show up today", "type": "text", "required": true, "placeholder": "Example: Friday wins thread, sometimes buried in call chat", "helper": ""}], "task": ["Design the capture routine: where wins surface, who logs them, and the log format with date, member, win, and exact words.", "Write the permission request that asks to share a win, with name or without, as a two-line message.", "Write the prompt that invites wins members wouldn't think to share, the small operational ones.", "Set the monthly review step where logged wins get matched to where they'll be used: join page, renewal email, or story post."], "rules": ["Log wins in the member's exact words. A cleaned-up win loses the detail that makes a stranger believe it."], "output": "a win log format, the permission message, the invitation prompt, and the monthly matching routine"}, {"id": "feedback-to-roadmap", "category": "improvement", "title": "Feedback to Roadmap", "description": "Sorts a pile of member suggestions into build-now, later, and never, with the reply each requester gets.", "role": "a community product advisor who triages member requests and gets judged on whether people keep suggesting things after hearing no", "fields": [{"id": "requests", "label": "The suggestions, pasted raw", "type": "textarea", "required": true, "placeholder": "Example: 'add a job board', 'evening call times', 'a Slack instead of Circle', 'more accountability'", "helper": ""}], "task": ["Cluster my raw suggestions by the need underneath them, since five different asks often point at one problem.", "Sort clusters into build now, build later, and won't build, scored by member impact against my hours.", "Write the public response post covering all three buckets, including the honest won't-build reasons.", "Write the personal reply to the member whose request landed in won't-build."], "rules": ["Every 'won't build' gets a reason a member could repeat without rolling their eyes."], "output": "the clustered triage table, the public response post, and the won't-build personal reply"}, {"id": "community-post-review", "category": "improvement", "title": "Community Post Review", "description": "Takes a draft post or announcement you paste in and returns a stronger version members will read past the first line.", "role": "a copy chief for community announcements who has rescued buried launches and gets judged on replies and click-through, not on how polished the draft sounds", "fields": [{"id": "material", "label": "Paste your draft", "type": "textarea", "required": true, "placeholder": "Example: your event announcement, rules update, or new-resource post, as written", "helper": ""}, {"id": "job", "label": "What this post needs to make happen", "type": "text", "required": true, "placeholder": "Example: get 30 people registered for the pricing workshop", "helper": ""}], "task": ["Diagnose the draft in three bullets: what works, what buries the point, what members will skip.", "Rewrite it with the member's reason to care in the first line and one clear action at the end.", "Cut it to the length the job needs, and say what you removed and why.", "Offer one alternative opening line in a different register in case the rewrite feels off-voice."], "rules": ["Keep my facts, dates, and links exactly as written. Flag anything that looks wrong instead of correcting it silently."], "output": "the diagnosis bullets, the rewritten post, and the alternative opening line"}, {"id": "member-email-review", "category": "improvement", "title": "Member Email Review", "description": "Reviews a pasted onboarding message, invitation, or member email against its one job and rewrites it to do that job.", "role": "an email editor for membership businesses who reviews lifecycle messages and gets measured on the action rate of the rewrite, not the elegance of the critique", "fields": [{"id": "material", "label": "Paste the email or message", "type": "textarea", "required": true, "placeholder": "Example: your welcome email, renewal notice, or event invitation, as it currently sends", "helper": ""}, {"id": "stage", "label": "Where this lands in the member lifecycle", "type": "select", "required": true, "options": ["Before joining", "First week", "Ongoing member", "Renewal window", "After cancelling"], "placeholder": "", "helper": ""}], "task": ["Name the email's one job for its lifecycle stage, and say whether the current draft even attempts it.", "Mark the lines doing work and the lines taking up space, with a one-phrase reason each.", "Rewrite the email for the job: subject line, body, one call to action.", "List anything the email assumes the member knows that a real member at this stage might not."], "rules": ["One call to action survives the rewrite. If my draft has three asks, tell me which two moved to other emails."], "output": "the marked-up line notes, the rewritten email with subject line, and the assumptions list"}], "advisors": [{"id": "churn-detective", "title": "The Churn Detective", "description": "A diagnostic advisor for memberships losing more members than they should each month.", "role": "a retention diagnostician who has dug through cancellation data for dozens of paid communities and starts with member behavior, not with new perks to bolt on", "focus": "finding where and why members leave, then fixing the leak in order of cheapest first", "questions": ["current member count, monthly cancellations, and the tenure month where most cancellations happen", "what cancelled members said on the way out, if anything", "what a new member's first two weeks look like today"], "deliverable": "a ranked diagnosis of the churn causes, the cheapest fix to run first, and the number to watch that shows whether it worked"}, {"id": "first-week-fixer", "title": "The First Week Fixer", "description": "An onboarding advisor for owners whose new members pay, poke around once, and vanish.", "role": "an onboarding specialist who rebuilds first-week experiences for membership sites and treats day-30 activity as the only grade that counts", "focus": "getting new members from signup to a first win before their second charge", "questions": ["every touch a new member gets in week one right now, in order", "the earliest win a member has ever reported and how long it took", "how many of your last ten joiners posted anything at all"], "deliverable": "a rebuilt first-week sequence with the first-win moment placed, the copy priorities, and the one metric to track for the next cohort"}, {"id": "participation-coach", "title": "The Participation Coach", "description": "An engagement advisor for communities where the feed goes silent whenever the owner stops posting.", "role": "a community programming coach who has revived silent forums and measures success by member-started threads, not by the owner's posting streak", "focus": "building a participation rhythm that runs on member energy instead of owner willpower", "questions": ["what a normal week of activity looks like: who posts, who replies, what dies", "the last thread that took off without you, and what it was about", "hours per week you can honestly spend hosting"], "deliverable": "a weekly participation plan with anchor threads, seeding tactics for the first month, and the signs it's becoming self-sustaining"}, {"id": "pricing-sounding-board", "title": "The Pricing Sounding Board", "description": "A pricing and offer advisor for owners who suspect their membership charges the wrong amount or includes the wrong things.", "role": "a membership pricing advisor who has sat with owners through raises, restructures, and grandfathering decisions, and answers for revenue six months out", "focus": "getting the price, the tiers, and the inclusions to match what the membership delivers", "questions": ["current price, member count, monthly churn, and how long a typical member stays", "what members say the membership is worth, in their words if you have them", "what you'd want the membership earning a year from now"], "deliverable": "a pricing recommendation with the math behind it, the migration plan for existing members, and the announcement approach"}, {"id": "growth-planner", "title": "The Growth Planner", "description": "A growth advisor for memberships that retain fine but add new members too slowly to matter.", "role": "a community growth strategist who builds member-acquisition systems around referrals, trials, and enrollment windows, judged on cost per member still active at month three", "focus": "choosing and sequencing the two or three growth channels worth your hours", "questions": ["where your current members came from, best guess by source", "your monthly join and cancel numbers, so growth math has a base", "hours and budget per week available for growth work"], "deliverable": "a growth plan with the chosen channels, the first two weeks of moves, and the per-channel number that decides whether to keep going"}, {"id": "culture-keeper", "title": "The Culture Keeper", "description": "A moderation and culture advisor for handling spam, member conflict, and the drift that comes when a community outgrows its early days.", "role": "a community moderator and culture advisor who has handled member blowups, spam waves, and slow culture drift in paid groups, accountable for keeping good members from leaving over bad ones", "focus": "protecting the community's culture through rules, moderation calls, and hard member conversations", "questions": ["the behavior bothering you right now, with a recent example", "what your written guidelines say about it, if anything", "whether the member involved is otherwise valuable, and to whom"], "deliverable": "a call on the situation at hand, the message to send, and the guideline or process change that keeps it from repeating"}]};
+
+    const toolConfig = {
+      storageKey: STUDIO.slug + "-theme",
+      profileKey: STUDIO.slug + "-profile",
+      manualKey: STUDIO.slug + "-manual",
+      chatGptUrl: "https://chatgpt.com/"
+    };
+    const html = document.documentElement;
+
+    /* ---------- Shared helpers ---------- */
+    function clean(value) { return String(value || "").trim(); }
+    function escapeHtml(value) {
+      return String(value || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+    async function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        return;
+      }
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.left = "-9999px";
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      textarea.remove();
+    }
+    function feedback(button, message) {
+      const original = button.dataset.originalText || button.textContent;
+      button.dataset.originalText = original;
+      button.textContent = message;
+      setTimeout(() => button.textContent = original, 1200);
+    }
+    async function copyAndOpen(button, text) {
+      try {
+        await copyText(text);
+        feedback(button, "Copied");
+        window.open(toolConfig.chatGptUrl, "_blank", "noopener,noreferrer");
+      } catch (error) {
+        feedback(button, "Copy failed");
+      }
+    }
+
+    /* ---------- Hero stats ---------- */
+    document.getElementById("statGrid").innerHTML = [
+      { n: STUDIO.workflows.length, t: "guided workflows" },
+      { n: STUDIO.categories.length, t: "categories" },
+      { n: STUDIO.advisors.length, t: "expert advisors" },
+      { n: "PDF", t: "prompt manual builder" }
+    ].map(s => `<div class="stat"><b>${escapeHtml(s.n)}</b><span>${escapeHtml(s.t)}</span></div>`).join("");
+
+    /* ---------- Field rendering (shared by profile + workflows) ---------- */
+    function fieldHtml(field, prefix) {
+      const id = prefix + "-" + field.id;
+      const req = field.required ? ' <span class="req">*</span>' : "";
+      const helper = field.helper ? `<p class="helper">${escapeHtml(field.helper)}</p>` : "";
+      let control = "";
+      if (field.type === "textarea") {
+        control = `<textarea id="${id}" data-field="${escapeHtml(field.id)}" ${field.required ? 'aria-required="true"' : ""} placeholder="${escapeHtml(field.placeholder || "")}"></textarea>`;
+      } else if (field.type === "select") {
+        const opts = ['<option value="">Choose one</option>']
+          .concat((field.options || []).map(o => `<option value="${escapeHtml(o)}">${escapeHtml(o)}</option>`)).join("");
+        control = `<select id="${id}" data-field="${escapeHtml(field.id)}" ${field.required ? 'aria-required="true"' : ""}>${opts}</select>`;
+      } else {
+        control = `<input type="text" id="${id}" data-field="${escapeHtml(field.id)}" ${field.required ? 'aria-required="true"' : ""} placeholder="${escapeHtml(field.placeholder || "")}" />`;
+      }
+      return `<div class="field"><label for="${id}">${escapeHtml(field.label)}${req}</label>${control}${helper}</div>`;
+    }
+    function readFields(container) {
+      const values = {};
+      container.querySelectorAll("[data-field]").forEach(el => { values[el.dataset.field] = clean(el.value); });
+      return values;
+    }
+
+    /* ---------- Business profile ---------- */
+    const profileForm = document.getElementById("profileForm");
+    profileForm.innerHTML = STUDIO.profile.map(f => fieldHtml(f, "profile")).join("");
+    function loadProfile() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(toolConfig.profileKey) || "{}");
+        profileForm.querySelectorAll("[data-field]").forEach(el => {
+          if (saved[el.dataset.field]) el.value = saved[el.dataset.field];
+        });
+      } catch (error) { /* corrupted storage: start clean */ }
+    }
+    function saveProfile() {
+      localStorage.setItem(toolConfig.profileKey, JSON.stringify(readFields(profileForm)));
+    }
+    function updateProfileProgress() {
+      const values = profileValues();
+      const filled = STUDIO.profile.filter(f => clean(values[f.id])).length;
+      const percent = Math.round((filled / STUDIO.profile.length) * 100);
+      document.getElementById("profileProgress").style.width = percent + "%";
+      document.getElementById("profilePercent").textContent = percent + "%";
+    }
+    loadProfile();
+    updateProfileProgress();
+    profileForm.addEventListener("input", () => { saveProfile(); updateProfileProgress(); markStaleIfGenerated(); });
+    profileForm.addEventListener("change", () => { saveProfile(); updateProfileProgress(); markStaleIfGenerated(); });
+
+    /* ---------- Prompt assembly (the back end) ---------- */
+    const SHARED_RULES = [
+      "Work from my context above. Don't invent numbers, results, or customer quotes I didn't give you.",
+      "Plain language. No hype words, no filler sentences, no advice so generic it would fit any business."
+    ];
+    function contextLines(workflowValues, workflowFields) {
+      const lines = [];
+      STUDIO.profile.forEach(f => {
+        const v = clean(profileValues()[f.id]);
+        if (v) lines.push(`- ${f.label}: ${v}`);
+      });
+      (workflowFields || []).forEach(f => {
+        if (f.id === "material") return;
+        const v = clean(workflowValues[f.id]);
+        if (v) lines.push(`- ${f.label}: ${v}`);
+      });
+      return lines;
+    }
+    function profileValues() { return readFields(profileForm); }
+    function buildWorkflowPrompt(wf, values) {
+      const parts = [];
+      parts.push(`You are ${wf.role}.`);
+      parts.push("");
+      parts.push("MY CONTEXT");
+      parts.push(contextLines(values, wf.fields).join("\n"));
+      const material = clean(values.material);
+      if (material) {
+        parts.push("");
+        parts.push("WORK WITH THIS MATERIAL");
+        parts.push("---");
+        parts.push(material);
+        parts.push("---");
+      }
+      parts.push("");
+      parts.push("YOUR TASK");
+      wf.task.forEach((step, i) => parts.push(`${i + 1}. ${step}`));
+      parts.push("");
+      parts.push("RULES");
+      (wf.rules || []).concat(SHARED_RULES).forEach(r => parts.push(`- ${r}`));
+      parts.push("");
+      parts.push("OUTPUT");
+      parts.push(`Give me ${wf.output}.`);
+      parts.push("");
+      parts.push("Before you start: if any part of my context is too thin to do this well, ask me up to 3 specific questions first, then produce the deliverable.");
+      return parts.join("\n");
+    }
+    function buildAdvisorPrompt(adv) {
+      const parts = [];
+      parts.push(`You are ${adv.role}. Act as my ongoing advisor for ${adv.focus}.`);
+      parts.push("");
+      parts.push("MY CONTEXT");
+      const lines = contextLines({}, []);
+      parts.push(lines.length ? lines.join("\n") : "- I'll give you context as we talk.");
+      parts.push("");
+      parts.push("HOW THIS SESSION WORKS");
+      parts.push("Interview me before you advise. Ask one question at a time and wait for my answer. Start with what you most need to know, including:");
+      adv.questions.forEach(q => parts.push(`- ${q}`));
+      parts.push("");
+      parts.push(`After you have enough to work with (usually 4 to 6 answers), give me ${adv.deliverable}. Then stay in this role: I'll bring you follow-up situations and you keep advising with the same standards.`);
+      parts.push("");
+      parts.push("RULES");
+      parts.push("- One question per message while interviewing.");
+      parts.push("- Don't invent numbers or facts I didn't give you. If you assume something, say so in one line.");
+      parts.push("- Plain language. No hype, no filler, no generic advice.");
+      return parts.join("\n");
+    }
+
+    /* ---------- Tabs ---------- */
+    const tabs = document.querySelectorAll(".tab");
+    tabs.forEach(tab => tab.addEventListener("click", () => {
+      tabs.forEach(t => { t.classList.toggle("active", t === tab); t.setAttribute("aria-selected", String(t === tab)); });
+      ["workflows", "advisors", "manual"].forEach(name => {
+        document.getElementById("tab-" + name).hidden = tab.dataset.tab !== name;
+      });
+    }));
+
+    /* ---------- Workflow browse ---------- */
+    const catRow = document.getElementById("catRow");
+    const catNote = document.getElementById("catNote");
+    const wfGrid = document.getElementById("wfGrid");
+    const browse = document.getElementById("workflowBrowse");
+    const detail = document.getElementById("workflowDetail");
+    const wfSearch = document.getElementById("wfSearch");
+    let currentCat = STUDIO.categories[0].id;
+    let currentWf = null;
+    let generated = false;
+    let searchTerm = "";
+
+    function renderCats() {
+      catRow.innerHTML = STUDIO.categories.map(c =>
+        `<button type="button" class="cat-chip${!searchTerm && c.id === currentCat ? " active" : ""}" data-cat="${escapeHtml(c.id)}">${escapeHtml(c.title)}</button>`
+      ).join("");
+      const cat = STUDIO.categories.find(c => c.id === currentCat);
+      catNote.textContent = searchTerm ? `Showing matches across all ${STUDIO.categories.length} categories.` : (cat && cat.note ? cat.note : "");
+      catRow.querySelectorAll("[data-cat]").forEach(chip => chip.addEventListener("click", () => {
+        currentCat = chip.dataset.cat;
+        searchTerm = "";
+        wfSearch.value = "";
+        renderCats();
+        renderGrid();
+      }));
+    }
+    function renderGrid() {
+      const matches = STUDIO.workflows.filter(w => searchTerm
+        ? (w.title + " " + w.description).toLowerCase().includes(searchTerm)
+        : w.category === currentCat);
+      if (!matches.length) {
+        wfGrid.innerHTML = `<div class="no-results"><div><strong>No workflow matches that search.</strong><br />Try the artifact you need, such as audit, plan, email, or offer.</div></div>`;
+        return;
+      }
+      wfGrid.innerHTML = matches.map(w =>
+        `<button type="button" class="wf-card" data-wf="${escapeHtml(w.id)}">
+          <span class="card-no">WORKFLOW ${String(STUDIO.workflows.indexOf(w) + 1).padStart(2, "0")}</span>
+          <b>${escapeHtml(w.title)}</b>
+          <span>${escapeHtml(w.description)}</span>
+          <span class="go">Open &rarr;</span>
+        </button>`
+      ).join("");
+      wfGrid.querySelectorAll("[data-wf]").forEach(card => card.addEventListener("click", () => openWorkflow(card.dataset.wf)));
+    }
+    wfSearch.addEventListener("input", () => {
+      searchTerm = clean(wfSearch.value).toLowerCase();
+      renderCats();
+      renderGrid();
+    });
+    renderCats();
+    renderGrid();
+
+    /* ---------- Workflow detail ---------- */
+    const wfFields = document.getElementById("wfFields");
+    const wfForm = document.getElementById("wfForm");
+    const wfValidation = document.getElementById("wfValidation");
+    const wfResultWrap = document.getElementById("wfResultWrap");
+    const wfPromptEl = document.getElementById("wfPrompt");
+    const staleNote = document.getElementById("staleNote");
+
+    function openWorkflow(id) {
+      currentWf = STUDIO.workflows.find(w => w.id === id);
+      generated = false;
+      const category = STUDIO.categories.find(c => c.id === currentWf.category);
+      document.getElementById("wfMeta").textContent = category ? category.title : "Workflow";
+      document.getElementById("wfTitle").textContent = currentWf.title;
+      document.getElementById("wfDescription").textContent = currentWf.description;
+      wfFields.innerHTML = currentWf.fields.map(f => fieldHtml(f, "wf")).join("");
+      wfFields.style.display = "grid";
+      wfFields.style.gap = "15px";
+      wfValidation.classList.remove("show");
+      wfResultWrap.hidden = true;
+      staleNote.classList.remove("show");
+      browse.hidden = true;
+      detail.hidden = false;
+      detail.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    document.getElementById("backToGrid").addEventListener("click", () => {
+      detail.hidden = true;
+      browse.hidden = false;
+      generated = false;
+    });
+
+    function markStaleIfGenerated() {
+      if (generated) {
+        staleNote.classList.add("show");
+        wfPromptEl.style.opacity = "0.55";
+      }
+    }
+    wfForm.addEventListener("input", markStaleIfGenerated);
+    wfForm.addEventListener("change", markStaleIfGenerated);
+
+    wfForm.addEventListener("submit", event => {
+      event.preventDefault();
+      if (!currentWf) return;
+      const missing = [];
+      STUDIO.profile.filter(f => f.required).forEach(f => {
+        if (!clean(profileValues()[f.id])) missing.push(f.label);
+      });
+      const values = readFields(wfFields);
+      currentWf.fields.filter(f => f.required).forEach(f => {
+        if (!clean(values[f.id])) missing.push(f.label);
+      });
+      if (missing.length) {
+        wfValidation.textContent = "Still needed: " + missing.join(", ") + ".";
+        wfValidation.classList.add("show");
+        const firstMissingProfile = STUDIO.profile.find(f => f.required && !clean(profileValues()[f.id]));
+        const firstMissingWorkflow = currentWf.fields.find(f => f.required && !clean(values[f.id]));
+        const target = firstMissingProfile ? document.getElementById("profile-" + firstMissingProfile.id) : (firstMissingWorkflow ? document.getElementById("wf-" + firstMissingWorkflow.id) : null);
+        if (target) target.focus();
+        return;
+      }
+      wfValidation.classList.remove("show");
+      wfPromptEl.textContent = buildWorkflowPrompt(currentWf, values);
+      wfPromptEl.style.opacity = "";
+      wfResultWrap.hidden = false;
+      staleNote.classList.remove("show");
+      generated = true;
+      wfResultWrap.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+
+    document.getElementById("copyPrompt").addEventListener("click", async event => {
+      try { await copyText(wfPromptEl.textContent); feedback(event.target, "Copied"); }
+      catch (error) { feedback(event.target, "Copy failed"); }
+    });
+    document.getElementById("copyOpen").addEventListener("click", event => copyAndOpen(event.target, wfPromptEl.textContent));
+    document.getElementById("addToManual").addEventListener("click", event => {
+      addManualEntry(currentWf.title, "Workflow", wfPromptEl.textContent);
+      feedback(event.target, "Saved to manual");
+    });
+
+    /* ---------- Advisors ---------- */
+    const advGrid = document.getElementById("advGrid");
+    const advResultWrap = document.getElementById("advResultWrap");
+    const advPromptEl = document.getElementById("advPrompt");
+    let currentAdv = null;
+    advGrid.innerHTML = STUDIO.advisors.map((a, i) =>
+      `<div class="adv-card">
+        <span class="advisor-index">ADVISOR ${String(i + 1).padStart(2, "0")}</span>
+        <b>${escapeHtml(a.title)}</b>
+        <p>${escapeHtml(a.description)}</p>
+        <button class="mini primary-mini" type="button" data-adv="${escapeHtml(a.id)}">Start this session</button>
+      </div>`
+    ).join("");
+    advGrid.querySelectorAll("[data-adv]").forEach(btn => btn.addEventListener("click", () => {
+      currentAdv = STUDIO.advisors.find(a => a.id === btn.dataset.adv);
+      document.getElementById("advResultTitle").textContent = currentAdv.title;
+      advPromptEl.textContent = buildAdvisorPrompt(currentAdv);
+      advResultWrap.hidden = false;
+      advResultWrap.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }));
+    document.getElementById("advCopy").addEventListener("click", async event => {
+      try { await copyText(advPromptEl.textContent); feedback(event.target, "Copied"); }
+      catch (error) { feedback(event.target, "Copy failed"); }
+    });
+    document.getElementById("advCopyOpen").addEventListener("click", event => copyAndOpen(event.target, advPromptEl.textContent));
+    document.getElementById("advAddToManual").addEventListener("click", event => {
+      addManualEntry(currentAdv.title, "Advisor", advPromptEl.textContent);
+      feedback(event.target, "Saved to manual");
+    });
+
+    /* ---------- Prompt manual ---------- */
+    const manualList = document.getElementById("manualList");
+    const manualEmpty = document.getElementById("manualEmpty");
+    const manualCount = document.getElementById("manualCount");
+    const manualTitle = document.getElementById("manualTitle");
+    let manual = [];
+    try { manual = JSON.parse(localStorage.getItem(toolConfig.manualKey) || "[]"); } catch (error) { manual = []; }
+    const savedManualTitle = localStorage.getItem(toolConfig.manualKey + "-title");
+    if (savedManualTitle) manualTitle.value = savedManualTitle;
+    manualTitle.addEventListener("input", () => localStorage.setItem(toolConfig.manualKey + "-title", manualTitle.value));
+
+    function saveManual() { localStorage.setItem(toolConfig.manualKey, JSON.stringify(manual)); }
+    function addManualEntry(title, source, text) {
+      manual.push({ id: "m" + (manual.length + 1) + "-" + text.length, title, source, text });
+      saveManual();
+      renderManual();
+    }
+    function renderManual() {
+      manualCount.textContent = manual.length ? "(" + manual.length + ")" : "";
+      manualEmpty.style.display = manual.length ? "none" : "grid";
+      manualList.innerHTML = manual.map((entry, i) =>
+        `<div class="manual-item">
+          <div class="manual-item-head">
+            <b>${i + 1}. ${escapeHtml(entry.title)}</b>
+            <span>${escapeHtml(entry.source)}</span>
+          </div>
+          <pre>${escapeHtml(entry.text)}</pre>
+          <div class="result-actions">
+            <button class="mini" type="button" data-up="${i}">Move up</button>
+            <button class="mini" type="button" data-down="${i}">Move down</button>
+            <button class="mini" type="button" data-copy="${i}">Copy</button>
+            <button class="mini" type="button" data-remove="${i}">Remove</button>
+          </div>
+        </div>`
+      ).join("");
+      manualList.querySelectorAll("[data-up]").forEach(b => b.addEventListener("click", () => {
+        const i = Number(b.dataset.up);
+        if (i > 0) { [manual[i - 1], manual[i]] = [manual[i], manual[i - 1]]; saveManual(); renderManual(); }
+      }));
+      manualList.querySelectorAll("[data-down]").forEach(b => b.addEventListener("click", () => {
+        const i = Number(b.dataset.down);
+        if (i < manual.length - 1) { [manual[i + 1], manual[i]] = [manual[i], manual[i + 1]]; saveManual(); renderManual(); }
+      }));
+      manualList.querySelectorAll("[data-copy]").forEach(b => b.addEventListener("click", async () => {
+        try { await copyText(manual[Number(b.dataset.copy)].text); feedback(b, "Copied"); }
+        catch (error) { feedback(b, "Copy failed"); }
+      }));
+      manualList.querySelectorAll("[data-remove]").forEach(b => b.addEventListener("click", () => {
+        manual.splice(Number(b.dataset.remove), 1);
+        saveManual();
+        renderManual();
+      }));
+    }
+    renderManual();
+
+    function manualDocTitle() { return clean(manualTitle.value) || STUDIO.title + " Prompt Manual"; }
+    function buildPrintArea() {
+      const printArea = document.getElementById("printArea");
+      const cover = document.createElement("div");
+      cover.className = "print-cover";
+      const h1 = document.createElement("h1");
+      h1.textContent = manualDocTitle();
+      const p = document.createElement("p");
+      p.textContent = manual.length + " prompts, built with " + STUDIO.title;
+      cover.append(h1, p);
+      printArea.replaceChildren(cover);
+      manual.forEach((entry, i) => {
+        const block = document.createElement("div");
+        block.className = "print-prompt";
+        const h2 = document.createElement("h2");
+        h2.textContent = (i + 1) + ". " + entry.title;
+        const src = document.createElement("p");
+        src.className = "print-source";
+        src.textContent = entry.source;
+        const pre = document.createElement("pre");
+        pre.textContent = entry.text;
+        block.append(h2, src, pre);
+        printArea.append(block);
+      });
+    }
+    document.getElementById("printManual").addEventListener("click", event => {
+      if (!manual.length) { feedback(event.target, "Manual is empty"); return; }
+      buildPrintArea();
+      window.print();
+    });
+    document.getElementById("downloadManual").addEventListener("click", event => {
+      if (!manual.length) { feedback(event.target, "Manual is empty"); return; }
+      const body = manual.map((entry, i) =>
+        `<section><h2>${escapeHtml((i + 1) + ". " + entry.title)}</h2><p class="src">${escapeHtml(entry.source)}</p><pre>${escapeHtml(entry.text)}</pre></section>`
+      ).join("\n");
+      const doc = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>${escapeHtml(manualDocTitle())}</title>
+<style>body{font-family:Georgia,serif;max-width:760px;margin:40px auto;padding:0 20px;color:#111;}h1{letter-spacing:-0.02em;}.src{color:#666;font-size:0.9rem;}pre{white-space:pre-wrap;word-break:break-word;font-family:"Courier New",monospace;font-size:0.85rem;line-height:1.5;border:1px solid #ccc;border-radius:8px;padding:14px;}section{margin:34px 0;}</style>
+</head><body><h1>${escapeHtml(manualDocTitle())}</h1><p class="src">${manual.length} prompts, built with ${escapeHtml(STUDIO.title)}</p>\n${body}\n</body></html>`;
+      const blob = new Blob([doc], { type: "text/html" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = STUDIO.slug + "-prompt-manual.html";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      feedback(event.target, "Downloaded");
+    });
+    document.getElementById("clearManual").addEventListener("click", event => {
+      if (!manual.length) { feedback(event.target, "Manual is empty"); return; }
+      manual = [];
+      saveManual();
+      renderManual();
+      feedback(event.target, "Cleared");
+    });
+
+    /* ---------- Theme ---------- */
+    function syncThemeButtons(theme) {
+      document.querySelectorAll("[data-theme-choice]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.themeChoice === theme)));
+    }
+    document.querySelectorAll("[data-theme-choice]").forEach(button => {
+      button.addEventListener("click", () => {
+        html.setAttribute("data-theme", button.dataset.themeChoice);
+        localStorage.setItem(toolConfig.storageKey, button.dataset.themeChoice);
+        syncThemeButtons(button.dataset.themeChoice);
+      });
+    });
+    const savedTheme = localStorage.getItem(toolConfig.storageKey);
+    const initialTheme = savedTheme === "light" || savedTheme === "dark" ? savedTheme : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    html.setAttribute("data-theme", initialTheme);
+    syncThemeButtons(initialTheme);
+  </script>
+</body>
+</html>

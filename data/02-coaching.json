@@ -1,0 +1,1888 @@
+{
+  "slug": "coaching",
+  "title": "Coaching & Consulting Prompt Studio",
+  "kicker": "Guided prompt system for expert services",
+  "subtitle": "Built for coaches, consultants, and advisors who need sharper offers, better client sessions, and recommendations people can act on. Pick a job, add the facts, and copy the finished prompt into the assistant you use.",
+  "badge": "48 guided workflows",
+  "accent": "#365f91",
+  "accent2": "#d6a11f",
+  "footer": "Prompt Studio",
+  "profile": [
+    {
+      "id": "business",
+      "label": "What you sell and who buys it",
+      "type": "textarea",
+      "required": true,
+      "placeholder": "Example: a $3,000 operations advisory package for owner-led manufacturers with 20 to 100 employees",
+      "helper": "One or two sentences. Every prompt in this studio uses this."
+    },
+    {
+      "id": "audience",
+      "label": "Your buyer in their own words",
+      "type": "textarea",
+      "required": false,
+      "placeholder": "Example: 'We keep fixing the same fire every Friday' is how clients describe the problem",
+      "helper": "Use phrases real buyers or clients say."
+    },
+    {
+      "id": "project",
+      "label": "The offer or project you're working on now",
+      "type": "textarea",
+      "required": false,
+      "placeholder": "Example: rebuilding the spring group program before enrollment opens",
+      "helper": ""
+    },
+    {
+      "id": "goal",
+      "label": "Your main goal for the next 90 days",
+      "type": "text",
+      "required": false,
+      "placeholder": "Example: enroll 12 right-fit clients without adding more sales calls",
+      "helper": ""
+    },
+    {
+      "id": "constraints",
+      "label": "Voice, proof, or constraints the AI should respect",
+      "type": "text",
+      "required": false,
+      "placeholder": "Example: plainspoken, no income claims, two-person delivery team",
+      "helper": ""
+    }
+  ],
+  "categories": [
+    {
+      "id": "positioning",
+      "title": "Positioning and Offers",
+      "note": "Turn experience into a clear reason to hire you."
+    },
+    {
+      "id": "sales",
+      "title": "Sales Conversations",
+      "note": "Diagnose fit before the conversation turns into a pitch."
+    },
+    {
+      "id": "delivery",
+      "title": "Sessions and Delivery",
+      "note": "Make each client session produce a decision and a next move."
+    },
+    {
+      "id": "advisory",
+      "title": "Audits and Roadmaps",
+      "note": "Turn a messy business problem into ranked recommendations."
+    },
+    {
+      "id": "retention",
+      "title": "Retention and Expansion",
+      "note": "Keep good clients moving without forcing an awkward upsell."
+    },
+    {
+      "id": "review",
+      "title": "Review and Improve",
+      "note": "Strengthen working material without losing the thinking already inside it."
+    }
+  ],
+  "workflows": [
+    {
+      "id": "expertise-position",
+      "category": "positioning",
+      "title": "Expertise Position",
+      "description": "Identify the narrow expertise claim buyers can repeat and the evidence that supports it.",
+      "role": "positioning strategist for expert services who must make the buyer, problem, and paid result unmistakable, with direct responsibility for the expertise position this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the offer, expertise, or positioning you want to work on",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: I help dental groups reduce front-desk turnover through a 10-week advisory engagement",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this expertise position.",
+        "Identify the narrow expertise claim buyers can repeat and the evidence that supports it.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished expertise position with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "named-method-builder",
+      "category": "positioning",
+      "title": "Named Method Builder",
+      "description": "Turn the delivery process into a named sequence with clear stages and boundaries.",
+      "role": "positioning strategist for expert services who must make the buyer, problem, and paid result unmistakable, with direct responsibility for the named method builder this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the offer, expertise, or positioning you want to work on",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: I help dental groups reduce front-desk turnover through a 10-week advisory engagement",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this named method builder.",
+        "Turn the delivery process into a named sequence with clear stages and boundaries.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished named method builder with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "offer-definition",
+      "category": "positioning",
+      "title": "Offer Definition",
+      "description": "State who the engagement serves, what changes, what is included, and what falls outside scope.",
+      "role": "positioning strategist for expert services who must make the buyer, problem, and paid result unmistakable, with direct responsibility for the offer definition this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the offer, expertise, or positioning you want to work on",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: I help dental groups reduce front-desk turnover through a 10-week advisory engagement",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this offer definition.",
+        "State who the engagement serves, what changes, what is included, and what falls outside scope.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished offer definition with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "niche-message-test",
+      "category": "positioning",
+      "title": "Niche Message Test",
+      "description": "Compare three niche messages against urgency, buying power, access, and proof.",
+      "role": "positioning strategist for expert services who must make the buyer, problem, and paid result unmistakable, with direct responsibility for the niche message test this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the offer, expertise, or positioning you want to work on",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: I help dental groups reduce front-desk turnover through a 10-week advisory engagement",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this niche message test.",
+        "Compare three niche messages against urgency, buying power, access, and proof.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished niche message test with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "problem-to-promise",
+      "category": "positioning",
+      "title": "Problem to Promise",
+      "description": "Translate the costly client problem into a credible paid outcome without overclaiming.",
+      "role": "positioning strategist for expert services who must make the buyer, problem, and paid result unmistakable, with direct responsibility for the problem to promise this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the offer, expertise, or positioning you want to work on",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: I help dental groups reduce front-desk turnover through a 10-week advisory engagement",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this problem to promise.",
+        "Translate the costly client problem into a credible paid outcome without overclaiming.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished problem to promise with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "service-package-map",
+      "category": "positioning",
+      "title": "Service Package Map",
+      "description": "Organize deliverables, meetings, support, timing, and client responsibilities into one package.",
+      "role": "positioning strategist for expert services who must make the buyer, problem, and paid result unmistakable, with direct responsibility for the service package map this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the offer, expertise, or positioning you want to work on",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: I help dental groups reduce front-desk turnover through a 10-week advisory engagement",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this service package map.",
+        "Organize deliverables, meetings, support, timing, and client responsibilities into one package.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished service package map with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "pricing-logic-memo",
+      "category": "positioning",
+      "title": "Pricing Logic Memo",
+      "description": "Build a defensible price argument from value, delivery cost, risk, and alternatives.",
+      "role": "positioning strategist for expert services who must make the buyer, problem, and paid result unmistakable, with direct responsibility for the pricing logic memo this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the offer, expertise, or positioning you want to work on",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: I help dental groups reduce front-desk turnover through a 10-week advisory engagement",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this pricing logic memo.",
+        "Build a defensible price argument from value, delivery cost, risk, and alternatives.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished pricing logic memo with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "positioning-gap-scan",
+      "category": "positioning",
+      "title": "Positioning Gap Scan",
+      "description": "Find where the current positioning sounds interchangeable and prescribe the first fixes.",
+      "role": "positioning strategist for expert services who must make the buyer, problem, and paid result unmistakable, with direct responsibility for the positioning gap scan this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the offer, expertise, or positioning you want to work on",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: I help dental groups reduce front-desk turnover through a 10-week advisory engagement",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this positioning gap scan.",
+        "Find where the current positioning sounds interchangeable and prescribe the first fixes.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished positioning gap scan with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "discovery-question-map",
+      "category": "sales",
+      "title": "Discovery Question Map",
+      "description": "Sequence questions that uncover symptoms, root causes, cost, urgency, and decision process.",
+      "role": "consultative sales director who reviews calls by diagnosis quality, next-step clarity, and fit, with direct responsibility for the discovery question map this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the prospect, conversation, or sales problem",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: owner agrees the problem is costly but keeps asking for a proposal before sharing numbers",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this discovery question map.",
+        "Sequence questions that uncover symptoms, root causes, cost, urgency, and decision process.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished discovery question map with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "client-readiness-score",
+      "category": "sales",
+      "title": "Client Readiness Score",
+      "description": "Score whether a prospect has the problem, authority, resources, and willingness to act.",
+      "role": "consultative sales director who reviews calls by diagnosis quality, next-step clarity, and fit, with direct responsibility for the client readiness score this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the prospect, conversation, or sales problem",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: owner agrees the problem is costly but keeps asking for a proposal before sharing numbers",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this client readiness score.",
+        "Score whether a prospect has the problem, authority, resources, and willingness to act.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished client readiness score with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "objection-diagnosis",
+      "category": "sales",
+      "title": "Objection Diagnosis",
+      "description": "Separate the stated objection from the unresolved risk or missing evidence behind it.",
+      "role": "consultative sales director who reviews calls by diagnosis quality, next-step clarity, and fit, with direct responsibility for the objection diagnosis this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the prospect, conversation, or sales problem",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: owner agrees the problem is costly but keeps asking for a proposal before sharing numbers",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this objection diagnosis.",
+        "Separate the stated objection from the unresolved risk or missing evidence behind it.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished objection diagnosis with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "sales-call-run-sheet",
+      "category": "sales",
+      "title": "Sales Call Run Sheet",
+      "description": "Build a call flow that diagnoses before recommending and ends with one honest next step.",
+      "role": "consultative sales director who reviews calls by diagnosis quality, next-step clarity, and fit, with direct responsibility for the sales call run sheet this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the prospect, conversation, or sales problem",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: owner agrees the problem is costly but keeps asking for a proposal before sharing numbers",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this sales call run sheet.",
+        "Build a call flow that diagnoses before recommending and ends with one honest next step.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished sales call run sheet with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "proposal-decision-path",
+      "category": "sales",
+      "title": "Proposal Decision Path",
+      "description": "Structure a proposal around the buyer's decision, proof needs, scope, and approval path.",
+      "role": "consultative sales director who reviews calls by diagnosis quality, next-step clarity, and fit, with direct responsibility for the proposal decision path this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the prospect, conversation, or sales problem",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: owner agrees the problem is costly but keeps asking for a proposal before sharing numbers",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this proposal decision path.",
+        "Structure a proposal around the buyer's decision, proof needs, scope, and approval path.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished proposal decision path with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "price-conversation-script",
+      "category": "sales",
+      "title": "Price Conversation Script",
+      "description": "Explain the fee, test commitment, and respond to price pressure without becoming defensive.",
+      "role": "consultative sales director who reviews calls by diagnosis quality, next-step clarity, and fit, with direct responsibility for the price conversation script this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the prospect, conversation, or sales problem",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: owner agrees the problem is costly but keeps asking for a proposal before sharing numbers",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this price conversation script.",
+        "Explain the fee, test commitment, and respond to price pressure without becoming defensive.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished price conversation script with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "no-fit-referral",
+      "category": "sales",
+      "title": "No Fit Referral",
+      "description": "Decline a poor-fit prospect clearly while preserving trust and pointing to a better route.",
+      "role": "consultative sales director who reviews calls by diagnosis quality, next-step clarity, and fit, with direct responsibility for the no fit referral this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the prospect, conversation, or sales problem",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: owner agrees the problem is costly but keeps asking for a proposal before sharing numbers",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this no fit referral.",
+        "Decline a poor-fit prospect clearly while preserving trust and pointing to a better route.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished no fit referral with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "follow-up-sequence",
+      "category": "sales",
+      "title": "Follow Up Sequence",
+      "description": "Write a short follow-up path tied to what the prospect said, not generic checking in.",
+      "role": "consultative sales director who reviews calls by diagnosis quality, next-step clarity, and fit, with direct responsibility for the follow up sequence this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the prospect, conversation, or sales problem",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: owner agrees the problem is costly but keeps asking for a proposal before sharing numbers",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this follow up sequence.",
+        "Write a short follow-up path tied to what the prospect said, not generic checking in.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished follow up sequence with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "session-outcome-plan",
+      "category": "delivery",
+      "title": "Session Outcome Plan",
+      "description": "Define the decision, preparation, discussion sequence, and close for one client session.",
+      "role": "client delivery lead who turns advisory time into decisions, owners, deadlines, and visible progress, with direct responsibility for the session outcome plan this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the client situation or session goal",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: leadership team agrees on the issue but hasn't picked who owns the fix",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this session outcome plan.",
+        "Define the decision, preparation, discussion sequence, and close for one client session.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished session outcome plan with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "breakthrough-questions",
+      "category": "delivery",
+      "title": "Breakthrough Questions",
+      "description": "Write questions that expose the assumption keeping the client stuck.",
+      "role": "client delivery lead who turns advisory time into decisions, owners, deadlines, and visible progress, with direct responsibility for the breakthrough questions this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the client situation or session goal",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: leadership team agrees on the issue but hasn't picked who owns the fix",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this breakthrough questions.",
+        "Write questions that expose the assumption keeping the client stuck.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished breakthrough questions with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "accountability-contract",
+      "category": "delivery",
+      "title": "Accountability Contract",
+      "description": "Set owners, deadlines, evidence of completion, and the response to missed commitments.",
+      "role": "client delivery lead who turns advisory time into decisions, owners, deadlines, and visible progress, with direct responsibility for the accountability contract this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the client situation or session goal",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: leadership team agrees on the issue but hasn't picked who owns the fix",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this accountability contract.",
+        "Set owners, deadlines, evidence of completion, and the response to missed commitments.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished accountability contract with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "client-homework-brief",
+      "category": "delivery",
+      "title": "Client Homework Brief",
+      "description": "Design useful between-session work with a purpose, time box, and completion standard.",
+      "role": "client delivery lead who turns advisory time into decisions, owners, deadlines, and visible progress, with direct responsibility for the client homework brief this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the client situation or session goal",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: leadership team agrees on the issue but hasn't picked who owns the fix",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this client homework brief.",
+        "Design useful between-session work with a purpose, time box, and completion standard.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished client homework brief with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "decision-log",
+      "category": "delivery",
+      "title": "Decision Log",
+      "description": "Capture the decision, rationale, risks, owner, deadline, and review date.",
+      "role": "client delivery lead who turns advisory time into decisions, owners, deadlines, and visible progress, with direct responsibility for the decision log this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the client situation or session goal",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: leadership team agrees on the issue but hasn't picked who owns the fix",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this decision log.",
+        "Capture the decision, rationale, risks, owner, deadline, and review date.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished decision log with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "group-hot-seat-plan",
+      "category": "delivery",
+      "title": "Group Hot Seat Plan",
+      "description": "Run a focused hot seat that gives one member depth without losing the rest of the room.",
+      "role": "client delivery lead who turns advisory time into decisions, owners, deadlines, and visible progress, with direct responsibility for the group hot seat plan this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the client situation or session goal",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: leadership team agrees on the issue but hasn't picked who owns the fix",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this group hot seat plan.",
+        "Run a focused hot seat that gives one member depth without losing the rest of the room.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished group hot seat plan with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "executive-session-brief",
+      "category": "delivery",
+      "title": "Executive Session Brief",
+      "description": "Compress a complex situation into the few facts and choices leaders need in the room.",
+      "role": "client delivery lead who turns advisory time into decisions, owners, deadlines, and visible progress, with direct responsibility for the executive session brief this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the client situation or session goal",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: leadership team agrees on the issue but hasn't picked who owns the fix",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this executive session brief.",
+        "Compress a complex situation into the few facts and choices leaders need in the room.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished executive session brief with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "session-follow-up",
+      "category": "delivery",
+      "title": "Session Follow Up",
+      "description": "Turn session notes into decisions, assignments, open questions, and the next meeting agenda.",
+      "role": "client delivery lead who turns advisory time into decisions, owners, deadlines, and visible progress, with direct responsibility for the session follow up this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the client situation or session goal",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: leadership team agrees on the issue but hasn't picked who owns the fix",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this session follow up.",
+        "Turn session notes into decisions, assignments, open questions, and the next meeting agenda.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished session follow up with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "root-cause-map",
+      "category": "advisory",
+      "title": "Root Cause Map",
+      "description": "Trace visible symptoms to operating causes and identify what evidence would confirm each link.",
+      "role": "management consultant accountable for evidence, tradeoffs, and an implementation order the client can defend, with direct responsibility for the root cause map this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the business problem and evidence available",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: margins fell six points after sales grew, with labor and freight both rising",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this root cause map.",
+        "Trace visible symptoms to operating causes and identify what evidence would confirm each link.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished root cause map with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "audit-evidence-plan",
+      "category": "advisory",
+      "title": "Audit Evidence Plan",
+      "description": "Name the documents, interviews, numbers, and observations required before making recommendations.",
+      "role": "management consultant accountable for evidence, tradeoffs, and an implementation order the client can defend, with direct responsibility for the audit evidence plan this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the business problem and evidence available",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: margins fell six points after sales grew, with labor and freight both rising",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this audit evidence plan.",
+        "Name the documents, interviews, numbers, and observations required before making recommendations.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished audit evidence plan with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "recommendation-ranker",
+      "category": "advisory",
+      "title": "Recommendation Ranker",
+      "description": "Rank options by value, effort, risk, timing, and organizational readiness.",
+      "role": "management consultant accountable for evidence, tradeoffs, and an implementation order the client can defend, with direct responsibility for the recommendation ranker this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the business problem and evidence available",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: margins fell six points after sales grew, with labor and freight both rising",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this recommendation ranker.",
+        "Rank options by value, effort, risk, timing, and organizational readiness.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished recommendation ranker with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "implementation-roadmap",
+      "category": "advisory",
+      "title": "Implementation Roadmap",
+      "description": "Sequence the work into phases with owners, dependencies, checkpoints, and stop conditions.",
+      "role": "management consultant accountable for evidence, tradeoffs, and an implementation order the client can defend, with direct responsibility for the implementation roadmap this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the business problem and evidence available",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: margins fell six points after sales grew, with labor and freight both rising",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this implementation roadmap.",
+        "Sequence the work into phases with owners, dependencies, checkpoints, and stop conditions.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished implementation roadmap with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "risk-and-assumption-scan",
+      "category": "advisory",
+      "title": "Risk and Assumption Scan",
+      "description": "Surface what the recommendation assumes and what could make it fail.",
+      "role": "management consultant accountable for evidence, tradeoffs, and an implementation order the client can defend, with direct responsibility for the risk and assumption scan this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the business problem and evidence available",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: margins fell six points after sales grew, with labor and freight both rising",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this risk and assumption scan.",
+        "Surface what the recommendation assumes and what could make it fail.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished risk and assumption scan with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "kpi-decision-board",
+      "category": "advisory",
+      "title": "KPI Decision Board",
+      "description": "Choose a small set of measures that tell the client when to continue, adjust, or stop.",
+      "role": "management consultant accountable for evidence, tradeoffs, and an implementation order the client can defend, with direct responsibility for the kpi decision board this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the business problem and evidence available",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: margins fell six points after sales grew, with labor and freight both rising",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this kpi decision board.",
+        "Choose a small set of measures that tell the client when to continue, adjust, or stop.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished kpi decision board with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "executive-summary",
+      "category": "advisory",
+      "title": "Executive Summary",
+      "description": "Present the finding, business consequence, recommendation, and decision required on one page.",
+      "role": "management consultant accountable for evidence, tradeoffs, and an implementation order the client can defend, with direct responsibility for the executive summary this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the business problem and evidence available",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: margins fell six points after sales grew, with labor and freight both rising",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this executive summary.",
+        "Present the finding, business consequence, recommendation, and decision required on one page.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished executive summary with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "first-30-days",
+      "category": "advisory",
+      "title": "First 30 Days",
+      "description": "Convert a broad recommendation into the first month of actions, meetings, proof, and decisions.",
+      "role": "management consultant accountable for evidence, tradeoffs, and an implementation order the client can defend, with direct responsibility for the first 30 days this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the business problem and evidence available",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: margins fell six points after sales grew, with labor and freight both rising",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this first 30 days.",
+        "Convert a broad recommendation into the first month of actions, meetings, proof, and decisions.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished first 30 days with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "renewal-evidence-pack",
+      "category": "retention",
+      "title": "Renewal Evidence Pack",
+      "description": "Collect results, adoption, unfinished work, and next risks into a renewal conversation.",
+      "role": "client success director measured on adoption, renewal quality, and expansion that follows delivered value, with direct responsibility for the renewal evidence pack this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the client relationship and current result",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: month five of a six-month retainer, two goals met, one delayed by hiring",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this renewal evidence pack.",
+        "Collect results, adoption, unfinished work, and next risks into a renewal conversation.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished renewal evidence pack with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "value-recap",
+      "category": "retention",
+      "title": "Value Recap",
+      "description": "Show what changed, what the client used, and where value remains unclaimed.",
+      "role": "client success director measured on adoption, renewal quality, and expansion that follows delivered value, with direct responsibility for the value recap this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the client relationship and current result",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: month five of a six-month retainer, two goals met, one delayed by hiring",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this value recap.",
+        "Show what changed, what the client used, and where value remains unclaimed.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished value recap with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "scope-boundary-script",
+      "category": "retention",
+      "title": "Scope Boundary Script",
+      "description": "Respond to extra requests by clarifying tradeoffs, included work, and paid options.",
+      "role": "client success director measured on adoption, renewal quality, and expansion that follows delivered value, with direct responsibility for the scope boundary script this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the client relationship and current result",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: month five of a six-month retainer, two goals met, one delayed by hiring",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this scope boundary script.",
+        "Respond to extra requests by clarifying tradeoffs, included work, and paid options.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished scope boundary script with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "retainer-expansion",
+      "category": "retention",
+      "title": "Retainer Expansion",
+      "description": "Identify the next problem that naturally follows the work already completed.",
+      "role": "client success director measured on adoption, renewal quality, and expansion that follows delivered value, with direct responsibility for the retainer expansion this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the client relationship and current result",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: month five of a six-month retainer, two goals met, one delayed by hiring",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this retainer expansion.",
+        "Identify the next problem that naturally follows the work already completed.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished retainer expansion with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "referral-moment",
+      "category": "retention",
+      "title": "Referral Moment",
+      "description": "Choose when and how to ask for a specific introduction based on delivered value.",
+      "role": "client success director measured on adoption, renewal quality, and expansion that follows delivered value, with direct responsibility for the referral moment this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the client relationship and current result",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: month five of a six-month retainer, two goals met, one delayed by hiring",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this referral moment.",
+        "Choose when and how to ask for a specific introduction based on delivered value.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished referral moment with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "testimonial-interview",
+      "category": "retention",
+      "title": "Testimonial Interview",
+      "description": "Ask questions that produce a credible before, decision, experience, and after story.",
+      "role": "client success director measured on adoption, renewal quality, and expansion that follows delivered value, with direct responsibility for the testimonial interview this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the client relationship and current result",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: month five of a six-month retainer, two goals met, one delayed by hiring",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this testimonial interview.",
+        "Ask questions that produce a credible before, decision, experience, and after story.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished testimonial interview with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "client-risk-signal",
+      "category": "retention",
+      "title": "Client Risk Signal",
+      "description": "Spot stalled adoption, missing stakeholders, weak ownership, and other renewal risks early.",
+      "role": "client success director measured on adoption, renewal quality, and expansion that follows delivered value, with direct responsibility for the client risk signal this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the client relationship and current result",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: month five of a six-month retainer, two goals met, one delayed by hiring",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this client risk signal.",
+        "Spot stalled adoption, missing stakeholders, weak ownership, and other renewal risks early.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished client risk signal with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "closeout-plan",
+      "category": "retention",
+      "title": "Closeout Plan",
+      "description": "End an engagement with decisions documented, ownership transferred, and a useful next review date.",
+      "role": "client success director measured on adoption, renewal quality, and expansion that follows delivered value, with direct responsibility for the closeout plan this prompt produces",
+      "fields": [
+        {
+          "id": "situation",
+          "label": "Describe the client relationship and current result",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: month five of a six-month retainer, two goals met, one delayed by hiring",
+          "helper": "Give the facts the output should use. Specifics beat background."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this closeout plan.",
+        "End an engagement with decisions documented, ownership transferred, and a useful next review date.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished closeout plan with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "proposal-in-chief",
+      "category": "review",
+      "title": "Proposal in Chief",
+      "description": "Review a proposal for decision clarity, proof, scope, price logic, and friction.",
+      "role": "senior consulting editor who preserves sound thinking while fixing gaps, weak claims, and unclear next steps, with direct responsibility for the proposal in chief this prompt produces",
+      "fields": [
+        {
+          "id": "material",
+          "label": "Paste the material you want reviewed",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Paste notes, a proposal, transcript, audit, or client message",
+          "helper": "The prompt keeps your core intent and works directly from this material."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this proposal in chief.",
+        "Review a proposal for decision clarity, proof, scope, price logic, and friction.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished proposal in chief with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "call-transcript-review",
+      "category": "review",
+      "title": "Call Transcript Review",
+      "description": "Find missed diagnosis, weak questions, premature pitching, and unclear next steps in a sales call.",
+      "role": "senior consulting editor who preserves sound thinking while fixing gaps, weak claims, and unclear next steps, with direct responsibility for the call transcript review this prompt produces",
+      "fields": [
+        {
+          "id": "material",
+          "label": "Paste the material you want reviewed",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Paste notes, a proposal, transcript, audit, or client message",
+          "helper": "The prompt keeps your core intent and works directly from this material."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this call transcript review.",
+        "Find missed diagnosis, weak questions, premature pitching, and unclear next steps in a sales call.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished call transcript review with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "session-notes-review",
+      "category": "review",
+      "title": "Session Notes Review",
+      "description": "Turn raw notes into decisions, commitments, open questions, and follow-up.",
+      "role": "senior consulting editor who preserves sound thinking while fixing gaps, weak claims, and unclear next steps, with direct responsibility for the session notes review this prompt produces",
+      "fields": [
+        {
+          "id": "material",
+          "label": "Paste the material you want reviewed",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Paste notes, a proposal, transcript, audit, or client message",
+          "helper": "The prompt keeps your core intent and works directly from this material."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this session notes review.",
+        "Turn raw notes into decisions, commitments, open questions, and follow-up.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished session notes review with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "audit-in-chief",
+      "category": "review",
+      "title": "Audit in Chief",
+      "description": "Challenge an audit's evidence, priorities, business consequences, and recommended order.",
+      "role": "senior consulting editor who preserves sound thinking while fixing gaps, weak claims, and unclear next steps, with direct responsibility for the audit in chief this prompt produces",
+      "fields": [
+        {
+          "id": "material",
+          "label": "Paste the material you want reviewed",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Paste notes, a proposal, transcript, audit, or client message",
+          "helper": "The prompt keeps your core intent and works directly from this material."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this audit in chief.",
+        "Challenge an audit's evidence, priorities, business consequences, and recommended order.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished audit in chief with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "roadmap-stress-test",
+      "category": "review",
+      "title": "Roadmap Stress Test",
+      "description": "Find hidden dependencies, overloaded phases, missing owners, and weak checkpoints.",
+      "role": "senior consulting editor who preserves sound thinking while fixing gaps, weak claims, and unclear next steps, with direct responsibility for the roadmap stress test this prompt produces",
+      "fields": [
+        {
+          "id": "material",
+          "label": "Paste the material you want reviewed",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Paste notes, a proposal, transcript, audit, or client message",
+          "helper": "The prompt keeps your core intent and works directly from this material."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this roadmap stress test.",
+        "Find hidden dependencies, overloaded phases, missing owners, and weak checkpoints.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished roadmap stress test with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "client-email-review",
+      "category": "review",
+      "title": "Client Email Review",
+      "description": "Make a client email clearer, firmer, and easier to act on without changing its intent.",
+      "role": "senior consulting editor who preserves sound thinking while fixing gaps, weak claims, and unclear next steps, with direct responsibility for the client email review this prompt produces",
+      "fields": [
+        {
+          "id": "material",
+          "label": "Paste the material you want reviewed",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Paste notes, a proposal, transcript, audit, or client message",
+          "helper": "The prompt keeps your core intent and works directly from this material."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this client email review.",
+        "Make a client email clearer, firmer, and easier to act on without changing its intent.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished client email review with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "framework-review",
+      "category": "review",
+      "title": "Framework Review",
+      "description": "Test whether a named method has real stages, decision rules, and a useful boundary.",
+      "role": "senior consulting editor who preserves sound thinking while fixing gaps, weak claims, and unclear next steps, with direct responsibility for the framework review this prompt produces",
+      "fields": [
+        {
+          "id": "material",
+          "label": "Paste the material you want reviewed",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Paste notes, a proposal, transcript, audit, or client message",
+          "helper": "The prompt keeps your core intent and works directly from this material."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this framework review.",
+        "Test whether a named method has real stages, decision rules, and a useful boundary.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished framework review with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    },
+    {
+      "id": "advisory-material-review",
+      "category": "review",
+      "title": "Advisory Material Review",
+      "description": "Strengthen a worksheet, briefing, or training aid around the decision it must help someone make.",
+      "role": "senior consulting editor who preserves sound thinking while fixing gaps, weak claims, and unclear next steps, with direct responsibility for the advisory material review this prompt produces",
+      "fields": [
+        {
+          "id": "material",
+          "label": "Paste the material you want reviewed",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Paste notes, a proposal, transcript, audit, or client message",
+          "helper": "The prompt keeps your core intent and works directly from this material."
+        },
+        {
+          "id": "evidence",
+          "label": "Numbers, evidence, or limits that should shape the answer",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required",
+          "helper": "Skip this if the field above already covers it."
+        }
+      ],
+      "task": [
+        "Read my context and isolate the facts, constraints, and unknowns that matter to this advisory material review.",
+        "Strengthen a worksheet, briefing, or training aid around the decision it must help someone make.",
+        "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.",
+        "Flag missing evidence and assumptions separately so I can review them before using the result."
+      ],
+      "rules": [
+        "Don't pad the deliverable with a general introduction or a summary that repeats it.",
+        "When two reasonable choices compete, state the tradeoff and make one recommendation."
+      ],
+      "output": "a finished advisory material review with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"
+    }
+  ],
+  "advisors": [
+    {
+      "id": "positioning-partner",
+      "title": "The Positioning Partner",
+      "description": "Finds the claim buyers can understand and competitors can't easily borrow.",
+      "role": "a positioning consultant who tests every claim against buyer urgency, proof, and competitive sameness",
+      "focus": "clarifying an expert service's strongest market position",
+      "questions": [
+        "the costly problem clients already admit",
+        "the evidence behind the proposed claim"
+      ],
+      "deliverable": "a positioning decision, the rejected alternatives, and the proof needed to carry the claim"
+    },
+    {
+      "id": "offer-architect",
+      "title": "The Offer Architect",
+      "description": "Turns scattered services into one engagement with a clean buying decision.",
+      "role": "a service offer designer who balances buyer value, delivery reality, and scope control",
+      "focus": "building or repairing a coaching or consulting offer",
+      "questions": [
+        "who the engagement is and isn't for",
+        "what must change by the end"
+      ],
+      "deliverable": "a complete offer structure with scope, sequence, price logic, risks, and next test"
+    },
+    {
+      "id": "call-coach",
+      "title": "The Call Coach",
+      "description": "Diagnoses where a real sales conversation lost trust or momentum.",
+      "role": "a consultative sales coach who listens for weak diagnosis, hidden objections, and rushed recommendations",
+      "focus": "improving discovery and sales conversations",
+      "questions": [
+        "what the prospect said the problem costs",
+        "where the conversation changed direction"
+      ],
+      "deliverable": "a call diagnosis, better questions, and the exact next conversation to run"
+    },
+    {
+      "id": "delivery-director",
+      "title": "The Delivery Director",
+      "description": "Keeps client work tied to decisions and visible movement.",
+      "role": "a client delivery director who insists on ownership, evidence, and a useful meeting outcome",
+      "focus": "improving client delivery and implementation",
+      "questions": [
+        "the decision the client keeps avoiding",
+        "what has and hasn't been completed"
+      ],
+      "deliverable": "a delivery diagnosis and a short action plan with owners, dates, and review points"
+    },
+    {
+      "id": "scope-guardian",
+      "title": "The Scope Guardian",
+      "description": "Separates a useful favor from unpaid expansion that hurts the engagement.",
+      "role": "a consulting operations lead who protects results, relationships, and delivery capacity",
+      "focus": "handling scope, boundaries, and change requests",
+      "questions": [
+        "what the contract includes",
+        "what the client is asking for now"
+      ],
+      "deliverable": "the scope call, a client-ready response, and the paid or deferred options"
+    },
+    {
+      "id": "renewal-strategist",
+      "title": "The Renewal Strategist",
+      "description": "Builds the renewal around evidence and the next business problem.",
+      "role": "a client success strategist who earns renewals through adoption and delivered value",
+      "focus": "planning renewals, referrals, and right-fit expansion",
+      "questions": [
+        "what changed during the engagement",
+        "what remains unresolved or newly possible"
+      ],
+      "deliverable": "a renewal path, evidence gaps, conversation plan, and fallback closeout"
+    }
+  ]
+}

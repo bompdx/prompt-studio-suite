@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<!--
+  PROMPT STUDIO ENGINE
+  Built from the micro-app-builder scaffold. One file, no backend,
+  no third-party JavaScript. Data bank injected by build_studio.py
+  at the __STUDIO_DATA__ marker.
+-->
+<html lang="en" data-theme="auto">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Course Builder Prompt Studio</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #16201c;
+      --muted: #607068;
+      --paper: #f2f0e9;
+      --panel: rgba(255, 254, 249, 0.94);
+      --card: #fffefa;
+      --card-strong: #ffffff;
+      --accent: #b3543a;
+      --accent-2: #d6a11f;
+      --accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
+      --line: rgba(22, 32, 28, 0.14);
+      --line-strong: rgba(22, 32, 28, 0.25);
+      --shadow: 0 24px 70px rgba(20, 31, 26, 0.10);
+      --shadow-small: 0 8px 24px rgba(20, 31, 26, 0.08);
+      --radius: 20px;
+      --max: 1240px;
+    }
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --ink: #f5f1e8;
+      --muted: #b8c4bd;
+      --paper: #0d1310;
+      --panel: rgba(19, 27, 23, 0.94);
+      --card: #17201b;
+      --card-strong: #1b2620;
+      --line: rgba(245, 241, 232, 0.13);
+      --line-strong: rgba(245, 241, 232, 0.24);
+      --shadow: 0 26px 80px rgba(0, 0, 0, 0.38);
+      --shadow-small: 0 8px 28px rgba(0, 0, 0, 0.28);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Avenir Next, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 2%, color-mix(in srgb, var(--accent) 17%, transparent), transparent 26rem),
+        radial-gradient(circle at 92% 18%, color-mix(in srgb, var(--accent-2) 15%, transparent), transparent 24rem),
+        var(--paper);
+      line-height: 1.5;
+    }
+    body::before {
+      content: ""; position: fixed; inset: 0; pointer-events: none; opacity: 0.28;
+      background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+      background-size: 64px 64px; mask-image: linear-gradient(to bottom, black, transparent 72%); z-index: -1;
+    }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; border: 0; touch-action: manipulation; }
+    button, input, select, textarea { transition: border-color 180ms ease, background 180ms ease, color 180ms ease, box-shadow 180ms ease, transform 180ms ease; }
+    :focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 55%, white); outline-offset: 3px; }
+    .skip-link { position: fixed; left: 16px; top: -80px; z-index: 1000; padding: 10px 14px; border-radius: 10px; background: var(--ink); color: var(--paper); font-weight: 800; }
+    .skip-link:focus { top: 16px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .shell { width: min(100% - 40px, var(--max)); margin: 0 auto; padding: 18px 0 40px; }
+    .topbar { position: sticky; top: 10px; z-index: 40; display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 18px; padding: 8px; border: 1px solid var(--line); border-radius: 18px; background: color-mix(in srgb, var(--panel) 88%, transparent); box-shadow: var(--shadow-small); backdrop-filter: blur(18px); }
+    .brand { display: inline-flex; align-items: center; gap: 11px; padding: 4px 8px 4px 5px; color: var(--ink); }
+    .brand-mark { position: relative; width: 34px; height: 34px; border-radius: 10px; background: var(--accent); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.2); }
+    .brand-mark::before, .brand-mark::after { content: ""; position: absolute; left: 8px; right: 8px; height: 3px; border-radius: 99px; background: white; }
+    .brand-mark::before { top: 10px; box-shadow: 0 6px 0 rgba(255,255,255,0.72); }
+    .brand-mark::after { top: 22px; right: 14px; }
+    .brand-copy { display: grid; line-height: 1.05; }
+    .brand-copy b { font-size: 0.9rem; letter-spacing: -0.01em; }
+    .brand-copy span { margin-top: 4px; color: var(--muted); font: 700 0.68rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; text-transform: uppercase; letter-spacing: 0.09em; }
+    .theme-toggle { display: inline-flex; gap: 4px; padding: 4px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+    .theme-toggle button { min-width: 54px; min-height: 36px; padding: 7px 10px; border-radius: 9px; color: var(--muted); background: transparent; font-weight: 800; font-size: 0.82rem; }
+    html[data-theme="light"] [data-theme-choice="light"], html[data-theme="dark"] [data-theme-choice="dark"] { background: var(--ink); color: var(--paper); }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
+      gap: clamp(24px, 5vw, 64px);
+      align-items: stretch;
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      padding: clamp(26px, 5vw, 64px);
+      overflow: hidden;
+      position: relative;
+    }
+    .hero::after { content: ""; position: absolute; width: 260px; height: 260px; right: -120px; bottom: -150px; border-radius: 50%; border: 42px solid color-mix(in srgb, var(--accent-2) 22%, transparent); }
+    .hero-copy { align-self: center; position: relative; z-index: 1; }
+    .kicker { margin: 0 0 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.12em; font: 900 0.72rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace; }
+    h1 { margin: 0; max-width: 780px; font-size: clamp(2.5rem, 6vw, 5.2rem); line-height: 0.92; letter-spacing: -0.06em; text-wrap: balance; }
+    .subtitle { max-width: 700px; margin: 21px 0 0; color: var(--muted); font-size: clamp(1.02rem, 2vw, 1.2rem); font-weight: 620; line-height: 1.65; }
+    .hero-path { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 24px; color: var(--muted); font: 800 0.78rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .hero-path span { display: inline-flex; align-items: center; min-height: 32px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 9px; background: var(--card); }
+    .hero-path i { color: var(--accent); font-style: normal; }
+    .status-panel { position: relative; z-index: 1; display: grid; align-content: start; gap: 14px; padding: 20px; border: 1px solid var(--line); border-radius: 22px; background: var(--card); box-shadow: var(--shadow-small); }
+    .status-label { display: flex; justify-content: space-between; align-items: center; gap: 10px; color: var(--muted); font: 800 0.7rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; text-transform: uppercase; letter-spacing: 0.1em; }
+    .status-label::after { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 5px var(--accent-soft); }
+    .badge { width: fit-content; padding: 8px 11px; border-radius: 10px; background: var(--ink); color: var(--paper); font-weight: 900; font-size: 0.82rem; }
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .stat { border: 1px solid var(--line); border-radius: 14px; padding: 13px; background: color-mix(in srgb, var(--paper) 70%, var(--card)); }
+    .stat b { display: block; font-size: 1.5rem; letter-spacing: -0.04em; }
+    .stat span { color: var(--muted); font-size: 0.76rem; font-weight: 750; line-height: 1.25; }
+    .layout { display: grid; grid-template-columns: minmax(290px, 0.72fr) minmax(0, 1.45fr); gap: 20px; align-items: start; margin-top: 20px; }
+    .panel { border: 1px solid var(--line); border-radius: 24px; background: var(--panel); box-shadow: var(--shadow-small); padding: clamp(20px, 3vw, 30px); }
+    .form-panel { position: sticky; top: 84px; }
+    .profile-head { display: flex; justify-content: space-between; align-items: start; gap: 18px; }
+    .profile-score { min-width: 64px; text-align: right; color: var(--muted); font: 800 0.72rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .profile-score b { display: block; margin-bottom: 5px; color: var(--ink); font-size: 1rem; }
+    .progress-track { height: 5px; margin: 17px 0 20px; overflow: hidden; border-radius: 99px; background: var(--line); }
+    .progress-fill { width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--accent), var(--accent-2)); transition: width 240ms ease; }
+    .section-title { margin: 0; font-size: clamp(1.35rem, 3vw, 1.8rem); line-height: 1.05; letter-spacing: -0.035em; }
+    .section-note { margin: 9px 0 20px; color: var(--muted); font-weight: 620; }
+    form { display: grid; gap: 15px; }
+    .field { display: grid; gap: 7px; }
+    label { font-weight: 850; font-size: 0.91rem; }
+    .req { color: var(--accent); }
+    .helper { margin: 0; color: var(--muted); font-size: 0.82rem; }
+    input, select, textarea { width: 100%; min-height: 48px; padding: 12px 13px; border: 1px solid var(--line-strong); border-radius: 12px; background: var(--card); color: var(--ink); }
+    input:hover, select:hover, textarea:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+    input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); outline: none; }
+    textarea { min-height: 104px; resize: vertical; }
+    .button-row, .result-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .primary, .secondary, .mini { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 15px; border-radius: 11px; font-weight: 900; }
+    .primary { background: var(--accent); color: white; box-shadow: 0 7px 18px color-mix(in srgb, var(--accent) 26%, transparent); }
+    .primary:hover { filter: brightness(1.06); transform: translateY(-1px); }
+    .secondary, .mini { border: 1px solid var(--line-strong); background: var(--card); color: var(--ink); }
+    .secondary:hover, .mini:hover { border-color: var(--accent); background: var(--accent-soft); }
+    .mini { min-height: 40px; padding: 8px 12px; font-size: 0.86rem; }
+    .mini.primary-mini { background: var(--accent); color: white; border-color: transparent; }
+    button:active { transform: scale(0.98); }
+    .validation { display: none; padding: 11px 12px; border-radius: 14px; background: rgba(180, 46, 46, 0.1); color: #b42e2e; font-weight: 800; }
+    .validation.show { display: block; }
+    .saved-note { color: var(--muted); font-size: 0.85rem; font-weight: 700; margin: 4px 0 0; }
+    .stale-note { display: none; margin-bottom: 14px; padding: 11px 12px; border-radius: 14px; background: color-mix(in srgb, var(--accent-2) 22%, var(--card)); border: 1px solid var(--line); font-weight: 800; }
+    .stale-note.show { display: block; }
+    footer { display: flex; justify-content: space-between; gap: 16px; margin-top: 24px; padding: 12px 4px; color: var(--muted); font: 700 0.75rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .entrance { animation: rise-in 420ms cubic-bezier(.16,1,.3,1) both; }
+    @keyframes rise-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 900px) { .hero, .layout { grid-template-columns: 1fr; } .form-panel { position: static; } }
+    @media (max-width: 640px) { .shell { width: min(100% - 22px, var(--max)); padding-top: 10px; } .topbar { top: 6px; } .brand-copy span { display: none; } .hero { padding: 27px 21px; border-radius: 22px; } h1 { font-size: clamp(2.35rem, 13vw, 3.6rem); } .hero-path i { display: none; } .primary, .secondary { width: 100%; } footer { text-align: center; display: block; } footer span { display: block; margin: 4px 0; } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+    }
+    /* ============ TYPE STYLES START ============ */
+    .workspace-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 18px; }
+    .workspace-label { color: var(--muted); font: 800 0.7rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; text-transform: uppercase; letter-spacing: 0.1em; }
+    .tab-row { display: inline-flex; flex-wrap: wrap; gap: 4px; margin-bottom: 22px; padding: 4px; border: 1px solid var(--line); border-radius: 13px; background: color-mix(in srgb, var(--paper) 65%, transparent); }
+    .tab {
+      min-height: 40px; padding: 8px 14px; border-radius: 9px;
+      background: transparent; color: var(--muted); font-weight: 900;
+    }
+    .tab:hover { color: var(--ink); }
+    .tab.active { background: var(--card-strong); color: var(--ink); box-shadow: var(--shadow-small); }
+    .browse-toolbar { display: grid; grid-template-columns: minmax(220px, 1fr); gap: 12px; margin: 18px 0; }
+    .search-wrap { position: relative; }
+    .search-wrap::before { content: ""; position: absolute; left: 15px; top: 50%; width: 12px; height: 12px; border: 2px solid var(--muted); border-radius: 50%; transform: translateY(-62%); pointer-events: none; }
+    .search-wrap::after { content: ""; position: absolute; left: 27px; top: 29px; width: 7px; height: 2px; border-radius: 2px; background: var(--muted); transform: rotate(45deg); pointer-events: none; }
+    .search-wrap input { padding-left: 43px; }
+    .cat-row { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; }
+    .cat-chip {
+      min-height: 40px; padding: 8px 12px; border-radius: 10px; border: 1px solid var(--line);
+      background: var(--card); color: var(--muted); font-weight: 800; font-size: 0.84rem;
+    }
+    .cat-chip.active { background: var(--accent); color: #fff; border-color: transparent; }
+    .cat-note { margin: 0 0 16px; color: var(--muted); font-weight: 620; }
+    .wf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(235px, 1fr)); gap: 11px; }
+    .wf-card {
+      position: relative; min-height: 184px; text-align: left; display: grid; gap: 8px; align-content: start;
+      border: 1px solid var(--line); border-radius: 16px; padding: 17px;
+      background: var(--card); color: var(--ink); overflow: hidden;
+    }
+    .wf-card::after { content: ""; position: absolute; inset: auto 0 0; height: 3px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 200ms ease; }
+    .wf-card:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); box-shadow: var(--shadow-small); }
+    .wf-card:hover::after { transform: scaleX(1); }
+    .wf-card b { font-size: 1.04rem; letter-spacing: -0.025em; }
+    .wf-card span { color: var(--muted); font-size: 0.86rem; font-weight: 620; }
+    .wf-card .card-no { color: var(--accent); font: 850 0.68rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.08em; }
+    .wf-card .go { align-self: end; margin-top: auto; color: var(--accent); font-weight: 900; font-size: 0.82rem; }
+    .no-results { grid-column: 1 / -1; min-height: 180px; display: grid; place-items: center; padding: 24px; border: 1px dashed var(--line-strong); border-radius: 16px; text-align: center; color: var(--muted); }
+    .detail-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
+    .crumb { min-height: 44px; background: transparent; color: var(--accent); font-weight: 900; padding: 7px 0; }
+    .detail-meta { margin: 0 0 8px; color: var(--accent); font: 850 0.7rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; text-transform: uppercase; letter-spacing: 0.1em; }
+    .result-ready { display: flex; align-items: center; gap: 9px; margin: 22px 0 10px; font-weight: 900; }
+    .result-ready::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 5px var(--accent-soft); }
+    .prompt-box {
+      margin-top: 12px; border: 1px solid var(--line); border-radius: 16px;
+      background: #101713; color: #eaf2ed; padding: 18px; max-height: 460px; overflow: auto; box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+    .prompt-box pre { margin: 0; white-space: pre-wrap; word-break: break-word; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.88rem; line-height: 1.55; }
+    .result-actions { margin-top: 12px; }
+    .adv-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+    .adv-card { min-height: 190px; border: 1px solid var(--line); border-radius: 16px; padding: 17px; background: var(--card); display: grid; gap: 9px; align-content: start; }
+    .adv-card:hover { border-color: color-mix(in srgb, var(--accent) 50%, var(--line)); box-shadow: var(--shadow-small); }
+    .advisor-index { color: var(--accent); font: 850 0.68rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .adv-card b { font-size: 1.05rem; }
+    .adv-card p { margin: 0; color: var(--muted); font-size: 0.9rem; font-weight: 620; }
+    .adv-card .mini { align-self: end; margin-top: auto; }
+    .empty { min-height: 200px; display: grid; place-items: center; text-align: center; border: 1px dashed var(--line); border-radius: 20px; color: var(--muted); padding: 22px; }
+    .empty strong { display: block; color: var(--ink); margin-bottom: 5px; }
+    .manual-item { border: 1px solid var(--line); border-radius: 16px; background: var(--card); padding: 15px 16px; display: grid; gap: 9px; margin-bottom: 10px; }
+    .manual-item-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+    .manual-item-head b { font-size: 1rem; }
+    .manual-item-head span { color: var(--muted); font-size: 0.82rem; font-weight: 700; }
+    .manual-item pre { margin: 0; white-space: pre-wrap; word-break: break-word; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.8rem; line-height: 1.5; max-height: 130px; overflow: auto; color: var(--muted); }
+    .manual-title-field { display: grid; gap: 7px; margin-bottom: 14px; }
+    #printArea { display: none; }
+    @media (max-width: 640px) { .workspace-head { display: block; } .tab-row { display: grid; grid-template-columns: repeat(3, 1fr); width: 100%; } .tab { padding-inline: 7px; } .wf-grid { grid-template-columns: 1fr; } .wf-card { min-height: 0; } }
+    @media print {
+      body * { visibility: hidden; }
+      #printArea, #printArea * { visibility: visible; }
+      #printArea {
+        display: block; position: absolute; inset: 0; padding: 0;
+        color: #111; background: #fff; font-family: Georgia, serif;
+      }
+      #printArea .print-cover { padding: 40vh 0 0; text-align: center; page-break-after: always; }
+      #printArea .print-cover h1 { font-size: 2.2rem; letter-spacing: 0; line-height: 1.2; }
+      #printArea .print-cover p { color: #555; }
+      #printArea .print-prompt { page-break-inside: avoid; page-break-before: always; padding: 24px 0; }
+      #printArea .print-prompt h2 { font-size: 1.2rem; margin: 0 0 4px; }
+      #printArea .print-prompt .print-source { color: #666; font-size: 0.85rem; margin: 0 0 12px; }
+      #printArea .print-prompt pre { white-space: pre-wrap; word-break: break-word; font-family: "Courier New", monospace; font-size: 0.82rem; line-height: 1.5; border: 1px solid #ccc; border-radius: 8px; padding: 14px; }
+    }
+    /* ============ TYPE STYLES END ============ */
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#studioWorkspace">Skip to the studio</a>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand" aria-label="Prompt Studio">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-copy"><b>Prompt Studio</b><span>Prompt workbench</span></span>
+      </div>
+      <div class="theme-toggle" role="group" aria-label="Theme selection">
+        <button type="button" data-theme-choice="light" aria-pressed="false">Light</button>
+        <button type="button" data-theme-choice="dark" aria-pressed="false">Dark</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero entrance" id="hero">
+        <div class="hero-copy">
+          <p class="kicker">Guided prompt system for online educators</p>
+          <h1>Course Builder Prompt Studio</h1>
+          <p class="subtitle">For educators, trainers, and experts turning what they know into courses students finish. Each workflow builds a ready-to-paste prompt for validating demand, designing curriculum, keeping students moving, and filling the next cohort.</p>
+          <div class="hero-path" aria-label="How the studio works">
+            <span>01 Add context</span><i aria-hidden="true">→</i><span>02 Pick a job</span><i aria-hidden="true">→</i><span>03 Copy the prompt</span>
+          </div>
+        </div>
+        <aside class="status-panel">
+          <div class="status-label">Studio contents</div>
+          <div class="badge">48 guided workflows</div>
+          <div class="stat-grid" id="statGrid"></div>
+        </aside>
+      </section>
+
+      <!-- ============ TYPE BODY START ============ -->
+      <div class="layout entrance" id="studioWorkspace">
+        <section class="panel form-panel" aria-labelledby="profileTitle">
+          <div class="profile-head">
+            <div><p class="kicker">Step 1</p><h2 class="section-title" id="profileTitle">Your business profile</h2></div>
+            <div class="profile-score"><b id="profilePercent">0%</b>context</div>
+          </div>
+          <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="profileProgress"></div></div>
+          <p class="section-note">Fill this once. Every workflow and advisor in this studio writes your answers into its prompt.</p>
+          <form id="profileForm" novalidate></form>
+          <p class="saved-note" id="savedNote">Saved on this device as you type.</p>
+        </section>
+
+        <section class="panel">
+          <div class="workspace-head"><div><span class="workspace-label">Your workspace</span><h2 class="section-title" style="margin-top:8px;">Build something useful</h2></div></div>
+          <div class="tab-row" role="tablist">
+            <button class="tab active" type="button" role="tab" aria-selected="true" data-tab="workflows">Workflows</button>
+            <button class="tab" type="button" role="tab" aria-selected="false" data-tab="advisors">Advisors</button>
+            <button class="tab" type="button" role="tab" aria-selected="false" data-tab="manual">Manual <span id="manualCount"></span></button>
+          </div>
+
+          <div id="tab-workflows">
+            <div id="workflowBrowse">
+              <p class="kicker">Step 2</p>
+              <h2 class="section-title">Pick a workflow</h2>
+              <p class="section-note">Each workflow asks for a few specifics, then builds a finished prompt you paste into ChatGPT, Claude, or the assistant you already use.</p>
+              <div class="browse-toolbar"><label class="search-wrap"><span class="sr-only">Search workflows</span><input type="search" id="wfSearch" placeholder="Search all 48 workflows" autocomplete="off" /></label></div>
+              <div class="cat-row" id="catRow"></div>
+              <p class="cat-note" id="catNote"></p>
+              <div class="wf-grid" id="wfGrid"></div>
+            </div>
+
+            <div id="workflowDetail" hidden>
+              <div class="detail-head">
+                <button class="crumb" type="button" id="backToGrid">&larr; All workflows</button>
+              </div>
+              <p class="detail-meta" id="wfMeta"></p>
+              <h2 class="section-title" id="wfTitle"></h2>
+              <p class="section-note" id="wfDescription"></p>
+              <form id="wfForm" novalidate>
+                <div id="wfFields"></div>
+                <div id="wfValidation" class="validation"></div>
+                <div class="button-row">
+                  <button class="primary" type="submit">Build my prompt</button>
+                </div>
+              </form>
+              <div id="wfResultWrap" hidden>
+                <div class="result-ready">Your prompt is ready</div>
+                <div id="staleNote" class="stale-note" role="status">Your inputs changed after this prompt was built. Build it again to refresh it.</div>
+                <div class="prompt-box"><pre id="wfPrompt"></pre></div>
+                <div class="result-actions">
+                  <button class="mini primary-mini" type="button" id="copyPrompt">Copy prompt</button>
+                  <button class="mini" type="button" id="copyOpen">Copy + open ChatGPT</button>
+                  <button class="mini" type="button" id="addToManual">Add to manual</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="tab-advisors" hidden>
+            <p class="kicker">Expert modes</p>
+            <h2 class="section-title">Sit down with an advisor</h2>
+            <p class="section-note">Each advisor prompt sets up a working session: the AI interviews you one question at a time, then delivers its recommendation and stays in the role.</p>
+            <div class="adv-grid" id="advGrid"></div>
+            <div id="advResultWrap" hidden>
+              <h2 class="section-title" id="advResultTitle" style="margin-top:18px;"></h2>
+              <div class="prompt-box"><pre id="advPrompt"></pre></div>
+              <div class="result-actions">
+                <button class="mini primary-mini" type="button" id="advCopy">Copy prompt</button>
+                <button class="mini" type="button" id="advCopyOpen">Copy + open ChatGPT</button>
+                <button class="mini" type="button" id="advAddToManual">Add to manual</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="tab-manual" hidden>
+            <p class="kicker">Your collection</p>
+            <h2 class="section-title">Prompt manual</h2>
+            <p class="section-note">Prompts you save land here. Reorder them, name the manual, then print it to PDF or download it as a file you can share with your team.</p>
+            <div class="manual-title-field field">
+              <label for="manualTitle">Manual title</label>
+              <input type="text" id="manualTitle" placeholder="Example: Q3 launch prompt playbook" />
+            </div>
+            <div id="manualEmpty" class="empty"><div><strong>Nothing saved yet</strong>Build a prompt in Workflows or Advisors, then hit "Add to manual".</div></div>
+            <div id="manualList"></div>
+            <div class="result-actions">
+              <button class="mini primary-mini" type="button" id="printManual">Print / save as PDF</button>
+              <button class="mini" type="button" id="downloadManual">Download as HTML</button>
+              <button class="mini" type="button" id="clearManual">Clear manual</button>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div id="printArea" aria-hidden="true"></div>
+      <!-- ============ TYPE BODY END ============ -->
+    </main>
+
+    <footer><span>Prompt Studio</span><span>Built for focused work. Your profile stays on this device.</span></footer>
+  </div>
+
+  <script>
+    const STUDIO = {"slug": "course-creators", "title": "Course Builder Prompt Studio", "kicker": "Guided prompt system for online educators", "subtitle": "For educators, trainers, and experts turning what they know into courses students finish. Each workflow builds a ready-to-paste prompt for validating demand, designing curriculum, keeping students moving, and filling the next cohort.", "badge": "48 guided workflows", "accent": "#b3543a", "accent2": "#d6a11f", "footer": "Prompt Studio", "profile": [{"id": "course", "label": "What you teach and who takes it", "type": "textarea", "required": true, "placeholder": "Example: 6-week course teaching realtors to shoot their own listing videos, $397", "helper": "One or two sentences. Every prompt in this studio uses this."}, {"id": "students", "label": "Your students in their own words", "type": "textarea", "required": false, "placeholder": "Example: 'I don't have time to learn editing' and 'my listings look worse than the new agent's down the street'", "helper": "Phrases from emails, calls, or comments. Their words, not yours."}, {"id": "project", "label": "The course or launch you're working on now", "type": "textarea", "required": false, "placeholder": "Example: rebuilding module 4 and prepping a September cohort launch", "helper": "Leave blank and prompts work from the course description above."}, {"id": "goal", "label": "Main goal for the next 90 days", "type": "text", "required": false, "placeholder": "Example: 40 enrollments and a completion rate above 60%", "helper": ""}, {"id": "voice", "label": "Voice and constraints the AI should know", "type": "text", "required": false, "placeholder": "Example: plainspoken, no hype, my students are busy professionals", "helper": ""}], "categories": [{"id": "direction", "title": "Course Direction", "note": "Sharpen the promise and prove people will pay before you record anything."}, {"id": "students", "title": "Learner Research", "note": "What your students believe, fear, and need to hear before they enroll."}, {"id": "curriculum", "title": "Curriculum Design", "note": "Turn what you know into modules and lessons students actually finish."}, {"id": "completion", "title": "Completion & Momentum", "note": "Onboarding, first wins, and the systems that carry students to the last module."}, {"id": "selling", "title": "Sales & Launch", "note": "The page, emails, and webinar that turn a waitlist into enrollments."}, {"id": "results", "title": "Results & Version Two", "note": "Proof collection, refund diagnosis, and what to fix before the next cohort."}], "workflows": [{"id": "course-promise-sharpener", "category": "direction", "title": "Course Promise Sharpener", "description": "Turns a fuzzy course topic into one promise a stranger could repeat back after reading it once.", "role": "a course positioning strategist who has rewritten promises for programs stuck at a handful of sales, and gets judged on whether a page visitor can say what the course does", "fields": [{"id": "promise", "label": "Your promise as it stands", "type": "text", "required": true, "placeholder": "Example: Learn to shoot professional listing videos with just your phone", "helper": ""}, {"id": "aftermath", "label": "What students say after finishing", "type": "textarea", "required": false, "placeholder": "Example: 'I stopped booking my videographer' and 'sellers comment on my videos at listing appointments'", "helper": "Optional, but real graduate language sharpens the rewrites."}], "task": ["Rewrite my course promise five ways: one built on the end result, one on the timeframe, one on the method, one on who it's for, and one on what students stop paying for or outsourcing.", "For each version, name the buyer who'd pick that framing and the buyer who'd scroll past it.", "Pick the strongest version and defend the pick using my audience and price, not general copywriting theory.", "List the claims inside the winning promise I need to back up with student results or my own results."], "rules": ["Every version must name an outcome a student could check off, not a feeling.", "If my current promise is already the strongest, say so and sharpen it instead of replacing it."], "output": "five promise rewrites with buyer notes, one recommended winner with reasoning, and a short list of claims that need proof"}, {"id": "transformation-map", "category": "direction", "title": "Before and After Map", "description": "Maps the student's starting Monday against their finishing Monday so every module has a job.", "role": "a learning designer who plans courses backward from the student's last day, and answers for whether graduates can do something they couldn't do at signup", "fields": [{"id": "before", "label": "Where students start", "type": "textarea", "required": true, "placeholder": "Example: agents who pay a videographer $300 per listing and wait 4 days for the edit", "helper": ""}, {"id": "after", "label": "Where they finish", "type": "textarea", "required": false, "placeholder": "Example: shoots, edits, and posts a listing video the same day using their phone", "helper": ""}], "task": ["Describe the student's typical week before the course: what they do, what they avoid, what they pay others for, and what they believe about their own ability.", "Describe the same week after finishing: which tasks moved in-house, what got faster, and what they now charge for or stop buying.", "List the 5 to 8 capability jumps between those two weeks, in the order a student has to make them.", "Flag any jump that's really a belief shift rather than a skill, since those need different teaching."], "rules": ["State every change as something visible in the student's calendar, bank account, or output, never in their confidence level."], "output": "a two-column before and after table plus an ordered list of capability jumps, each tagged skill or belief"}, {"id": "outcome-metrics", "category": "direction", "title": "Student Outcome Metrics", "description": "Defines the 3 to 5 numbers that prove your course worked, so testimonials say more than 'great content'.", "role": "an outcomes-focused program director who won't launch a cohort without knowing what number goes next to the word 'graduate'", "fields": [{"id": "promise", "label": "The course promise", "type": "text", "required": true, "placeholder": "Example: publish your first listing video within 3 weeks", "helper": ""}, {"id": "current", "label": "How you measure success today", "type": "textarea", "required": false, "placeholder": "Example: I ask for feedback in the final module and hope for the best", "helper": ""}], "task": ["Propose 3 to 5 measurable outcomes for this course: at least one during the course, one at completion, and one 30 to 60 days after.", "For each, define exactly how a student measures it without special tools.", "Write the check-in question I'd send students to collect each number.", "Show what a testimonial built on each metric sounds like, in one sentence of student language."], "rules": ["Reject vanity measures like modules watched. Every metric has to survive a skeptical buyer asking 'so what'."], "output": "a metrics table with measurement method, collection question, and a sample testimonial line for each outcome"}, {"id": "demand-validation-plan", "category": "direction", "title": "Demand Validation Plan", "description": "A 14-day test that finds out if people will pay for this course before you record module one.", "role": "a product validator who has talked creators out of building courses nobody ordered, and measures success in deposits collected, not survey yeses", "fields": [{"id": "access", "label": "Your audience access", "type": "textarea", "required": true, "placeholder": "Example: 2,100 email subscribers, a 900-member Facebook group, 15 past coaching clients", "helper": ""}, {"id": "price", "label": "Planned price", "type": "text", "required": false, "placeholder": "Example: thinking $497", "helper": ""}], "task": ["Design a validation test I can run in 14 days with the audience access I listed, ending in a real payment or deposit rather than expressed interest.", "Write the pitch message for the test, sized to the channel I'd send it through.", "Set the pass and fail line: how many paid commitments at what price means build it, and what number means stop.", "List the three most likely false positives with my audience and how the test design avoids each one."], "rules": ["Survey answers and waitlist signups don't count as validation in this plan. Money or a calendared commitment does."], "output": "a day-by-day 14-day validation plan with the pitch message, a pass or fail threshold, and a stop-loss rule"}, {"id": "presale-offer-draft", "category": "direction", "title": "Presale Offer Draft", "description": "Drafts the founding-cohort offer that sells the course before it exists, with honest framing about what's built.", "role": "a launch copywriter who sells beta cohorts for a living and keeps refunds low by promising the roadmap, never the finished thing", "fields": [{"id": "built", "label": "What exists today", "type": "textarea", "required": true, "placeholder": "Example: full outline done, module 1 recorded, the rest ships weekly during the cohort", "helper": ""}, {"id": "terms", "label": "Founding price and cap", "type": "text", "required": false, "placeholder": "Example: $297 for the first 20, full price will be $497", "helper": ""}], "task": ["Write the founding-cohort offer: what buyers get now, what ships when, and what they give up by waiting for the finished version.", "Draft the honesty paragraph that states plainly what isn't built yet and why early buyers come out ahead anyway.", "Write the founding-member ask: what feedback or testimonials I'm requesting in exchange for the discount.", "Draft a 3-email presale sequence: announcement, proof or story, deadline."], "rules": ["No manufactured scarcity. The only deadline allowed is one tied to the real cohort start date or seat cap I gave you."], "output": "a one-page presale offer plus three emails, each under 250 words"}, {"id": "course-angle-bench", "category": "direction", "title": "Course Angle Bench", "description": "Generates six distinct angles for the same course so your marketing isn't repeating one pitch until it wears out.", "role": "a course marketing strategist who plans 90 days of promotion before launch day and gets judged on whether week 8 content still earns replies", "fields": [{"id": "pitch", "label": "Your main pitch today", "type": "textarea", "required": true, "placeholder": "Example: I mostly say 'stop paying videographers, learn to do it yourself'", "helper": ""}], "task": ["Generate six angles for this course: cost replacement, speed, independence, a common mistake, a contrarian take on how this skill is usually taught, and a student story frame.", "For each angle, write the one-line hook and name where it fits: cold audience, email list, or retargeting.", "Rank the six by distance from my current pitch, so I know which ones add real variety.", "Flag any angle that needs proof I might not have yet."], "rules": ["Each angle has to change the argument, not just the wording. If two angles could share a headline, replace one."], "output": "six angle cards, each with a hook line, audience fit, distance from my current pitch, and required proof"}, {"id": "price-tier-decision", "category": "direction", "title": "Price and Tier Decision", "description": "Settles your course price and whether a second tier earns its complexity, using your delivery costs and revenue goal.", "role": "a pricing advisor for education products who has watched three-tier pricing sink checkout conversion, and defends the simplest structure that hits the revenue number", "fields": [{"id": "options", "label": "Prices you're weighing", "type": "text", "required": true, "placeholder": "Example: torn between $297 self-paced and $597 with group calls", "helper": ""}, {"id": "cost", "label": "What delivery costs you", "type": "textarea", "required": false, "placeholder": "Example: group calls take 3 hours a week for 6 weeks, plus feedback on submissions", "helper": ""}, {"id": "target", "label": "Revenue goal", "type": "text", "required": false, "placeholder": "Example: $15,000 from this cohort", "helper": ""}], "task": ["Work the math on each option I listed: enrollments needed to hit my revenue goal and hours of my time each enrollment consumes.", "Recommend one price and structure, and defend it against the strongest alternative I listed.", "If you recommend a second tier, define exactly what separates it and which buyer picks it. If not, say what to cut.", "Write the one-paragraph price justification for the sales page, anchored to what students currently spend on this problem."], "rules": ["Count my hours as a real cost. A higher price that eats 20 hours a week isn't automatically the better answer."], "output": "a pricing recommendation memo with the math shown, a tier decision, and sales-page price copy"}, {"id": "competitor-gap-scan", "category": "direction", "title": "Competing Course Gap Scan", "description": "Finds what rival courses skip, overpromise, or bury so your positioning claims the territory they left open.", "role": "a competitive researcher for course businesses who reads rival curricula and buyer reviews hunting for the complaint that shows up three times", "fields": [{"id": "rivals", "label": "The competition", "type": "textarea", "required": true, "placeholder": "Example: two Udemy courses at $89, one $997 signature program, endless free YouTube tutorials", "helper": ""}, {"id": "heard", "label": "What students said about them", "type": "textarea", "required": false, "placeholder": "Example: two students said the cheap courses never cover working with sellers on camera", "helper": ""}], "task": ["Map what each competitor I listed covers, what they skip, and what their buyers complain about, based on what I shared or what's typical in this market.", "Identify the gap my course fills that shows up as a real complaint or a missing module, not just a feature difference.", "Write the positioning line that claims that gap without naming competitors.", "Answer the objection 'why not just watch YouTube' for my specific course."], "rules": ["Where you're inferring a competitor's weakness instead of working from what I gave you, mark it as a guess to verify."], "output": "a competitor gap table, one positioning line, and a written answer to the free-alternative objection"}, {"id": "ideal-student-profile", "category": "students", "title": "Ideal Student Profile", "description": "Profiles your best-fit student and the buyer you should turn away, so marketing and refund rates both improve.", "role": "an enrollment strategist who screens applicants for cohort programs and knows a wrong-fit student costs a refund plus a public complaint", "fields": [{"id": "best", "label": "Your best student ever", "type": "textarea", "required": true, "placeholder": "Example: Dana, a solo agent who finished in 5 weeks and booked 3 listings using her videos", "helper": ""}, {"id": "worst", "label": "Your worst fit so far", "type": "textarea", "required": false, "placeholder": "Example: a broker who wanted done-for-you videos and refunded in week 2", "helper": ""}], "task": ["Build the best-fit profile from my examples: situation, resources, time available, and what they'd already tried before enrolling.", "Build the wrong-fit profile: the buyer who'll enroll, stall, and refund, and the signal that identifies them before checkout.", "Write the 'this is for you if, not for you if' section for my sales page, six lines max per side.", "Suggest one qualifying question I could add before or at checkout to filter wrong fits."], "rules": ["The wrong-fit profile gets equal effort. Naming who shouldn't buy is the point of this exercise."], "output": "two student profiles, a for-you and not-for-you sales page block, and one checkout qualifying question"}, {"id": "pain-interview-kit", "category": "students", "title": "Pain Point Interview Kit", "description": "A script for five learner interviews that digs up the frustrations your modules and sales page should be built on.", "role": "a customer researcher who runs pre-course interviews and throws out any question a polite person could answer with 'yeah, that'd be nice'", "fields": [{"id": "who", "label": "Who you can interview", "type": "textarea", "required": true, "placeholder": "Example: 6 past coaching clients and 3 people from my waitlist", "helper": ""}, {"id": "question", "label": "The one thing you need to learn", "type": "text", "required": false, "placeholder": "Example: whether the tech setup or the on-camera fear is the bigger blocker", "helper": ""}], "task": ["Write a 20-minute interview script with 8 to 10 questions, ordered from their current situation to past attempts to what they'd pay to fix.", "For each question, note what a useful answer sounds like versus a polite non-answer.", "Add two follow-up probes for the moments people go vague.", "Explain how to log answers so patterns across five interviews show up on one page."], "rules": ["No question may pitch the course or ask 'would you buy'. This kit finds pain; it doesn't test the offer."], "output": "an interview script with answer-quality notes, follow-up probes, and a one-page logging format"}, {"id": "enrollment-objection-map", "category": "students", "title": "Enrollment Objection Map", "description": "Lists every reason someone almost buys your course and doesn't, then assigns each a home: page, email, or FAQ.", "role": "a conversion strategist for course launches who reads cart-abandonment surveys for fun and sorts every objection into answer-here or answer-earlier", "fields": [{"id": "heard", "label": "Objections you've heard", "type": "textarea", "required": true, "placeholder": "Example: 'no time right now', 'my market is different', 'I bought a course before and never finished it'", "helper": ""}, {"id": "price", "label": "Course price", "type": "text", "required": false, "placeholder": "Example: $497", "helper": ""}], "task": ["Expand my list to the full objection set for a course at this price, marking which ones I supplied and which you added.", "Sort them: price, time, self-doubt, skepticism about the method, and wrong timing.", "For each objection, write a two-sentence answer using my course specifics and pick where it lives: sales page section, launch email, FAQ, or checkout.", "Name the one objection that's actually a fit problem I should stop trying to answer."], "rules": ["Answers must concede what's true in the objection before countering it. Students smell a dodge."], "output": "an objection table with category, written answer, and placement, plus one objection flagged as a fit filter"}, {"id": "readiness-checklist", "category": "students", "title": "Student Readiness Checklist", "description": "A pre-enrollment checklist that tells buyers exactly what they need before day one, cutting week-one refunds.", "role": "a student success lead who reviews every refund request and traces most of them to expectations nobody set before checkout", "fields": [{"id": "prereqs", "label": "What students need before starting", "type": "textarea", "required": true, "placeholder": "Example: a smartphone from the last 4 years, 3 hours a week, at least one active listing to practice on", "helper": ""}, {"id": "surprise", "label": "What surprises new students", "type": "text", "required": false, "placeholder": "Example: nobody expects the homework to involve posting publicly", "helper": ""}], "task": ["Turn my prerequisites into a checklist a buyer reads in under a minute: tools, time, starting skills, and what they'll be asked to do publicly.", "Write the honest line about the hardest part of the course, placed where it prevents a refund instead of a sale it should never have made.", "Draft the pre-start email that walks enrolled students through getting ready before module one opens.", "Recommend where the checklist appears: sales page, checkout, confirmation email, or all three, with reasoning."], "rules": ["Write the checklist to lose the wrong buyers. A shorter refund column beats a longer sales column."], "output": "a readiness checklist, one hardest-part disclosure line, a pre-start email, and placement recommendations"}, {"id": "student-language-bank", "category": "students", "title": "Student Language Bank", "description": "Pulls the exact phrases students use about the problem so your copy sounds like the inside of their heads, not your slides.", "role": "a voice-of-customer analyst who builds copy decks from student emails and call notes, and bans any phrase the students didn't say first", "fields": [{"id": "material", "label": "Paste raw student words", "type": "textarea", "required": true, "placeholder": "Example: paste survey answers, DMs, community posts, or call notes where students describe the problem", "helper": "Unedited. Typos and rambling included."}], "task": ["Extract every phrase where a student describes the problem, a failed attempt, or the wished-for outcome, keeping their exact wording.", "Group the phrases: pain, desire, objection, and identity, meaning how they describe themselves.", "Mark the 5 strongest lines for headlines and the 5 that belong in body copy or FAQs.", "List the words I tend to use that never appear in their language, as candidates to cut from my copy."], "rules": ["Keep quotes verbatim, typos included. Paraphrasing destroys the evidence."], "output": "a categorized phrase bank with headline picks, body-copy picks, and a cut list of my words they never use"}, {"id": "false-belief-inventory", "category": "students", "title": "False Belief Inventory", "description": "Names the beliefs that stop your students from starting, like 'I need expensive gear', and plans the counter-proof for each.", "role": "a curriculum psychologist for skills courses who treats every stalled student as evidence of a belief the course never addressed", "fields": [{"id": "beliefs", "label": "Beliefs you've heard", "type": "textarea", "required": true, "placeholder": "Example: 'phone video looks cheap', 'my voice sounds terrible recorded', 'buyers never watch these anyway'", "helper": ""}], "task": ["List the beliefs blocking enrollment and the beliefs blocking completion, keeping the two lists separate.", "For each belief, identify the fastest proof that breaks it: a demo, a student result, a stat, or an exercise.", "Assign each belief a home: sales copy handles pre-purchase beliefs, specific modules handle mid-course beliefs.", "Write the reframe sentence for the two most damaging beliefs, in words my students would use."], "rules": ["Proof beats argument. If the counter is a claim instead of a demonstration, keep looking."], "output": "two belief lists with proof type and placement for each, plus reframe lines for the top two"}, {"id": "buyer-trigger-timeline", "category": "students", "title": "Buyer Trigger Timeline", "description": "Reconstructs what happens in a student's life the week before they finally enroll, so launches can time to real triggers.", "role": "a buying-behavior researcher for education products who asks every new student 'what happened the week you enrolled' and plans campaigns around the answers", "fields": [{"id": "triggers", "label": "Triggers you know about", "type": "textarea", "required": true, "placeholder": "Example: two students enrolled right after losing a listing to an agent with better marketing", "helper": ""}, {"id": "pattern", "label": "When sales actually land", "type": "text", "required": false, "placeholder": "Example: most enrollments come in the last 48 hours of open cart", "helper": ""}], "task": ["Build the trigger timeline: the events, seasons, or setbacks that move my student from aware to ready.", "Rank the triggers by how often they appear in what I shared and how visible each is from the outside.", "For the top three triggers, write the message that meets a student inside that moment.", "Suggest what to ask new enrollees at checkout so this timeline keeps getting sharper."], "rules": ["Anchor every trigger to something I reported, or label it an assumption to verify. No invented backstory."], "output": "a ranked trigger list, three trigger-matched messages, and one post-checkout research question"}, {"id": "prelaunch-survey-builder", "category": "students", "title": "Pre-Launch Survey Builder", "description": "A short survey your waitlist will actually finish, built to settle one course decision rather than collect compliments.", "role": "a research designer for course businesses who caps every survey at two minutes because question eleven is where honest answers stop", "fields": [{"id": "audience", "label": "Who gets the survey", "type": "text", "required": true, "placeholder": "Example: 340-person waitlist, sent by email", "helper": ""}, {"id": "decision", "label": "The decision it must settle", "type": "text", "required": true, "placeholder": "Example: whether to open the course with gear setup or on-camera confidence", "helper": ""}], "task": ["Write a survey of 6 to 8 questions that settles the decision I named, mixing multiple-choice, one ranking question, and open text.", "Order the questions so the easy ones build momentum and the money question lands in the middle.", "Write the invitation email that gets the survey opened without begging.", "Define what answer pattern settles my decision each way, before I see any results."], "rules": ["Every question must map to a decision. Delete anything I'd read with interest but never act on."], "output": "the survey with answer options, an invitation email, and a pre-registered decision rule"}, {"id": "module-map-builder", "category": "curriculum", "title": "Module Map Builder", "description": "Sequences your course into modules where each one ends with something a student made, not just watched.", "role": "a curriculum architect who has rescued sprawling 12-module courses by cutting them to six, and gets measured on completion rate, not content volume", "fields": [{"id": "topics", "label": "Everything you want to teach", "type": "textarea", "required": true, "placeholder": "Example: gear setup, lighting, shooting walkthroughs, editing in CapCut, posting, getting sellers on camera, running the video as an ad", "helper": "Brain-dump it all. Sorting is the AI's job."}, {"id": "length", "label": "Course length", "type": "text", "required": false, "placeholder": "Example: 6 weeks, one module per week", "helper": ""}], "task": ["Sort everything I listed into must-teach, reference material, and cut, judged against the course promise in my context.", "Sequence the must-teach items into modules where each module ends with a deliverable the student produced.", "Name each module by the student's result, not the topic.", "Flag the module where students are most likely to stall and say why.", "Show what got demoted to reference material and where it lives instead."], "rules": ["If a topic doesn't move the student toward the promised outcome, it goes to reference or the cut list, however proud of it I am."], "output": "a module map with per-module deliverables, result-based names, a stall-risk flag, and a demotion list"}, {"id": "lesson-plan-builder", "category": "curriculum", "title": "Lesson Plan Builder", "description": "Drafts one lesson with an objective, an opening hook, timed teaching beats, a practice activity, and a completion check.", "role": "an instructional designer who scripts lessons for skills courses and cuts any minute that doesn't change what the student can do", "fields": [{"id": "topic", "label": "Lesson topic", "type": "text", "required": true, "placeholder": "Example: shooting a walkthrough with natural light only", "helper": ""}, {"id": "position", "label": "Where it sits in the course", "type": "text", "required": false, "placeholder": "Example: module 3 of 6, students have gear set up but haven't filmed yet", "helper": ""}, {"id": "format", "label": "Lesson format", "type": "select", "required": false, "options": ["Video lesson", "Live session", "Text lesson", "Video plus worksheet"], "helper": ""}], "task": ["Write the lesson objective as 'by the end, the student can X', where X is checkable.", "Script the first 60 seconds: the hook that names why this lesson matters to their next listing, client, or project.", "Outline the teaching beats in order, with a time estimate per beat.", "Design the practice activity students complete before the next lesson, using materials they already have.", "Write the completion check: how a student knows they got it, as one question or one visible result."], "rules": ["The practice activity ships with the lesson, not as an afterthought. No activity means this is content, not teaching."], "output": "a complete lesson plan: objective, hook script, timed beats, activity instructions, and a completion check"}, {"id": "worksheet-builder", "category": "curriculum", "title": "Worksheet Builder", "description": "Turns a lesson into a fill-in worksheet that makes students apply the idea to their own business before moving on.", "role": "a learning materials designer who tests every worksheet on one real student first and rewrites any field that came back blank", "fields": [{"id": "lesson", "label": "The lesson it supports", "type": "textarea", "required": true, "placeholder": "Example: the pricing lesson where students set their own video package rates", "helper": ""}, {"id": "freeze", "label": "Where students freeze", "type": "text", "required": false, "placeholder": "Example: they stall when asked to write an actual dollar amount", "helper": ""}], "task": ["Design the worksheet as a sequence of prompts moving from recall to applying the idea to their own numbers, market, or project.", "Write each prompt with an example answer shown in grey text so students see what done looks like.", "Add one 'if you're stuck' branch at the point I said students freeze.", "Keep it to one page and name the finished artifact the student walks away with."], "rules": ["Every field must require their specifics. A worksheet a student could complete without their own business data is a quiz wearing a costume."], "output": "a one-page worksheet layout with prompts, example answers, a stuck branch, and the named artifact it produces"}, {"id": "microlearning-cut-plan", "category": "curriculum", "title": "Microlearning Cut Plan", "description": "Splits long lessons into short standalone units for students who learn in 10-minute gaps between appointments.", "role": "a course editor who chops 45-minute recordings into short units and knows the right cut points live at decisions, not timestamps", "fields": [{"id": "lesson", "label": "The lesson to split", "type": "textarea", "required": true, "placeholder": "Example: a 52-minute editing walkthrough covering trimming, captions, music, and export", "helper": ""}, {"id": "habits", "label": "How students watch", "type": "text", "required": false, "placeholder": "Example: mostly on phones between showings", "helper": ""}], "task": ["Break the lesson into units of 12 minutes or less, cutting at natural decision or action boundaries.", "Give each unit a title stating what the student can do after it.", "Write the 15-second recap that opens each unit so it stands alone.", "Mark which units need re-recording versus a straight cut, and flag anything that should become text instead of video."], "rules": ["A unit must end with the student able to act. Never cut mid-instruction to hit a time target."], "output": "a cut list with unit titles, durations, opening recaps, and re-record versus straight-cut flags"}, {"id": "bonus-selection-filter", "category": "curriculum", "title": "Bonus Selection Filter", "description": "Decides which bonuses actually raise enrollments and completion, and which ones just fatten the sales page.", "role": "an offer strategist for course launches who has watched a $29 template outsell a $500 bonus stack, and scores every bonus on whether it removes a named objection", "fields": [{"id": "ideas", "label": "Bonus ideas on the table", "type": "textarea", "required": true, "placeholder": "Example: my shot-list template pack, a private feedback session, 30 days of community access, a gear discount code", "helper": ""}, {"id": "objections", "label": "The objections bonuses should answer", "type": "text", "required": false, "placeholder": "Example: 'no time' and 'my videos will look amateur'", "helper": ""}], "task": ["Score each bonus idea on three tests: removes a named objection, speeds completion, and what it costs me in recurring delivery time.", "Kill or park the bonuses that fail, and say what each one was actually trying to do.", "Rank the survivors and write the sales-page line for each, tied to the objection it removes.", "Cap the stack: recommend the maximum number of bonuses this offer should carry and defend the cap."], "rules": ["A bonus that adds hours to my delivery week gets priced in honestly. Free for the student isn't free for me."], "output": "a scored bonus table, a kill list with reasons, and sales-page copy for the keepers"}, {"id": "knowledge-check-designer", "category": "curriculum", "title": "Knowledge Check Designer", "description": "Adds checkpoints to a module so students prove they can do the thing before the next module builds on it.", "role": "an assessment designer for practical courses who writes checks a student can't pass by rewatching, only by doing", "fields": [{"id": "module", "label": "The module to check", "type": "textarea", "required": true, "placeholder": "Example: module 2, camera settings and framing for interior shots", "helper": ""}, {"id": "downstream", "label": "What failure looks like later", "type": "text", "required": false, "placeholder": "Example: students who skip this shoot dark, shaky footage in module 4 and blame the editing", "helper": ""}], "task": ["Design 2 or 3 checkpoints for this module: at least one do-and-submit task and at most one question-based check.", "For each, define pass criteria specific enough that a student can self-grade against them.", "Write the feedback message for a failed check that points to the exact lesson segment to revisit, without shaming.", "Connect each check to the downstream failure I described, so students see why it gates the next module."], "rules": ["Prefer artifacts over answers. One submitted 30-second clip beats ten quiz questions for a course like mine."], "output": "checkpoint specs with pass criteria, self-grading guides, and a redirect message for failed attempts"}, {"id": "curriculum-trim-pass", "category": "curriculum", "title": "Curriculum Trim Pass", "description": "Reviews your pasted outline and cuts the lessons that inflate course hours but sink completion, with a home for everything removed.", "role": "a course surgeon brought in when completion drops below a third, who has never once found the cause to be too little content", "fields": [{"id": "material", "label": "Paste your current outline", "type": "textarea", "required": true, "placeholder": "Example: paste your full module and lesson list, with rough durations if you have them", "helper": ""}, {"id": "data", "label": "Completion numbers if you have them", "type": "text", "required": false, "placeholder": "Example: 60% finish module 2, 25% finish module 5", "helper": ""}], "task": ["Map my pasted outline against the drop-off data and the course promise: mark each lesson keep, compress, merge, or cut.", "For every cut, name where it goes: a reference vault, a bonus, an advanced follow-up product, or the trash.", "Show the trimmed outline with new durations and where the saved student hours went.", "Predict which cut I'll resist most and make the case for it anyway."], "rules": ["Judge every lesson by whether the promised outcome survives without it, not by how long it took me to make."], "output": "a keep, compress, merge, cut table, the trimmed outline, and a destination for every removed piece"}, {"id": "student-resource-vault", "category": "curriculum", "title": "Student Resource Vault", "description": "Plans the templates, checklists, and quick references that let students act without rewatching lessons.", "role": "a course operations designer who counts every 'where do I find that' message in the community as a missing resource", "fields": [{"id": "questions", "label": "Questions students keep asking", "type": "textarea", "required": true, "placeholder": "Example: students keep asking for my export settings and the shot list from module 3", "helper": ""}, {"id": "format", "label": "Where resources will live", "type": "select", "required": false, "options": ["PDF downloads", "Notion or doc links", "Inside the course platform", "Mix of formats"], "helper": ""}], "task": ["Turn each repeat question into a named resource: template, checklist, settings card, or script.", "Write the full content for the two most requested resources.", "Organize the vault: categories, a naming pattern, and the one place it gets linked from in every module.", "Add a maintenance note: which resources go stale and when to review them."], "rules": ["Each resource fits on one page or one screen. If it needs scrolling and a table of contents, it should've been a lesson."], "output": "a vault inventory with categories, two finished resources written in full, and a linking plan"}, {"id": "first-week-onboarding", "category": "completion", "title": "First Week Onboarding Plan", "description": "Scripts days one through seven after purchase so new students log in, act, and stop wondering if they wasted $497.", "role": "a student success designer who treats the first seven days as the refund window they are, and measures onboarding by day-seven activity, not welcome-email opens", "fields": [{"id": "current", "label": "Your onboarding today", "type": "textarea", "required": true, "placeholder": "Example: a welcome email with login details, then nothing until the first live call", "helper": ""}, {"id": "platform", "label": "Your platform", "type": "text", "required": false, "placeholder": "Example: Kajabi with a Circle community", "helper": ""}], "task": ["Design the day-by-day first week: what arrives, what the student does, and what I or my platform checks.", "Write the welcome email and the day-3 nudge for students who haven't logged in.", "Place the first required action within 24 hours of purchase and make it small enough to finish in 15 minutes.", "Define the day-7 health signal that predicts completion, and what fires if a student misses it."], "rules": ["Every touchpoint asks for exactly one action, never a list. Overwhelmed students in week one become refunds in week two."], "output": "a 7-day onboarding calendar, two written emails, and a day-7 health check with an intervention trigger"}, {"id": "fast-first-win", "category": "completion", "title": "Fast First Win", "description": "Engineers a real result inside the student's first 72 hours, sized so a busy person actually gets it done.", "role": "a momentum designer for online programs who believes the first win decides completion more than the curriculum does, and gets judged on time-to-first-result", "fields": [{"id": "candidates", "label": "Possible first wins", "type": "textarea", "required": true, "placeholder": "Example: could be publishing a 15-second phone clip, or just a finished gear checklist", "helper": ""}, {"id": "schedule", "label": "A typical student's week", "type": "text", "required": false, "placeholder": "Example: working agents, evenings and weekends only", "helper": ""}], "task": ["Evaluate my candidate wins for speed, visibility, and how directly each proves the course promise in miniature.", "Pick one and shrink it until a student with the schedule I described finishes it in one sitting.", "Script the exact instructions for the win, including what to do with the result: post it, send it, or show someone.", "Write the celebration touchpoint that lands when they finish, and what it points them to next."], "rules": ["The win must produce something the student can show another person. Private progress builds no momentum."], "output": "one specified first win with full instructions, a completion touchpoint message, and the bridge to the next lesson"}, {"id": "dropout-point-patch", "category": "completion", "title": "Dropout Point Patch", "description": "Diagnoses the module where your students go dark and rebuilds that stretch to carry them past it.", "role": "a retention analyst for course businesses who plots completion curves and knows the drop cliff usually sits two lessons before the creator expects it", "fields": [{"id": "stall", "label": "Where students stall", "type": "textarea", "required": true, "placeholder": "Example: activity nosedives in module 4, the editing module, right when homework goes public", "helper": ""}, {"id": "excuses", "label": "What stalled students say", "type": "textarea", "required": false, "placeholder": "Example: 'I'm behind and need to catch up first'", "helper": ""}], "task": ["Diagnose the most likely causes of the stall from what I shared: difficulty spike, time-cost jump, fear of exposure, or unclear payoff.", "Redesign the stall stretch: what gets split, resequenced, or supported with a template or worked example.", "Write the re-engagement message for students stuck there now, offering a way back in that skips catching up.", "Add an early-warning marker one module earlier so I see the next cohort's stall coming."], "rules": ["'They got busy' is banned as a diagnosis. Busy students still finish things that feel worth it and doable."], "output": "a stall diagnosis, a redesigned module stretch, a re-engagement message, and one early-warning marker"}, {"id": "implementation-sprint", "category": "completion", "title": "Implementation Sprint Plan", "description": "Designs a short group sprint where students apply one module together and nobody gets to just watch.", "role": "a cohort facilitator who runs implementation weeks for course businesses and counts success in artifacts submitted, not attendance", "fields": [{"id": "module", "label": "The module to sprint", "type": "text", "required": true, "placeholder": "Example: module 5, filming your first full listing walkthrough", "helper": ""}, {"id": "group", "label": "Group size and format", "type": "text", "required": false, "placeholder": "Example: about 30 students, Zoom plus a community thread", "helper": ""}], "task": ["Structure the sprint: length, kickoff, daily checkpoints, and the single artifact everyone submits at the end.", "Write the kickoff message that sets the rule: everyone ships something, rough is fine.", "Design the daily check-in format so posting progress takes under two minutes.", "Plan the finish-line event: how submitted work gets seen, and what students who didn't finish get invited to do."], "rules": ["Rough and shipped beats polished and private in every sprint communication. Say it more than once."], "output": "a sprint schedule, kickoff message, daily check-in template, and a finish-line event plan"}, {"id": "accountability-loop", "category": "completion", "title": "Accountability Loop Design", "description": "Builds the check-in structure that keeps solo students moving without you personally chasing 200 people.", "role": "a program operations designer who automates accountability for courses too big for personal check-ins, and rejects any system that adds an hour a day to the creator's plate", "fields": [{"id": "current", "label": "How you follow up now", "type": "textarea", "required": true, "placeholder": "Example: I manually DM students who go missing, which stopped scaling at 50 enrollments", "helper": ""}, {"id": "tools", "label": "Your tools", "type": "text", "required": false, "placeholder": "Example: Kajabi email automations plus a Circle community", "helper": ""}], "task": ["Design the accountability loop with the tools I have: what fires when a student completes, stalls, or goes silent.", "Write the three automated messages: on-track encouragement, stalled nudge, and gone-dark recovery.", "Add one peer mechanism, like posted commitments or accountability pairs, that runs without my involvement.", "Estimate my weekly time cost for the whole loop and cut anything pushing it past two hours."], "rules": ["Nudges reference the student's actual position in the course, never a generic 'checking in'. Vague nudges train students to ignore me."], "output": "an accountability flow with triggers, three written messages, one peer mechanism, and a weekly time budget"}, {"id": "progress-nudge-emails", "category": "completion", "title": "Progress Nudge Emails", "description": "Writes the between-module emails that pull students back into the course by naming what's waiting for them next.", "role": "a lifecycle email writer for education products whose work gets judged on course logins the next day, not open rates", "fields": [{"id": "rhythm", "label": "Course rhythm", "type": "text", "required": true, "placeholder": "Example: 6 modules dripped weekly on Mondays", "helper": ""}, {"id": "data", "label": "Progress data your platform can insert", "type": "text", "required": false, "placeholder": "Example: my platform can merge in each student's last completed lesson", "helper": ""}], "task": ["Map the email touchpoints across the course: module openings, mid-module nudges, and the pre-finish push.", "Write four of these emails in full, each under 150 words, each ending in one link to one lesson.", "Vary the angle across the four: the next result, a quick-win recap, a student example, and what finishing unblocks.", "Write subject lines that name the payoff of the lesson, not the module number."], "rules": ["One email, one action. The moment an email offers two links, it's a newsletter."], "output": "a touchpoint map plus four finished emails with subject lines"}, {"id": "community-prompt-calendar", "category": "completion", "title": "Community Prompt Calendar", "description": "A month of discussion prompts tied to your modules, so the community feeds completion instead of distracting from it.", "role": "a community manager for course businesses who kills generic engagement posts and only runs prompts that surface student work or student blockers", "fields": [{"id": "space", "label": "Platform and size", "type": "text", "required": true, "placeholder": "Example: Circle space, 180 students, maybe 20 active", "helper": ""}, {"id": "schedule", "label": "Where the cohort is right now", "type": "text", "required": false, "placeholder": "Example: cohort is in weeks 2 through 5 of the course", "helper": ""}], "task": ["Write a 4-week prompt calendar synced to my module schedule: two prompts a week, one that surfaces work and one that surfaces blockers.", "Write each prompt in full, sized so a student can answer from their phone in two minutes.", "Add one recurring ritual, like a weekly wins thread, with its exact recurring post text.", "Give the response plan: how I reply to the first answers so threads don't die at one comment."], "rules": ["Every prompt ties to a module or a student's project. Off-topic fun builds chatter, not completion."], "output": "a 4-week prompt calendar with full post text, one ritual, and a thread-response plan"}, {"id": "office-hours-format", "category": "completion", "title": "Office Hours Format", "description": "Structures your live Q&A so quiet students get help too and calls stop turning into one person's consulting session.", "role": "a live-session facilitator for group programs who has rescued office hours where three talkers consumed forty students' hour", "fields": [{"id": "current", "label": "Your format today", "type": "textarea", "required": true, "placeholder": "Example: monthly open Zoom call, whoever shows up asks whatever", "helper": ""}, {"id": "attendance", "label": "Who actually shows up", "type": "text", "required": false, "placeholder": "Example: 15 to 20 attend, the same 4 ask everything", "helper": ""}], "task": ["Design the session structure with time blocks: pre-submitted questions first, live queue second, one teach-along segment.", "Write the question submission form: three fields max, including where the student is in the course.", "Set the facilitation rules: a per-person time cap, how to park deep one-on-one issues, and how to pull in quiet attendees.", "Plan the after-call artifact: what gets clipped, summarized, or posted so absent students still benefit."], "rules": ["Every answer gets generalized before moving on: one line on how the same fix applies beyond the asker's situation."], "output": "a session run-of-show, submission form fields, facilitation rules, and an after-call artifact plan"}, {"id": "sales-page-skeleton", "category": "selling", "title": "Sales Page Skeleton", "description": "Outlines your course sales page section by section, with each section's job and the proof it needs from your inventory.", "role": "a direct-response copywriter who builds course sales pages from the objection list backward and treats every section without a job as dead weight", "fields": [{"id": "objections", "label": "The big objections", "type": "textarea", "required": true, "placeholder": "Example: 'no time', 'tried a course before and quit', 'can't I learn this on YouTube'", "helper": ""}, {"id": "proof", "label": "Proof you have on hand", "type": "textarea", "required": false, "placeholder": "Example: 12 student videos, 3 testimonials, my own before-and-after footage", "helper": ""}], "task": ["Lay out the page section by section: each section gets a name, its job, the objection it handles, and the proof it uses from my inventory.", "Write the above-the-fold block in full: headline, subhead, and first call to action.", "Mark the sections where my proof inventory falls short and say what to collect before launch.", "Order the sections for a skeptical returning visitor, since most course buyers read the page more than once."], "rules": ["No section exists for rhythm or tradition. If the answer to 'what is this section for' is 'pages usually have one', cut it."], "output": "a section-by-section page outline with jobs and proof assignments, a written above-the-fold block, and a proof gap list"}, {"id": "launch-email-sequence", "category": "selling", "title": "Launch Email Sequence", "description": "Drafts the open-to-close email sequence for your enrollment window, with a job and a send day for every email.", "role": "an email launch strategist for course sellers who plans the close before the open, because the last 48 hours decide most of the revenue", "fields": [{"id": "window", "label": "Your enrollment window", "type": "text", "required": true, "placeholder": "Example: 7-day open cart, June 3 to June 9", "helper": ""}, {"id": "warmth", "label": "List warmth", "type": "select", "required": false, "options": ["Mostly cold or new subscribers", "Warmed up by recent content", "A waitlist that asked for this", "Mixed"], "helper": ""}], "task": ["Map the sequence: number of emails, send days, and each email's single job from announcement through final hours.", "Write three of them in full: the open email, the strongest mid-cart proof email, and the final-day email.", "Handle the deadline honestly: state what actually ends when the cart closes and build the final email around that fact.", "Plan the non-buyer exit: the day-after email that keeps the relationship without a fake cart reopen."], "rules": ["Each email makes one argument. Stacking three reasons to buy in one email means you owe me three emails."], "output": "a sequence map with jobs and send days, three finished emails, and a post-close non-buyer email"}, {"id": "sales-webinar-outline", "category": "selling", "title": "Sales Webinar Outline", "description": "Plans a webinar that teaches one real thing and makes the pitch feel like the obvious next step instead of an ambush.", "role": "a webinar strategist for course launches who tracks stay-to-pitch rate and knows an audience that learned something real sticks around for the offer", "fields": [{"id": "topic", "label": "Webinar topic idea", "type": "text", "required": true, "placeholder": "Example: the 5 shots every listing video needs", "helper": ""}, {"id": "offer", "label": "The offer at the end", "type": "text", "required": false, "placeholder": "Example: the $497 course with a webinar-only bonus", "helper": ""}], "task": ["Pick the teaching content: one complete, usable takeaway that demonstrates my method without giving away the whole course.", "Outline the webinar minute by minute: open, teach, transition, pitch, questions, close.", "Script the transition from teaching to pitch so it extends the lesson instead of switching modes.", "Design the offer moment: what's on screen, what the webinar-only incentive is, and the exact call to action.", "List the three questions I'll most likely get and the honest answers."], "rules": ["The teaching has to work for someone who never buys. An audience that got nothing real won't trust the pitch."], "output": "a minute-by-minute outline, a scripted teach-to-pitch transition, an offer-screen spec, and a Q&A prep sheet"}, {"id": "checkout-page-fixes", "category": "selling", "title": "Checkout Page Fixes", "description": "Rewrites the copy on your checkout page, where one doubt at the card field costs the whole sale.", "role": "a conversion copywriter who works the last 5% of the funnel and reads checkout pages the way a nervous buyer does at 11pm", "fields": [{"id": "current", "label": "What your checkout says now", "type": "textarea", "required": true, "placeholder": "Example: 'Complete your order' headline, order summary, card fields, a support email in the footer", "helper": ""}, {"id": "guarantee", "label": "Your guarantee", "type": "text", "required": false, "placeholder": "Example: 14-day money back, no conditions", "helper": ""}], "task": ["Rewrite the checkout headline and button text to restate what they're getting, not process a transaction.", "Write the reassurance block for beside the card fields: guarantee, what happens right after payment, and how to reach support.", "Add the one-line objection catcher for the buyer hovering over the button, based on my course's biggest doubt.", "List what to remove from the page: every link, field, or logo that offers an exit."], "rules": ["No new claims at checkout. This page confirms the decision the sales page earned, in words the buyer already saw."], "output": "rewritten checkout copy: headline, button, reassurance block, objection line, and a removal list"}, {"id": "sales-faq-block", "category": "selling", "title": "Sales Page FAQ Block", "description": "Writes the FAQ section that answers real pre-purchase doubts instead of padding the page with softballs.", "role": "a sales copywriter who mines support inboxes for FAQ material and deletes any question no prospect ever actually asked", "fields": [{"id": "questions", "label": "Questions you actually get", "type": "textarea", "required": true, "placeholder": "Example: 'how long do I keep access', 'will this work for commercial properties', 'what phone do I need'", "helper": ""}, {"id": "policy", "label": "Refund policy", "type": "text", "required": false, "placeholder": "Example: 14 days, must show completed module 1 homework", "helper": ""}], "task": ["Sort my real questions by what they're really asking: logistics, fit, difficulty, or trust.", "Write answers that concede limits honestly, including who the course won't work for.", "Add the 2 or 3 questions prospects think but rarely type, like 'what if I fall behind', with answers.", "Order the FAQ so fit and trust questions come before logistics."], "rules": ["If an answer would surprise a buyer after purchase, the surprise goes in the answer now. FAQs prevent refunds, not just objections."], "output": "an ordered FAQ block with written answers, flagged to show which ones protect against refunds"}, {"id": "waitlist-warmup-plan", "category": "selling", "title": "Waitlist Warmup Plan", "description": "Plans the two weeks before cart open so your waitlist remembers why they joined it before you ask them to buy.", "role": "a pre-launch strategist who measures warmup by reply rate before open cart, because a list that's silent on day one stays silent through close", "fields": [{"id": "list", "label": "Waitlist size and age", "type": "text", "required": true, "placeholder": "Example: 340 people, collected over 4 months, last emailed 3 weeks ago", "helper": ""}, {"id": "date", "label": "Launch date", "type": "text", "required": false, "placeholder": "Example: cart opens June 3", "helper": ""}], "task": ["Plan the 14 days before open: what goes out, on which days, and what each send warms up: the problem, the method, or the proof.", "Write two of the warmup emails in full, including one that asks a question designed to get replies.", "Design the early-list mechanic: what waitlist members get that the general list doesn't, without discount games.", "Set the signal to watch: what reply and open behavior by day 10 says about softening the launch goal."], "rules": ["Warmup content never sells. The moment a warmup email links to a price, it's a launch email arriving early."], "output": "a 14-day warmup calendar, two finished emails, an early-access mechanic, and a day-10 health signal"}, {"id": "honest-deadline-design", "category": "selling", "title": "Honest Deadline Design", "description": "Builds real reasons enrollment closes, so your urgency survives a student screenshotting last launch's 'final' deadline.", "role": "a launch integrity strategist who designs scarcity that's true, because course audiences compare notes and screenshot everything", "fields": [{"id": "limits", "label": "What's actually limited", "type": "textarea", "required": true, "placeholder": "Example: I onboard cohorts personally, and feedback slots cap at 40 students", "helper": ""}, {"id": "history", "label": "Your deadline track record", "type": "text", "required": false, "placeholder": "Example: last launch I reopened the cart 'one more day' twice", "helper": ""}], "task": ["Identify every true constraint in my delivery model that justifies a deadline or a cap, from what I listed.", "Pick the strongest constraint and write the deadline copy around it for the sales page and the final email.", "Write the policy for after the deadline: what a day-late requester hears, word for word.", "If I've burned deadline credibility before, write the one-time reset line that owns it without groveling."], "rules": ["If no true constraint exists, say so and design an incentive deadline instead: a bonus that expires, framed honestly."], "output": "a constraint inventory, deadline copy for page and email, a late-request script, and a credibility reset line if needed"}, {"id": "sales-copy-review-desk", "category": "selling", "title": "Sales Copy Review Desk", "description": "Marks up your pasted sales page or launch email against how a skeptical almost-buyer actually reads it.", "role": "a course-launch copy chief who reviews enrollment pages line by line and represents the reader who wants a reason to close the tab", "fields": [{"id": "material", "label": "Paste your sales copy", "type": "textarea", "required": true, "placeholder": "Example: paste the full sales page draft or launch email, headlines included", "helper": ""}, {"id": "surface", "label": "Where it runs", "type": "select", "required": false, "options": ["Sales page", "Launch email", "Webinar registration page", "Checkout page"], "helper": ""}], "task": ["Read the draft as an interested skeptic and mark every line where you'd stop trusting, get bored, or lose the thread.", "Check the spine: promise, proof, offer, and reason to act now. Name which of the four is weakest in this draft.", "Rewrite the three weakest passages, keeping my voice and my facts.", "Flag any claim that outruns the proof shown in the draft or my context.", "List what's missing entirely, in priority order."], "rules": ["Quote my exact line before critiquing it.", "Every rewrite must be swappable in place: same slot, same job."], "output": "a marked-up review with quoted lines, a weakest-element verdict, three in-place rewrites, and a prioritized missing list"}, {"id": "testimonial-ask-kit", "category": "results", "title": "Testimonial Ask Kit", "description": "The messages and questions that turn 'loved the course!' into testimonials with numbers, timelines, and doubts overcome.", "role": "a social-proof producer for course businesses who interviews graduates and never accepts an adjective where a number could go", "fields": [{"id": "who", "label": "Who you can ask", "type": "textarea", "required": true, "placeholder": "Example: 9 students finished last cohort, 3 posted wins in the community", "helper": ""}, {"id": "destination", "label": "Where the proof will run", "type": "select", "required": false, "options": ["Sales page", "Launch emails", "Webinar slides", "Social posts", "All of these"], "helper": ""}], "task": ["Write the ask message for finishers, timed and worded so yes is easy: reply to a few questions, no video call required.", "Write the 5 interview questions that pull out the before-state, the doubt, the turning point, and the measurable after.", "Show how to edit a rambling reply into a tight testimonial without changing the student's meaning, with one worked example.", "Draft the permission line covering name, result, and where it runs."], "rules": ["Never script or prewrite a testimonial for a student to approve. Shape their words after they say them."], "output": "an ask message, five interview questions, a worked editing example, and a permission request line"}, {"id": "student-case-study", "category": "results", "title": "Student Case Study Draft", "description": "Turns one student's result into a full case study for your sales page, built around their starting doubt.", "role": "a case-study writer for education businesses who opens with the student's skepticism, because prospects trust a convert more than a fan", "fields": [{"id": "story", "label": "The student's story", "type": "textarea", "required": true, "placeholder": "Example: Maria nearly refunded in week 1, then her third video got a seller callback; she now shoots every listing herself", "helper": ""}, {"id": "numbers", "label": "Numbers you can use", "type": "text", "required": false, "placeholder": "Example: she saved $1,200 in videographer fees in 2 months", "helper": ""}], "task": ["Structure the case study: who they were, the doubt that almost stopped them, what the course changed, and the checkable result.", "Write the full draft at 300 to 400 words in plain narrative, no hero language.", "Pull three quotable lines sized for the sales page, an email, and a social post.", "List the facts I should verify with the student before publishing, numbers first."], "rules": ["Keep the timeline honest, struggle included. A case study without the week-1 wobble reads like an ad."], "output": "a full case study draft, three sized pull quotes, and a pre-publication fact-check list"}, {"id": "completion-dashboard-spec", "category": "results", "title": "Completion Dashboard Spec", "description": "Defines the five numbers that tell you each week whether students are moving or melting away, and where to pull them.", "role": "a data-minded course operator who checks one dashboard every Monday and drops any metric that's never changed a decision", "fields": [{"id": "platform", "label": "Your platform", "type": "text", "required": true, "placeholder": "Example: Teachable, plus Circle for community", "helper": ""}, {"id": "current", "label": "What you track today", "type": "textarea", "required": false, "placeholder": "Example: I check total completions monthly, that's it", "helper": ""}], "task": ["Pick the 5 metrics worth tracking weekly for completion: consider day-7 activation, module-over-module progression, stall count, community participation, and support volume.", "Define each precisely: the formula, where the number lives in my platform, and its healthy range for a course like mine.", "Design the Monday review: a 15-minute reading order and the action each red number triggers.", "Name two metrics I might expect to see that you left out, and why they don't earn a slot."], "rules": ["Every metric needs an owner action attached. A number I'd nod at and scroll past gets cut."], "output": "a 5-metric spec with formulas, sources, healthy ranges, and a 15-minute Monday review script"}, {"id": "refund-risk-diagnosis", "category": "results", "title": "Refund Risk Diagnosis", "description": "Traces your refunds back to the sales promise, the onboarding, or the course itself, since each source needs a different fix.", "role": "a refund analyst for course businesses who reads every request as a data point about where the promise and the product split apart", "fields": [{"id": "picture", "label": "Your refund picture", "type": "textarea", "required": true, "placeholder": "Example: 6 refunds out of 80 last cohort, 5 in the first two weeks, most said 'not what I expected'", "helper": ""}, {"id": "policy", "label": "Your refund policy", "type": "text", "required": false, "placeholder": "Example: 14 days, no questions asked", "helper": ""}], "task": ["Classify each refund pattern I described: wrong buyer, wrong expectation, early overwhelm, or a real product gap.", "For the dominant pattern, trace it upstream to its source: a sales page line, a missing readiness filter, or an onboarding hole.", "Prescribe the fix at the source, plus the save attempt for the moment a refund request arrives.", "Write the refund-request reply that asks one diagnostic question before processing, without making leaving hard.", "Set the refund-rate threshold that means pause and fix, versus a normal cost of selling."], "rules": ["Fixes reduce future refunds, never friction for refunders. Anyone who wants out gets out clean."], "output": "a classified refund diagnosis, an upstream fix, a save-attempt script, a reply template, and a threshold rule"}, {"id": "full-course-audit", "category": "results", "title": "Full Course Audit", "description": "Grades your whole course against the promise on the sales page, module by module, and hands back a ranked fix list.", "role": "an independent course auditor hired between cohorts, who grades against the sales page because that page is the contract students bought", "fields": [{"id": "summary", "label": "Describe the course as it exists", "type": "textarea", "required": true, "placeholder": "Example: 6 modules, 41 lessons, page promises same-day listing videos; modules: gear, settings, shooting, editing, posting, advanced", "helper": "Module list plus the sales page promise, minimum."}, {"id": "suspects", "label": "Known weak spots", "type": "textarea", "required": false, "placeholder": "Example: module 5 feels thin and students say the pace jumps at module 3", "helper": ""}], "task": ["Audit each module against the sales page promise: what it contributes, where it overdelivers, and where the promise goes uncovered.", "Check the connective tissue: transitions between modules, prerequisite gaps, and anywhere a student needs knowledge no lesson provided.", "Grade the support layer per module: worksheets, checkpoints, and resources, present or missing.", "Rank every finding into a fix list: before next cohort, during it, and someday."], "rules": ["Audit what I described, not an ideal course. Where my description is too thin to judge a module, say so instead of guessing."], "output": "a module-by-module audit table, a connective-tissue gap list, and a ranked three-horizon fix list"}, {"id": "version-two-plan", "category": "results", "title": "Version Two Plan", "description": "Decides what changes in your next course version using cohort evidence, not the lesson you're most tired of.", "role": "a product manager for course businesses who scopes version two by student evidence and cuts the creator's pet rebuild first", "fields": [{"id": "evidence", "label": "Evidence from the last run", "type": "textarea", "required": true, "placeholder": "Example: module 4 gets triple the questions, everyone loves module 2, the bonus went unopened, 3 students asked for advanced editing", "helper": ""}, {"id": "budget", "label": "Your time budget", "type": "text", "required": false, "placeholder": "Example: 20 hours before the September cohort", "helper": ""}], "task": ["Sort my evidence into signals: fix for confusion, amplify what worked, cut what got ignored, and add what multiple students requested.", "Scope changes to my time budget, biggest completion impact per hour first.", "Write the change list with per-item hour estimates and the evidence behind each.", "Name what explicitly stays untouched this version, so scope creep hits a wall.", "Draft the two-line note to alumni about what's improving, since it doubles as social proof."], "rules": ["A single student's request never outranks a pattern. Two mentions minimum before anything earns build hours."], "output": "a scoped version-two change list with hours and evidence, a not-this-version list, and an alumni note"}, {"id": "alumni-next-step", "category": "results", "title": "Alumni Next Step Path", "description": "Plans what graduates get offered after the final module, so finishing your course opens a door instead of ending the relationship.", "role": "a customer journey designer for education businesses who has seen graduates buy again at twice the rate of cold leads, when there's anything for them to buy", "fields": [{"id": "requests", "label": "What finishers ask for", "type": "textarea", "required": true, "placeholder": "Example: some want advanced editing, some want monthly video reviews, a few asked about referring other agents", "helper": ""}, {"id": "current", "label": "What happens after the last module today", "type": "text", "required": false, "placeholder": "Example: a congrats email, then nothing", "helper": ""}], "task": ["Map the 2 or 3 natural next steps from my finishers' requests: an advanced offer, a recurring service, or a referral role.", "Pick the one to build first based on demand signals and my delivery capacity, and outline it at offer level: what, price logic, and delivery format.", "Write the graduation-moment message that presents the next step while the win is fresh.", "Design the touch for graduates not ready to buy: a quarterly check-in that collects results and testimonials."], "rules": ["The next step must need the course as its foundation. If a stranger could buy it cold, it's a new product, not an alumni path."], "output": "a next-step recommendation with an offer outline, a graduation message, and a quarterly alumni touch plan"}, {"id": "cohort-feedback-digest", "category": "results", "title": "Cohort Feedback Digest", "description": "Boils a pile of end-of-course survey answers down to the three changes worth making and the praise worth quoting.", "role": "a feedback analyst for course creators who reads every response once and refuses to let the loudest student outweigh the quiet majority", "fields": [{"id": "material", "label": "Paste the raw feedback", "type": "textarea", "required": true, "placeholder": "Example: paste survey responses, exit interviews, or community feedback threads, unedited", "helper": ""}, {"id": "context", "label": "Response context", "type": "text", "required": false, "placeholder": "Example: 34 responses from an 80-student cohort", "helper": ""}], "task": ["Sort every piece of feedback into themes and count mentions per theme, so frequency sits next to intensity.", "Separate actionable critique from preference noise, showing your sorting logic on two borderline examples.", "Pick the three changes with the best completion payoff per effort and defend each with quoted feedback.", "Extract the praise usable as social proof, tagged by where each quote could run.", "Note what the non-responders' silence might mean, given the response rate I shared."], "rules": ["Count before you conclude. One vivid complaint reads louder than five quiet mentions of something else, and that's a trap."], "output": "a themed feedback tally, three defended change picks, a tagged proof-quote list, and a non-response caveat"}], "advisors": [{"id": "curriculum-surgeon", "title": "The Curriculum Surgeon", "description": "An advisor for courses that grew too big to finish, who cuts until completion recovers.", "role": "a curriculum consultant who has trimmed dozens of bloated courses and treats every added lesson as a completion tax until proven otherwise", "focus": "deciding what your course teaches, in what order, and what gets cut", "questions": ["your course promise and the modules as they stand today", "your completion numbers, or your honest guess at where students stop", "which lessons you added because students asked, versus because you knew more"], "deliverable": "a keep, cut, or merge verdict on your curriculum with a resequenced outline and the reasoning behind every cut"}, {"id": "validation-referee", "title": "The Validation Referee", "description": "A skeptical advisor who stress-tests a course idea before you sink three months into recording it.", "role": "a demand analyst who has watched creators build courses their audience praised and never bought, and trusts payments over applause", "focus": "deciding whether your course idea has paying demand before production starts", "questions": ["the course idea, the price you have in mind, and who it's for", "what evidence of demand you have so far, and whether any of it involved money", "your audience access: list size, community, past clients, or none yet"], "deliverable": "a build, test-first, or walk-away verdict with the specific validation test to run and the number that settles it"}, {"id": "completion-mechanic", "title": "The Completion Mechanic", "description": "A diagnostic advisor for courses where students buy, start strong, and vanish around module three.", "role": "a retention specialist for online programs who starts every diagnosis at the student's calendar, not the content quality", "focus": "finding why students stall in your course and fixing the stretch where they quit", "questions": ["where students actually stop, from platform data or your best read", "what a stalled student says when you ask, if you've asked", "what happens in your course during the 48 hours after purchase"], "deliverable": "a stall diagnosis with the most likely cause, a redesign for that stretch, and one re-engagement play for currently stuck students"}, {"id": "enrollment-planner", "title": "The Enrollment Planner", "description": "A launch advisor who works the math backward from your revenue goal to the list, offer, and calendar you actually have.", "role": "a launch strategist for course sellers who plans enrollment windows around list math and rejects goals the numbers can't reach", "focus": "planning your next enrollment window: timing, sequence, and a goal your list size can support", "questions": ["your revenue goal for the launch and your course price", "list size, engagement, and how recently they heard from you", "what your last launch did, if there was one, and how the close rate looked"], "deliverable": "a launch plan with a defensible enrollment target, an email and content calendar, and the two risks most likely to sink it"}, {"id": "refund-detective", "title": "The Refund Detective", "description": "An advisor for creators whose refund rate crept up and who want the cause, not a tighter policy.", "role": "a refund investigator for course businesses who traces requests back through onboarding and sales copy, and has rarely found the course content to be the true culprit", "focus": "finding where your sales promise, onboarding, and course split apart and started producing refunds", "questions": ["your refund rate, the refund window, and when in the course requests arrive", "the exact words from your last three refund requests, as close as you remember", "what your sales page promises and what week one actually delivers"], "deliverable": "a root-cause verdict with the upstream fix, a refund-reply script, and the threshold where refunds mean pause the launch"}, {"id": "proof-collector", "title": "The Proof Collector", "description": "An ongoing advisor for building a proof library: wins, testimonials, and case studies captured while they're fresh.", "role": "a social-proof strategist for course businesses who schedules proof collection into the course itself, because asking six months later gets adjectives instead of numbers", "focus": "building a system that captures student results and turns them into sales assets on a schedule", "questions": ["what proof you have today: testimonials, numbers, screenshots, or none", "the student results your course reliably produces, and when they show up during or after the course", "where you most need proof next: sales page, ads, webinar, or emails"], "deliverable": "a proof-collection system mapped to your course timeline, ask scripts for each collection point, and a gap list ranked by sales impact"}]};
+
+    const toolConfig = {
+      storageKey: STUDIO.slug + "-theme",
+      profileKey: STUDIO.slug + "-profile",
+      manualKey: STUDIO.slug + "-manual",
+      chatGptUrl: "https://chatgpt.com/"
+    };
+    const html = document.documentElement;
+
+    /* ---------- Shared helpers ---------- */
+    function clean(value) { return String(value || "").trim(); }
+    function escapeHtml(value) {
+      return String(value || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+    async function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        return;
+      }
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.left = "-9999px";
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      textarea.remove();
+    }
+    function feedback(button, message) {
+      const original = button.dataset.originalText || button.textContent;
+      button.dataset.originalText = original;
+      button.textContent = message;
+      setTimeout(() => button.textContent = original, 1200);
+    }
+    async function copyAndOpen(button, text) {
+      try {
+        await copyText(text);
+        feedback(button, "Copied");
+        window.open(toolConfig.chatGptUrl, "_blank", "noopener,noreferrer");
+      } catch (error) {
+        feedback(button, "Copy failed");
+      }
+    }
+
+    /* ---------- Hero stats ---------- */
+    document.getElementById("statGrid").innerHTML = [
+      { n: STUDIO.workflows.length, t: "guided workflows" },
+      { n: STUDIO.categories.length, t: "categories" },
+      { n: STUDIO.advisors.length, t: "expert advisors" },
+      { n: "PDF", t: "prompt manual builder" }
+    ].map(s => `<div class="stat"><b>${escapeHtml(s.n)}</b><span>${escapeHtml(s.t)}</span></div>`).join("");
+
+    /* ---------- Field rendering (shared by profile + workflows) ---------- */
+    function fieldHtml(field, prefix) {
+      const id = prefix + "-" + field.id;
+      const req = field.required ? ' <span class="req">*</span>' : "";
+      const helper = field.helper ? `<p class="helper">${escapeHtml(field.helper)}</p>` : "";
+      let control = "";
+      if (field.type === "textarea") {
+        control = `<textarea id="${id}" data-field="${escapeHtml(field.id)}" ${field.required ? 'aria-required="true"' : ""} placeholder="${escapeHtml(field.placeholder || "")}"></textarea>`;
+      } else if (field.type === "select") {
+        const opts = ['<option value="">Choose one</option>']
+          .concat((field.options || []).map(o => `<option value="${escapeHtml(o)}">${escapeHtml(o)}</option>`)).join("");
+        control = `<select id="${id}" data-field="${escapeHtml(field.id)}" ${field.required ? 'aria-required="true"' : ""}>${opts}</select>`;
+      } else {
+        control = `<input type="text" id="${id}" data-field="${escapeHtml(field.id)}" ${field.required ? 'aria-required="true"' : ""} placeholder="${escapeHtml(field.placeholder || "")}" />`;
+      }
+      return `<div class="field"><label for="${id}">${escapeHtml(field.label)}${req}</label>${control}${helper}</div>`;
+    }
+    function readFields(container) {
+      const values = {};
+      container.querySelectorAll("[data-field]").forEach(el => { values[el.dataset.field] = clean(el.value); });
+      return values;
+    }
+
+    /* ---------- Business profile ---------- */
+    const profileForm = document.getElementById("profileForm");
+    profileForm.innerHTML = STUDIO.profile.map(f => fieldHtml(f, "profile")).join("");
+    function loadProfile() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(toolConfig.profileKey) || "{}");
+        profileForm.querySelectorAll("[data-field]").forEach(el => {
+          if (saved[el.dataset.field]) el.value = saved[el.dataset.field];
+        });
+      } catch (error) { /* corrupted storage: start clean */ }
+    }
+    function saveProfile() {
+      localStorage.setItem(toolConfig.profileKey, JSON.stringify(readFields(profileForm)));
+    }
+    function updateProfileProgress() {
+      const values = profileValues();
+      const filled = STUDIO.profile.filter(f => clean(values[f.id])).length;
+      const percent = Math.round((filled / STUDIO.profile.length) * 100);
+      document.getElementById("profileProgress").style.width = percent + "%";
+      document.getElementById("profilePercent").textContent = percent + "%";
+    }
+    loadProfile();
+    updateProfileProgress();
+    profileForm.addEventListener("input", () => { saveProfile(); updateProfileProgress(); markStaleIfGenerated(); });
+    profileForm.addEventListener("change", () => { saveProfile(); updateProfileProgress(); markStaleIfGenerated(); });
+
+    /* ---------- Prompt assembly (the back end) ---------- */
+    const SHARED_RULES = [
+      "Work from my context above. Don't invent numbers, results, or customer quotes I didn't give you.",
+      "Plain language. No hype words, no filler sentences, no advice so generic it would fit any business."
+    ];
+    function contextLines(workflowValues, workflowFields) {
+      const lines = [];
+      STUDIO.profile.forEach(f => {
+        const v = clean(profileValues()[f.id]);
+        if (v) lines.push(`- ${f.label}: ${v}`);
+      });
+      (workflowFields || []).forEach(f => {
+        if (f.id === "material") return;
+        const v = clean(workflowValues[f.id]);
+        if (v) lines.push(`- ${f.label}: ${v}`);
+      });
+      return lines;
+    }
+    function profileValues() { return readFields(profileForm); }
+    function buildWorkflowPrompt(wf, values) {
+      const parts = [];
+      parts.push(`You are ${wf.role}.`);
+      parts.push("");
+      parts.push("MY CONTEXT");
+      parts.push(contextLines(values, wf.fields).join("\n"));
+      const material = clean(values.material);
+      if (material) {
+        parts.push("");
+        parts.push("WORK WITH THIS MATERIAL");
+        parts.push("---");
+        parts.push(material);
+        parts.push("---");
+      }
+      parts.push("");
+      parts.push("YOUR TASK");
+      wf.task.forEach((step, i) => parts.push(`${i + 1}. ${step}`));
+      parts.push("");
+      parts.push("RULES");
+      (wf.rules || []).concat(SHARED_RULES).forEach(r => parts.push(`- ${r}`));
+      parts.push("");
+      parts.push("OUTPUT");
+      parts.push(`Give me ${wf.output}.`);
+      parts.push("");
+      parts.push("Before you start: if any part of my context is too thin to do this well, ask me up to 3 specific questions first, then produce the deliverable.");
+      return parts.join("\n");
+    }
+    function buildAdvisorPrompt(adv) {
+      const parts = [];
+      parts.push(`You are ${adv.role}. Act as my ongoing advisor for ${adv.focus}.`);
+      parts.push("");
+      parts.push("MY CONTEXT");
+      const lines = contextLines({}, []);
+      parts.push(lines.length ? lines.join("\n") : "- I'll give you context as we talk.");
+      parts.push("");
+      parts.push("HOW THIS SESSION WORKS");
+      parts.push("Interview me before you advise. Ask one question at a time and wait for my answer. Start with what you most need to know, including:");
+      adv.questions.forEach(q => parts.push(`- ${q}`));
+      parts.push("");
+      parts.push(`After you have enough to work with (usually 4 to 6 answers), give me ${adv.deliverable}. Then stay in this role: I'll bring you follow-up situations and you keep advising with the same standards.`);
+      parts.push("");
+      parts.push("RULES");
+      parts.push("- One question per message while interviewing.");
+      parts.push("- Don't invent numbers or facts I didn't give you. If you assume something, say so in one line.");
+      parts.push("- Plain language. No hype, no filler, no generic advice.");
+      return parts.join("\n");
+    }
+
+    /* ---------- Tabs ---------- */
+    const tabs = document.querySelectorAll(".tab");
+    tabs.forEach(tab => tab.addEventListener("click", () => {
+      tabs.forEach(t => { t.classList.toggle("active", t === tab); t.setAttribute("aria-selected", String(t === tab)); });
+      ["workflows", "advisors", "manual"].forEach(name => {
+        document.getElementById("tab-" + name).hidden = tab.dataset.tab !== name;
+      });
+    }));
+
+    /* ---------- Workflow browse ---------- */
+    const catRow = document.getElementById("catRow");
+    const catNote = document.getElementById("catNote");
+    const wfGrid = document.getElementById("wfGrid");
+    const browse = document.getElementById("workflowBrowse");
+    const detail = document.getElementById("workflowDetail");
+    const wfSearch = document.getElementById("wfSearch");
+    let currentCat = STUDIO.categories[0].id;
+    let currentWf = null;
+    let generated = false;
+    let searchTerm = "";
+
+    function renderCats() {
+      catRow.innerHTML = STUDIO.categories.map(c =>
+        `<button type="button" class="cat-chip${!searchTerm && c.id === currentCat ? " active" : ""}" data-cat="${escapeHtml(c.id)}">${escapeHtml(c.title)}</button>`
+      ).join("");
+      const cat = STUDIO.categories.find(c => c.id === currentCat);
+      catNote.textContent = searchTerm ? `Showing matches across all ${STUDIO.categories.length} categories.` : (cat && cat.note ? cat.note : "");
+      catRow.querySelectorAll("[data-cat]").forEach(chip => chip.addEventListener("click", () => {
+        currentCat = chip.dataset.cat;
+        searchTerm = "";
+        wfSearch.value = "";
+        renderCats();
+        renderGrid();
+      }));
+    }
+    function renderGrid() {
+      const matches = STUDIO.workflows.filter(w => searchTerm
+        ? (w.title + " " + w.description).toLowerCase().includes(searchTerm)
+        : w.category === currentCat);
+      if (!matches.length) {
+        wfGrid.innerHTML = `<div class="no-results"><div><strong>No workflow matches that search.</strong><br />Try the artifact you need, such as audit, plan, email, or offer.</div></div>`;
+        return;
+      }
+      wfGrid.innerHTML = matches.map(w =>
+        `<button type="button" class="wf-card" data-wf="${escapeHtml(w.id)}">
+          <span class="card-no">WORKFLOW ${String(STUDIO.workflows.indexOf(w) + 1).padStart(2, "0")}</span>
+          <b>${escapeHtml(w.title)}</b>
+          <span>${escapeHtml(w.description)}</span>
+          <span class="go">Open &rarr;</span>
+        </button>`
+      ).join("");
+      wfGrid.querySelectorAll("[data-wf]").forEach(card => card.addEventListener("click", () => openWorkflow(card.dataset.wf)));
+    }
+    wfSearch.addEventListener("input", () => {
+      searchTerm = clean(wfSearch.value).toLowerCase();
+      renderCats();
+      renderGrid();
+    });
+    renderCats();
+    renderGrid();
+
+    /* ---------- Workflow detail ---------- */
+    const wfFields = document.getElementById("wfFields");
+    const wfForm = document.getElementById("wfForm");
+    const wfValidation = document.getElementById("wfValidation");
+    const wfResultWrap = document.getElementById("wfResultWrap");
+    const wfPromptEl = document.getElementById("wfPrompt");
+    const staleNote = document.getElementById("staleNote");
+
+    function openWorkflow(id) {
+      currentWf = STUDIO.workflows.find(w => w.id === id);
+      generated = false;
+      const category = STUDIO.categories.find(c => c.id === currentWf.category);
+      document.getElementById("wfMeta").textContent = category ? category.title : "Workflow";
+      document.getElementById("wfTitle").textContent = currentWf.title;
+      document.getElementById("wfDescription").textContent = currentWf.description;
+      wfFields.innerHTML = currentWf.fields.map(f => fieldHtml(f, "wf")).join("");
+      wfFields.style.display = "grid";
+      wfFields.style.gap = "15px";
+      wfValidation.classList.remove("show");
+      wfResultWrap.hidden = true;
+      staleNote.classList.remove("show");
+      browse.hidden = true;
+      detail.hidden = false;
+      detail.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    document.getElementById("backToGrid").addEventListener("click", () => {
+      detail.hidden = true;
+      browse.hidden = false;
+      generated = false;
+    });
+
+    function markStaleIfGenerated() {
+      if (generated) {
+        staleNote.classList.add("show");
+        wfPromptEl.style.opacity = "0.55";
+      }
+    }
+    wfForm.addEventListener("input", markStaleIfGenerated);
+    wfForm.addEventListener("change", markStaleIfGenerated);
+
+    wfForm.addEventListener("submit", event => {
+      event.preventDefault();
+      if (!currentWf) return;
+      const missing = [];
+      STUDIO.profile.filter(f => f.required).forEach(f => {
+        if (!clean(profileValues()[f.id])) missing.push(f.label);
+      });
+      const values = readFields(wfFields);
+      currentWf.fields.filter(f => f.required).forEach(f => {
+        if (!clean(values[f.id])) missing.push(f.label);
+      });
+      if (missing.length) {
+        wfValidation.textContent = "Still needed: " + missing.join(", ") + ".";
+        wfValidation.classList.add("show");
+        const firstMissingProfile = STUDIO.profile.find(f => f.required && !clean(profileValues()[f.id]));
+        const firstMissingWorkflow = currentWf.fields.find(f => f.required && !clean(values[f.id]));
+        const target = firstMissingProfile ? document.getElementById("profile-" + firstMissingProfile.id) : (firstMissingWorkflow ? document.getElementById("wf-" + firstMissingWorkflow.id) : null);
+        if (target) target.focus();
+        return;
+      }
+      wfValidation.classList.remove("show");
+      wfPromptEl.textContent = buildWorkflowPrompt(currentWf, values);
+      wfPromptEl.style.opacity = "";
+      wfResultWrap.hidden = false;
+      staleNote.classList.remove("show");
+      generated = true;
+      wfResultWrap.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+
+    document.getElementById("copyPrompt").addEventListener("click", async event => {
+      try { await copyText(wfPromptEl.textContent); feedback(event.target, "Copied"); }
+      catch (error) { feedback(event.target, "Copy failed"); }
+    });
+    document.getElementById("copyOpen").addEventListener("click", event => copyAndOpen(event.target, wfPromptEl.textContent));
+    document.getElementById("addToManual").addEventListener("click", event => {
+      addManualEntry(currentWf.title, "Workflow", wfPromptEl.textContent);
+      feedback(event.target, "Saved to manual");
+    });
+
+    /* ---------- Advisors ---------- */
+    const advGrid = document.getElementById("advGrid");
+    const advResultWrap = document.getElementById("advResultWrap");
+    const advPromptEl = document.getElementById("advPrompt");
+    let currentAdv = null;
+    advGrid.innerHTML = STUDIO.advisors.map((a, i) =>
+      `<div class="adv-card">
+        <span class="advisor-index">ADVISOR ${String(i + 1).padStart(2, "0")}</span>
+        <b>${escapeHtml(a.title)}</b>
+        <p>${escapeHtml(a.description)}</p>
+        <button class="mini primary-mini" type="button" data-adv="${escapeHtml(a.id)}">Start this session</button>
+      </div>`
+    ).join("");
+    advGrid.querySelectorAll("[data-adv]").forEach(btn => btn.addEventListener("click", () => {
+      currentAdv = STUDIO.advisors.find(a => a.id === btn.dataset.adv);
+      document.getElementById("advResultTitle").textContent = currentAdv.title;
+      advPromptEl.textContent = buildAdvisorPrompt(currentAdv);
+      advResultWrap.hidden = false;
+      advResultWrap.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }));
+    document.getElementById("advCopy").addEventListener("click", async event => {
+      try { await copyText(advPromptEl.textContent); feedback(event.target, "Copied"); }
+      catch (error) { feedback(event.target, "Copy failed"); }
+    });
+    document.getElementById("advCopyOpen").addEventListener("click", event => copyAndOpen(event.target, advPromptEl.textContent));
+    document.getElementById("advAddToManual").addEventListener("click", event => {
+      addManualEntry(currentAdv.title, "Advisor", advPromptEl.textContent);
+      feedback(event.target, "Saved to manual");
+    });
+
+    /* ---------- Prompt manual ---------- */
+    const manualList = document.getElementById("manualList");
+    const manualEmpty = document.getElementById("manualEmpty");
+    const manualCount = document.getElementById("manualCount");
+    const manualTitle = document.getElementById("manualTitle");
+    let manual = [];
+    try { manual = JSON.parse(localStorage.getItem(toolConfig.manualKey) || "[]"); } catch (error) { manual = []; }
+    const savedManualTitle = localStorage.getItem(toolConfig.manualKey + "-title");
+    if (savedManualTitle) manualTitle.value = savedManualTitle;
+    manualTitle.addEventListener("input", () => localStorage.setItem(toolConfig.manualKey + "-title", manualTitle.value));
+
+    function saveManual() { localStorage.setItem(toolConfig.manualKey, JSON.stringify(manual)); }
+    function addManualEntry(title, source, text) {
+      manual.push({ id: "m" + (manual.length + 1) + "-" + text.length, title, source, text });
+      saveManual();
+      renderManual();
+    }
+    function renderManual() {
+      manualCount.textContent = manual.length ? "(" + manual.length + ")" : "";
+      manualEmpty.style.display = manual.length ? "none" : "grid";
+      manualList.innerHTML = manual.map((entry, i) =>
+        `<div class="manual-item">
+          <div class="manual-item-head">
+            <b>${i + 1}. ${escapeHtml(entry.title)}</b>
+            <span>${escapeHtml(entry.source)}</span>
+          </div>
+          <pre>${escapeHtml(entry.text)}</pre>
+          <div class="result-actions">
+            <button class="mini" type="button" data-up="${i}">Move up</button>
+            <button class="mini" type="button" data-down="${i}">Move down</button>
+            <button class="mini" type="button" data-copy="${i}">Copy</button>
+            <button class="mini" type="button" data-remove="${i}">Remove</button>
+          </div>
+        </div>`
+      ).join("");
+      manualList.querySelectorAll("[data-up]").forEach(b => b.addEventListener("click", () => {
+        const i = Number(b.dataset.up);
+        if (i > 0) { [manual[i - 1], manual[i]] = [manual[i], manual[i - 1]]; saveManual(); renderManual(); }
+      }));
+      manualList.querySelectorAll("[data-down]").forEach(b => b.addEventListener("click", () => {
+        const i = Number(b.dataset.down);
+        if (i < manual.length - 1) { [manual[i + 1], manual[i]] = [manual[i], manual[i + 1]]; saveManual(); renderManual(); }
+      }));
+      manualList.querySelectorAll("[data-copy]").forEach(b => b.addEventListener("click", async () => {
+        try { await copyText(manual[Number(b.dataset.copy)].text); feedback(b, "Copied"); }
+        catch (error) { feedback(b, "Copy failed"); }
+      }));
+      manualList.querySelectorAll("[data-remove]").forEach(b => b.addEventListener("click", () => {
+        manual.splice(Number(b.dataset.remove), 1);
+        saveManual();
+        renderManual();
+      }));
+    }
+    renderManual();
+
+    function manualDocTitle() { return clean(manualTitle.value) || STUDIO.title + " Prompt Manual"; }
+    function buildPrintArea() {
+      const printArea = document.getElementById("printArea");
+      const cover = document.createElement("div");
+      cover.className = "print-cover";
+      const h1 = document.createElement("h1");
+      h1.textContent = manualDocTitle();
+      const p = document.createElement("p");
+      p.textContent = manual.length + " prompts, built with " + STUDIO.title;
+      cover.append(h1, p);
+      printArea.replaceChildren(cover);
+      manual.forEach((entry, i) => {
+        const block = document.createElement("div");
+        block.className = "print-prompt";
+        const h2 = document.createElement("h2");
+        h2.textContent = (i + 1) + ". " + entry.title;
+        const src = document.createElement("p");
+        src.className = "print-source";
+        src.textContent = entry.source;
+        const pre = document.createElement("pre");
+        pre.textContent = entry.text;
+        block.append(h2, src, pre);
+        printArea.append(block);
+      });
+    }
+    document.getElementById("printManual").addEventListener("click", event => {
+      if (!manual.length) { feedback(event.target, "Manual is empty"); return; }
+      buildPrintArea();
+      window.print();
+    });
+    document.getElementById("downloadManual").addEventListener("click", event => {
+      if (!manual.length) { feedback(event.target, "Manual is empty"); return; }
+      const body = manual.map((entry, i) =>
+        `<section><h2>${escapeHtml((i + 1) + ". " + entry.title)}</h2><p class="src">${escapeHtml(entry.source)}</p><pre>${escapeHtml(entry.text)}</pre></section>`
+      ).join("\n");
+      const doc = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>${escapeHtml(manualDocTitle())}</title>
+<style>body{font-family:Georgia,serif;max-width:760px;margin:40px auto;padding:0 20px;color:#111;}h1{letter-spacing:-0.02em;}.src{color:#666;font-size:0.9rem;}pre{white-space:pre-wrap;word-break:break-word;font-family:"Courier New",monospace;font-size:0.85rem;line-height:1.5;border:1px solid #ccc;border-radius:8px;padding:14px;}section{margin:34px 0;}</style>
+</head><body><h1>${escapeHtml(manualDocTitle())}</h1><p class="src">${manual.length} prompts, built with ${escapeHtml(STUDIO.title)}</p>\n${body}\n</body></html>`;
+      const blob = new Blob([doc], { type: "text/html" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = STUDIO.slug + "-prompt-manual.html";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      feedback(event.target, "Downloaded");
+    });
+    document.getElementById("clearManual").addEventListener("click", event => {
+      if (!manual.length) { feedback(event.target, "Manual is empty"); return; }
+      manual = [];
+      saveManual();
+      renderManual();
+      feedback(event.target, "Cleared");
+    });
+
+    /* ---------- Theme ---------- */
+    function syncThemeButtons(theme) {
+      document.querySelectorAll("[data-theme-choice]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.themeChoice === theme)));
+    }
+    document.querySelectorAll("[data-theme-choice]").forEach(button => {
+      button.addEventListener("click", () => {
+        html.setAttribute("data-theme", button.dataset.themeChoice);
+        localStorage.setItem(toolConfig.storageKey, button.dataset.themeChoice);
+        syncThemeButtons(button.dataset.themeChoice);
+      });
+    });
+    const savedTheme = localStorage.getItem(toolConfig.storageKey);
+    const initialTheme = savedTheme === "light" || savedTheme === "dark" ? savedTheme : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    html.setAttribute("data-theme", initialTheme);
+    syncThemeButtons(initialTheme);
+  </script>
+</body>
+</html>

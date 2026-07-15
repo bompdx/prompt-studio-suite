@@ -1,0 +1,1712 @@
+{
+  "slug": "memberships",
+  "title": "Membership & Community Prompt Studio",
+  "kicker": "Guided prompt system for community builders",
+  "subtitle": "Built for membership owners and community builders, paid or free. Every workflow turns your answers into a finished prompt that produces onboarding flows, discussion calendars, renewal emails, and churn diagnoses you can use the same day.",
+  "badge": "48 guided workflows",
+  "accent": "#4a6d9e",
+  "accent2": "#d6a11f",
+  "footer": "Prompt Studio",
+  "profile": [
+    {
+      "id": "membership",
+      "label": "Your membership and who joins it",
+      "type": "textarea",
+      "required": true,
+      "placeholder": "Example: $49/month community for freelance bookkeepers, 180 members",
+      "helper": "One or two sentences. Every prompt in this studio uses this."
+    },
+    {
+      "id": "members",
+      "label": "Your members in their own words",
+      "type": "textarea",
+      "required": false,
+      "placeholder": "Example: 'I'm tired of being the only person who gets what I do all day'",
+      "helper": "Phrases from surveys, DMs, or calls. Leave blank if you don't have them yet."
+    },
+    {
+      "id": "project",
+      "label": "What you're working on in the community right now",
+      "type": "textarea",
+      "required": false,
+      "placeholder": "Example: rebuilding onboarding before the September enrollment window",
+      "helper": ""
+    },
+    {
+      "id": "goal",
+      "label": "Your main goal for the next 90 days",
+      "type": "text",
+      "required": false,
+      "placeholder": "Example: cut monthly churn from 9% to 5%",
+      "helper": ""
+    },
+    {
+      "id": "voice",
+      "label": "Voice or constraints the AI should know",
+      "type": "text",
+      "required": false,
+      "placeholder": "Example: warm and casual, first names, no hustle-culture talk",
+      "helper": ""
+    }
+  ],
+  "categories": [
+    { "id": "positioning", "title": "Positioning & Offer", "note": "Decide who the membership is for, what it promises, and what joining costs." },
+    { "id": "onboarding", "title": "Onboarding & First Wins", "note": "Get new members to a visible win before the second charge hits their card." },
+    { "id": "programming", "title": "Programming & Participation", "note": "Fill the calendar with prompts, sessions, and rituals members show up for." },
+    { "id": "retention", "title": "Retention & Renewals", "note": "Spot churn early, re-engage quiet members, and make renewals feel earned." },
+    { "id": "growth", "title": "Growth & Revenue", "note": "Bring in new members through waitlists, referrals, trials, and upsells." },
+    { "id": "improvement", "title": "Feedback & Improvement", "note": "Measure community health, mine member feedback, and strengthen what you already send." }
+  ],
+  "workflows": [
+    {
+      "id": "community-positioning-memo",
+      "category": "positioning",
+      "title": "Community Positioning Memo",
+      "description": "Nails down who your membership serves, why it exists, and the reason someone joins instead of staying in the free group.",
+      "role": "a membership strategist who has repositioned flat communities and gets judged on whether join-page conversion moves, not on how the mission statement sounds",
+      "fields": [
+        {
+          "id": "alternatives",
+          "label": "What people do instead of joining",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: they stay in the free Slack, watch YouTube tutorials, or buy one-off templates",
+          "helper": ""
+        },
+        {
+          "id": "promise",
+          "label": "The change members should see in 90 days",
+          "type": "text",
+          "required": false,
+          "placeholder": "Example: first three retainer clients booked",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Write a one-paragraph positioning statement naming who this membership is for, the situation they're in when they join, and the result they should see by day 90.",
+        "List the alternatives my best-fit member already uses and say, for each one, why the membership beats it or where it honestly doesn't.",
+        "Draft the answer to 'why does this community exist' in two sentences a member could repeat to a colleague.",
+        "Name who this membership is not for, in plain terms I could post on the join page."
+      ],
+      "rules": [
+        "If my 90-day promise can't be seen or measured, say so and propose a version that can."
+      ],
+      "output": "a positioning memo with sections for who it's for, who it's not for, the 90-day promise, why it exists, and how it beats each alternative"
+    },
+    {
+      "id": "member-profile-cards",
+      "category": "positioning",
+      "title": "Member Profile Cards",
+      "description": "Builds three member profiles with the trigger that made each one pay and the moment each one starts drifting.",
+      "role": "a community researcher who builds member profiles from renewal data and exit surveys, accountable for whether onboarding and programming decisions match real members instead of imagined ones",
+      "fields": [
+        {
+          "id": "knowns",
+          "label": "What you know about current members",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: mostly solo bookkeepers, 2 to 8 years in, joined after a pricing webinar, half never post",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Build three member profiles: the ideal member, the most common member, and the member who joins and churns within 60 days.",
+        "For each profile, name the trigger event that made them pay, what a good first week looks like to them, and the first sign they're drifting.",
+        "Write the sentence each profile would use to describe the membership to a peer, in their words, not marketing words.",
+        "Flag which profile my current onboarding serves best and which one it loses without anyone noticing."
+      ],
+      "rules": [
+        "Ground every profile in what I told you about current members. Mark anything you inferred with the word 'assumption'."
+      ],
+      "output": "three profile cards, each with join trigger, first-week expectation, drift signal, and a quote in the member's own words"
+    },
+    {
+      "id": "member-journey-map",
+      "category": "positioning",
+      "title": "Member Journey Map",
+      "description": "Maps the path from day-one signup to belonging and visible results, with the drop-off risk at each stage.",
+      "role": "a retention-focused community designer who maps member journeys for paid communities and answers for month-three retention, not signup numbers",
+      "fields": [
+        {
+          "id": "current",
+          "label": "What happens to a new member today",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: welcome email, an invite to post an intro, then nothing structured until the monthly call",
+          "helper": ""
+        },
+        {
+          "id": "result",
+          "label": "The visible result members should reach",
+          "type": "text",
+          "required": false,
+          "placeholder": "Example: first client booked through the community job board",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Lay out the member journey in five stages from signup to visible result, naming what the member should feel, do, and get at each stage.",
+        "Mark the stage where my current setup goes silent and estimate what that silence costs in month-two cancellations, flagged as an assumption.",
+        "For each stage, name one owner action or automated touch that moves the member to the next stage.",
+        "Define the moment a member counts as 'belonging' in observable terms: something they do, not something they feel."
+      ],
+      "rules": [
+        "Every stage needs one observable behavior that proves the member reached it."
+      ],
+      "output": "a five-stage journey map with member state, drop-off risk, and the single touch that advances each stage"
+    },
+    {
+      "id": "membership-offer-sharpener",
+      "category": "positioning",
+      "title": "Membership Offer Sharpener",
+      "description": "Tightens what the membership includes so the price reads as obvious instead of negotiable.",
+      "role": "an offer editor who has trimmed bloated membership tiers and gets measured on whether members can name what they pay for without checking the sales page",
+      "fields": [
+        {
+          "id": "inclusions",
+          "label": "Everything the membership includes today",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: monthly call, template vault, private forum, quarterly hot seat, a dead book-club channel",
+          "helper": ""
+        },
+        {
+          "id": "price",
+          "label": "Current price and billing",
+          "type": "text",
+          "required": false,
+          "placeholder": "Example: $49/month or $470/year",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Sort my inclusions into three buckets: things members join for, things members stay for, and things nobody would miss.",
+        "Recommend what to cut, what to keep, and what to rename so the value is legible at a glance.",
+        "Write the offer as a single sentence: outcome first, then the two or three inclusions that carry it.",
+        "Flag any inclusion that creates weekly work for me but sits in the 'nobody would miss' bucket."
+      ],
+      "rules": [
+        "Argue for cutting at least one inclusion. If everything survives, explain why in one line each."
+      ],
+      "output": "a revised offer sheet with keep, cut, and rename columns plus the one-sentence offer statement"
+    },
+    {
+      "id": "pricing-decision-brief",
+      "category": "positioning",
+      "title": "Pricing Decision Brief",
+      "description": "Weighs your monthly price against churn, content load, and what members compare you to, then makes a call.",
+      "role": "a pricing advisor for recurring memberships who has raised and lowered community prices and stands behind the revenue result six months out, not the launch-week applause",
+      "fields": [
+        {
+          "id": "numbers",
+          "label": "Your current numbers",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: $49/month, 180 members, about 9% cancel each month, most stay 7 months",
+          "helper": ""
+        },
+        {
+          "id": "comparison",
+          "label": "What members compare the price to",
+          "type": "text",
+          "required": false,
+          "placeholder": "Example: a $200/month mastermind and free Reddit threads",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Assess whether the current price matches the result the membership delivers, and say plainly if it's underpriced, overpriced, or priced right.",
+        "Model what a price change would need to do to member count to break even, using my numbers and labeling every assumption.",
+        "Recommend one pricing move: raise, hold, add an annual tier, or restructure, with the reason in two sentences.",
+        "Write the two-paragraph note to existing members if the move affects them."
+      ],
+      "rules": [
+        "Pick one recommendation. Listing options without a call doesn't count as an answer."
+      ],
+      "output": "a one-page pricing brief with the recommendation, break-even math, member note, and the signal that would prove the move wrong"
+    },
+    {
+      "id": "join-page-outline",
+      "category": "positioning",
+      "title": "Join Page Outline",
+      "description": "Structures your join page so a fence-sitter can see the first week, the price, and the promise without scrolling twice.",
+      "role": "a conversion copywriter who works on membership join pages and gets paid on signup rate, not word count",
+      "fields": [
+        {
+          "id": "objection",
+          "label": "The objection you hear most",
+          "type": "text",
+          "required": true,
+          "placeholder": "Example: 'I'm already in three free groups I never open'",
+          "helper": ""
+        },
+        {
+          "id": "proof",
+          "label": "Proof you can show",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: two member wins with names, a screenshot of the weekly thread, 14 months average tenure",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Outline the join page top to bottom: headline, promise, what week one looks like, proof, price, FAQ, and the join call to action.",
+        "Write the headline and the week-one section in full, using my proof and promise.",
+        "Answer my most common objection inside the page copy, not in a separate FAQ line.",
+        "List the three FAQ entries that remove the most doubt for a fence-sitter."
+      ],
+      "rules": [
+        "Use only the proof I gave you. A proof slot with nothing real to fill it gets marked 'needs proof' instead of filler."
+      ],
+      "output": "a section-by-section join page outline with the headline and week-one section written in full"
+    },
+    {
+      "id": "community-guidelines-draft",
+      "category": "positioning",
+      "title": "Community Guidelines Draft",
+      "description": "Writes rules that protect the culture you want without reading like a terms-of-service page.",
+      "role": "a community operator who has moderated paid groups through spam waves and member conflicts, accountable for keeping discussion active while enforcement stays rare",
+      "fields": [
+        {
+          "id": "culture",
+          "label": "The culture you're protecting",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: generous answers, no pitching in threads, beginners ask without getting talked down to",
+          "helper": ""
+        },
+        {
+          "id": "problems",
+          "label": "Behavior you've already seen",
+          "type": "text",
+          "required": false,
+          "placeholder": "Example: one member DM-pitching every new joiner",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Write five to eight guidelines, each one sentence, each tied to a behavior members can picture.",
+        "For each guideline, add the enforcement line: what happens on first violation and what happens on repeat.",
+        "Write the pinned-post version in a warm voice, under 150 words.",
+        "Draft the private message I send to someone who breaks the no-pitching rule, firm but keeping the relationship."
+      ],
+      "rules": [
+        "No rule that exists only to sound official. If a guideline doesn't map to a behavior I've seen or fear, cut it."
+      ],
+      "output": "a guidelines list with enforcement notes, a pinned-post version, and one enforcement DM"
+    },
+    {
+      "id": "free-vs-paid-call",
+      "category": "positioning",
+      "title": "Free vs Paid Call",
+      "description": "Decides whether your community should be free, paid, or a free front door with a paid core, based on your goal and capacity.",
+      "role": "a community business advisor who has run both free audience groups and paid memberships, judged on whether the model chosen still makes sense a year in",
+      "fields": [
+        {
+          "id": "capacity",
+          "label": "Hours per week you can give this",
+          "type": "text",
+          "required": true,
+          "placeholder": "Example: 5 hours, mostly Tuesday and Thursday",
+          "helper": ""
+        },
+        {
+          "id": "purpose",
+          "label": "What the community does for your business",
+          "type": "text",
+          "required": false,
+          "placeholder": "Example: feeds my done-for-you bookkeeping service",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Lay out the three models for my situation: fully free, fully paid, and free front door with a paid core.",
+        "Score each model against my weekly capacity, my 90-day goal, and how the community feeds my business.",
+        "Pick one model and defend the pick in a short paragraph, including the main risk.",
+        "List the first three moves to run the chosen model, in order."
+      ],
+      "rules": [
+        "Commit to one model. Present the other two only long enough to show why they lose."
+      ],
+      "output": "a decision memo with the recommended model, the scoring table, the main risk, and three first moves"
+    },
+    {
+      "id": "first-week-welcome-flow",
+      "category": "onboarding",
+      "title": "First Week Welcome Flow",
+      "description": "Plans the seven days after signup so a new member posts, connects, and gets one useful thing before day eight.",
+      "role": "an onboarding designer for paid communities who is measured on how many new members are still active at day 30",
+      "fields": [
+        {
+          "id": "tools",
+          "label": "Where onboarding happens",
+          "type": "text",
+          "required": true,
+          "placeholder": "Example: Circle space plus a ConvertKit email sequence",
+          "helper": ""
+        },
+        {
+          "id": "win",
+          "label": "The first useful thing a member should get",
+          "type": "text",
+          "required": false,
+          "placeholder": "Example: feedback on their pricing page within 48 hours",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Map days one through seven: what the member receives, what they're asked to do, and where each touch happens.",
+        "Design day one so the member takes one small action in under five minutes.",
+        "Place the first-win moment before day four and spell out exactly how the member gets it.",
+        "Write the copy for the day-one touch in full.",
+        "Add one checkpoint where I personally show up, sized to my available hours."
+      ],
+      "rules": [
+        "One ask per day, maximum. A new member facing three tasks does none of them."
+      ],
+      "output": "a day-by-day welcome flow table with channel, message purpose, member action, and the day-one message written out"
+    },
+    {
+      "id": "orientation-session-plan",
+      "category": "onboarding",
+      "title": "Orientation Session Plan",
+      "description": "Builds a live or recorded orientation that shows new members where things live and what to do first, in 20 minutes or less.",
+      "role": "a member-education lead who runs orientations for online communities and gets judged on whether attendees post within a week of the session",
+      "fields": [
+        {
+          "id": "format",
+          "label": "Format",
+          "type": "select",
+          "required": true,
+          "options": ["Live monthly call", "Recorded video", "Live plus recording", "Written walkthrough"],
+          "placeholder": "",
+          "helper": ""
+        },
+        {
+          "id": "spaces",
+          "label": "The spaces members need to know",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: intro thread, weekly wins post, template vault, ask-anything channel",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Structure the orientation into timed segments totaling 20 minutes or less, from welcome to the closing ask.",
+        "Script the opening two minutes word for word.",
+        "Pick the single action attendees commit to before leaving and build the segment that sets it up.",
+        "List what to cut from a typical orientation because nobody retains it on day one."
+      ],
+      "rules": [
+        "The tour covers at most four spaces. More than that and members remember none of them."
+      ],
+      "output": "a timed orientation agenda with the scripted opening and the closing commitment ask"
+    },
+    {
+      "id": "activation-email-series",
+      "category": "onboarding",
+      "title": "Activation Email Series",
+      "description": "Writes the short email sequence that moves a new member from paid to posting during their first two weeks.",
+      "role": "an email writer for membership businesses whose sequences get graded on login and first-post rates, not open rates",
+      "fields": [
+        {
+          "id": "count",
+          "label": "How many emails",
+          "type": "select",
+          "required": true,
+          "options": ["3 emails", "4 emails", "5 emails"],
+          "placeholder": "",
+          "helper": ""
+        },
+        {
+          "id": "stall",
+          "label": "Where new members stall today",
+          "type": "text",
+          "required": true,
+          "placeholder": "Example: they read the welcome email, never set up their profile",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Plan the sequence: send day, job of each email, and the single link or action per email.",
+        "Write every email in full, subject line included, each under 150 words.",
+        "Aim one email directly at the stall point I described.",
+        "End each email with one action, never a list of options."
+      ],
+      "rules": [
+        "Every email drives one click into the community. An email that just says welcome again gets rewritten.",
+        "Subject lines name what's inside. No curiosity-gap tricks on people who already paid."
+      ],
+      "output": "the full email sequence with send days, subject lines, and body copy ready to paste into my email tool"
+    },
+    {
+      "id": "first-win-design",
+      "category": "onboarding",
+      "title": "First Win Design",
+      "description": "Defines the small, visible result a new member can hit in week one and builds the path to it.",
+      "role": "a member-success designer who engineers early wins for subscription communities, accountable for the share of new members reporting a win by day 14",
+      "fields": [
+        {
+          "id": "outcomes",
+          "label": "Wins members have already reported",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: raised a package price by $200, fixed a broken proposal template, booked one discovery call",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Pick the first win worth designing for: small enough to hit in a week, real enough that the member tells someone.",
+        "Break the path to it into three steps or fewer, each doable in one sitting.",
+        "Write the prompt or template the member uses at each step.",
+        "Design the moment the win gets seen: where the member reports it and how the community responds.",
+        "Draft the message inviting a brand-new member onto this path."
+      ],
+      "rules": [
+        "The win must be checkable. 'Feels more confident' isn't a first win; 'sent the raised-price proposal' is."
+      ],
+      "output": "a first-win spec with the target win, the three-step path, member-facing copy for each step, and the reporting ritual"
+    },
+    {
+      "id": "intro-thread-template",
+      "category": "onboarding",
+      "title": "Intro Thread Template",
+      "description": "Rebuilds your introduction prompt so new members share something other members actually respond to.",
+      "role": "a community host who has tested dozens of intro formats and is judged on replies per intro post, since an ignored intro is often the last post a member makes",
+      "fields": [
+        {
+          "id": "current",
+          "label": "Your current intro prompt",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: 'Introduce yourself and tell us what you do!'",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Diagnose why my current intro prompt produces posts nobody replies to.",
+        "Write three replacement intro prompts, each asking for one specific, low-stakes detail members can react to.",
+        "Write the template response I or a moderator posts under every intro within 24 hours.",
+        "Suggest one way to route each new intro to one existing member who shares something with the poster."
+      ],
+      "rules": [
+        "Prompts ask for specifics ('the tool you'd never give up'), never open-ended life stories."
+      ],
+      "output": "three intro prompt options with a recommendation, plus the 24-hour response template"
+    },
+    {
+      "id": "member-onboarding-checklist",
+      "category": "onboarding",
+      "title": "Member Onboarding Checklist",
+      "description": "Turns your first month into a visible member-facing checklist that ends at the first win instead of at 'explore the community'.",
+      "role": "an onboarding operations lead who converts vague welcome experiences into checklists, measured on completion rate of the final item",
+      "fields": [
+        {
+          "id": "milestones",
+          "label": "What a well-onboarded member has done",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: posted an intro, joined one weekly call, downloaded the pricing template, shared a win",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Turn my milestones into a checklist of five to seven items, ordered from easiest to the first win.",
+        "Write each item as the member sees it: verb first, one line, with where to do it.",
+        "Flag which item most members will skip and add the nudge that recovers them.",
+        "Write the completion message a member gets when the list is done."
+      ],
+      "rules": [
+        "Each item takes under 15 minutes. Anything longer gets split or cut."
+      ],
+      "output": "the member-facing checklist with completion message and one skip-recovery nudge"
+    },
+    {
+      "id": "welcome-dm-script",
+      "category": "onboarding",
+      "title": "Welcome DM Script",
+      "description": "Writes the personal message you send each new member that starts a conversation instead of collecting a polite thumbs-up.",
+      "role": "a community manager who has sent thousands of new-member DMs and tracks reply rate, because a member who answers in week one behaves differently at renewal",
+      "fields": [
+        {
+          "id": "info",
+          "label": "What you know about a member at signup",
+          "type": "text",
+          "required": true,
+          "placeholder": "Example: name, business type, and the answer to 'what made you join?'",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Write the welcome DM: two to four sentences, one genuine question at the end, no links.",
+        "Write two follow-up variants: one for members who reply, one for members who go silent after three days.",
+        "Show how to personalize the opener from the signup info I collect, with two filled-in examples."
+      ],
+      "rules": [
+        "The DM asks about them. It never pitches, never lists features, and never says 'let me know if you have questions'."
+      ],
+      "output": "the welcome DM plus both follow-up variants, with two personalized examples"
+    },
+    {
+      "id": "day-30-checkin",
+      "category": "onboarding",
+      "title": "Day 30 Check-In",
+      "description": "Builds the one-month checkpoint that catches members who paid twice but haven't gotten value once.",
+      "role": "a retention specialist who runs 30-day checkpoints for membership sites and answers for second-renewal rate",
+      "fields": [
+        {
+          "id": "signals",
+          "label": "How you can tell who's engaged",
+          "type": "text",
+          "required": true,
+          "placeholder": "Example: Circle activity score plus whether they've posted at all",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Define the two day-30 segments: members showing life and members who've gone dark, using the signals I have.",
+        "Write the check-in message for each segment, under 100 words each.",
+        "Give the dark-segment message one specific, low-effort re-entry action tied to something happening this week.",
+        "Write the internal note format I use to track responses so patterns show up by month three."
+      ],
+      "rules": [
+        "Neither message guilt-trips. 'We miss you' is banned; a concrete reason to come back this week isn't."
+      ],
+      "output": "two segment definitions, two check-in messages, and a simple response-tracking format"
+    },
+    {
+      "id": "daily-prompt-bank",
+      "category": "programming",
+      "title": "Daily Prompt Bank",
+      "description": "Generates 30 conversation starters tied to your members' actual work so the feed doesn't depend on your mood that morning.",
+      "role": "a discussion editor for niche communities who writes prompts for a living and gets judged on replies per prompt, not on how clever the question sounds",
+      "fields": [
+        {
+          "id": "themes",
+          "label": "Topics your members talk about unprompted",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: scope creep, QuickBooks headaches, raising prices, firing bad clients",
+          "helper": ""
+        },
+        {
+          "id": "flops",
+          "label": "Prompt types that flopped before",
+          "type": "text",
+          "required": false,
+          "placeholder": "Example: 'share your goals for the week' gets two likes and no replies",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Write 30 prompts across my themes, mixing question types: experience shares, hot takes, show-your-work, this-or-that, and help requests.",
+        "Keep each prompt under 40 words with one clear question at the end.",
+        "Tag each prompt with its best posting day and the reply pattern to expect.",
+        "Skip anything resembling the flop types I listed and say in one line why those flop."
+      ],
+      "rules": [
+        "Every prompt should be answerable from memory in two minutes. Research homework kills reply rates."
+      ],
+      "output": "a 30-prompt calendar table with prompt text, type tag, and suggested day"
+    },
+    {
+      "id": "weekly-discussion-plan",
+      "category": "programming",
+      "title": "Weekly Discussion Plan",
+      "description": "Sets a repeatable weekly rhythm of threads so members know Tuesday is wins day without checking.",
+      "role": "a community programmer who builds weekly cadences for paid groups, accountable for the share of members who post at least once a week",
+      "fields": [
+        {
+          "id": "days",
+          "label": "How many anchor threads per week",
+          "type": "select",
+          "required": true,
+          "options": ["2", "3", "4", "5"],
+          "placeholder": "",
+          "helper": ""
+        },
+        {
+          "id": "existing",
+          "label": "Recurring threads you already run",
+          "type": "text",
+          "required": false,
+          "placeholder": "Example: Friday wins thread, nothing else regular",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Design the weekly rhythm: which day, which thread, and what job each thread does for the community.",
+        "Write the recurring post copy for each anchor thread, ready to schedule.",
+        "Give each thread a name members will use in conversation.",
+        "State the kill rule: how many quiet weeks before a thread gets retired or reworked."
+      ],
+      "rules": [
+        "Each thread serves a different member need. Two threads that both collect wins is one thread."
+      ],
+      "output": "a weekly cadence table with thread names, scheduled copy, and the kill rule"
+    },
+    {
+      "id": "monthly-programming-calendar",
+      "category": "programming",
+      "title": "Monthly Programming Calendar",
+      "description": "Plans a month of events, challenges, and resource drops sized to the hours you actually have.",
+      "role": "a programming director for online communities who plans calendars owners can sustain, judged on month-over-month attendance rather than launch-week turnout",
+      "fields": [
+        {
+          "id": "hours",
+          "label": "Hours per week you can spend",
+          "type": "text",
+          "required": true,
+          "placeholder": "Example: 4 hours plus one VA day per month",
+          "helper": ""
+        },
+        {
+          "id": "staples",
+          "label": "Events you already run",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Example: monthly member call, occasional guest workshop when I remember to book one",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Build a four-week calendar mixing live events, a challenge or sprint, resource drops, and lighter touchpoints.",
+        "Cost each item in prep hours and run hours, and keep the total inside my budget.",
+        "Mark which items repeat monthly and which rotate, so members get rhythm plus novelty.",
+        "Write the month-ahead announcement post."
+      ],
+      "rules": [
+        "If the calendar exceeds my hours, cut events rather than shrinking prep time. Under-prepped events cost more than missing ones."
+      ],
+      "output": "a four-week calendar with hour costs per item and the announcement post"
+    },
+    {
+      "id": "community-ritual-design",
+      "category": "programming",
+      "title": "Community Ritual Design",
+      "description": "Designs a recurring ritual with a name, a rhythm, and a reason members would complain if you skipped a week.",
+      "role": "a community culture designer who builds rituals for membership groups and measures them by unprompted member participation after week six",
+      "fields": [
+        {
+          "id": "moment",
+          "label": "The behavior you want to ritualize",
+          "type": "text",
+          "required": true,
+          "placeholder": "Example: members sharing revenue wins without being asked",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Design the ritual: name, cadence, trigger post, and the member behavior it rewards.",
+        "Write the launch post introducing it and the recurring post that runs it.",
+        "Plan the first four weeks, where I seed participation before it carries itself.",
+        "Name the signal that the ritual has taken hold and the signal that it's dying."
+      ],
+      "rules": [
+        "The ritual must work with three participants, because that's week one."
+      ],
+      "output": "a ritual spec with launch post, recurring post, four-week seeding plan, and health signals"
+    },
+    {
+      "id": "hot-seat-format",
+      "category": "programming",
+      "title": "Hot Seat Format",
+      "description": "Structures a member hot seat so one person gets real help while everyone watching learns something they can use.",
+      "role": "a group facilitator who has run hot seats in paid masterminds and gets judged on whether the featured member acts on the advice within a week",
+      "fields": [
+        {
+          "id": "length",
+          "label": "Session length",
+          "type": "select",
+          "required": true,
+          "options": ["20 minutes", "30 minutes", "45 minutes", "60 minutes"],
+          "placeholder": "",
+          "helper": ""
+        },
+        {
+          "id": "trouble",
+          "label": "What goes wrong in your current calls",
+          "type": "text",
+          "required": false,
+          "placeholder": "Example: advice-givers monologue and the member leaves with 12 conflicting to-dos",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Build the timed hot seat structure: intake, framing, questioning, advice rounds, and commitment.",
+        "Write the intake form the featured member fills before the session, five questions max.",
+        "Script my three facilitator interventions for the problem I described.",
+        "Design the closing so the member leaves with one committed action, not a pile of suggestions."
+      ],
+      "rules": [
+        "Advice rounds have a hard time cap per speaker. Put the cap in the structure, not in my hopes."
+      ],
+      "output": "a timed hot seat runsheet with intake form, facilitator scripts, and the closing commitment format"
+    },
+    {
+      "id": "live-session-runsheet",
+      "category": "programming",
+      "title": "Live Session Runsheet",
+      "description": "Plans a member call from pre-promotion to replay post so attendance doesn't ride on one reminder email.",
+      "role": "an events producer for online communities who owns attendance numbers and replay engagement, not just what happens on the call",
+      "fields": [
+        {
+          "id": "topic",
+          "label": "The session topic",
+          "type": "text",
+          "required": true,
+          "placeholder": "Example: cleaning up your client onboarding before tax season",
+          "helper": ""
+        },
+        {
+          "id": "attendance",
+          "label": "Typical live attendance",
+          "type": "text",
+          "required": false,
+          "placeholder": "Example: 14 of 180 members show up live",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Write the promotion plan: three touches before the call, each with copy, spaced across the week prior.",
+        "Build the session runsheet with timed segments, an interaction every ten minutes, and a clear payoff promised up front.",
+        "Write the replay post that gives non-attendees a reason to watch, with timestamps.",
+        "Suggest one change to lift live attendance given my current numbers, and say what result would prove it worked."
+      ],
+      "rules": [
+        "Every promotion touch names what attendees will walk away with. 'Join us for a great call' copy gets rewritten."
+      ],
+      "output": "a promotion plan with copy, a timed runsheet, and the replay post"
+    },
+    {
+      "id": "resource-library-plan",
+      "category": "programming",
+      "title": "Resource Library Plan",
+      "description": "Organizes your templates and replays into a library members can search in 30 seconds instead of asking where things are.",
+      "role": "a knowledge-base architect who has restructured content libraries for paid communities and is judged on how often members find things without asking",
+      "fields": [
+        {
+          "id": "inventory",
+          "label": "What's in the pile today",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: 40 call replays, 12 templates, a pricing course, scattered PDFs in old posts",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Propose a category structure of five to seven top-level sections named in member language, not mine.",
+        "Sort my inventory into it and flag what to archive because it's outdated or duplicated.",
+        "Pick the ten items that earn a 'start here' shelf and order them.",
+        "Write the naming convention for future uploads so the library doesn't decay in six months."
+      ],
+      "rules": [
+        "Categories get organized by member problem ('pricing a new client'), never by content format ('videos')."
+      ],
+      "output": "a library structure with sorted inventory, a start-here shelf, an archive list, and the naming convention"
+    },
+    {
+      "id": "office-hours-format",
+      "category": "programming",
+      "title": "Office Hours Format",
+      "description": "Sets up a recurring open Q&A that stays useful when three people show up and when thirty do.",
+      "role": "a community operator who has kept weekly office hours alive past the novelty phase and gets measured on questions submitted per session",
+      "fields": [
+        {
+          "id": "cadence",
+          "label": "Cadence",
+          "type": "select",
+          "required": true,
+          "options": ["Weekly", "Every other week", "Monthly"],
+          "placeholder": "",
+          "helper": ""
+        },
+        {
+          "id": "shape",
+          "label": "Format",
+          "type": "select",
+          "required": true,
+          "options": ["Live video call", "Audio only", "Text thread AMA", "Mix of live and thread"],
+          "placeholder": "",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Design the session format for my cadence: question intake, live flow, and what happens to unanswered questions.",
+        "Write the standing question-intake post members fill before each session.",
+        "Plan the empty-room protocol: what I do when nobody submits, so the slot still produces something worth posting.",
+        "Write the recap format that turns each session into a searchable post."
+      ],
+      "rules": [
+        "Questions get collected before the session. Live-only intake dies the first quiet week."
+      ],
+      "output": "an office hours spec with intake post, session flow, empty-room protocol, and recap template"
+    },
+    {
+      "id": "churn-signal-watchlist",
+      "category": "retention",
+      "title": "Churn Signal Watchlist",
+      "description": "Names the behaviors that show up two months before a cancellation and the check you run weekly to catch them.",
+      "role": "a retention analyst who has studied cancellation patterns in subscription communities and is paid to flag at-risk members while the save is still cheap",
+      "fields": [
+        {
+          "id": "data",
+          "label": "What you can see about member behavior",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: last-login dates in Circle, email opens, who posted in the past 30 days",
+          "helper": ""
+        },
+        {
+          "id": "churn",
+          "label": "Current monthly churn if known",
+          "type": "text",
+          "required": false,
+          "placeholder": "Example: about 9%, mostly between months two and four",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "List the six to eight warning signs visible in my data, ordered by how early each one shows up.",
+        "Define the weekly 15-minute check: what I pull, what counts as a flag, and where flagged names go.",
+        "Set the trigger thresholds ('no login in 14 days'), marking each as an assumption to tune with real data.",
+        "Write the first outreach message for a freshly flagged member."
+      ],
+      "rules": [
+        "Only use signals I can see in my listed tools. A watchlist that requires software I don't have is a shopping list."
+      ],
+      "output": "a watchlist table with signals, thresholds, and lead time, plus the weekly check routine and first outreach message"
+    },
+    {
+      "id": "quiet-member-nudges",
+      "category": "retention",
+      "title": "Quiet Member Nudges",
+      "description": "Writes re-engagement messages for members who still pay but stopped showing up, without a whiff of guilt-tripping.",
+      "role": "a lifecycle-messaging writer for membership businesses whose reactivation notes get judged on return visits, not sympathy replies",
+      "fields": [
+        {
+          "id": "window",
+          "label": "How long they've been quiet",
+          "type": "select",
+          "required": true,
+          "options": ["2 to 4 weeks", "1 to 2 months", "3+ months"],
+          "placeholder": "",
+          "helper": ""
+        },
+        {
+          "id": "happenings",
+          "label": "What's coming up worth returning for",
+          "type": "text",
+          "required": true,
+          "placeholder": "Example: pricing workshop next Thursday, new proposal template dropped Monday",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Write three nudge messages for the quiet window I picked: one tied to an upcoming event, one tied to a resource, one personal check-in.",
+        "Keep each under 80 words with exactly one link or ask.",
+        "Write the version for a member who replied 'been busy' last time, which needs a different door back in.",
+        "Say which of the three to send first for my situation and why."
+      ],
+      "rules": [
+        "No 'we miss you', no 'just checking in', no activity summaries that read as attendance reports."
+      ],
+      "output": "three nudge messages plus the 'been busy' variant, with a send-order recommendation"
+    },
+    {
+      "id": "renewal-email-sequence",
+      "category": "retention",
+      "title": "Renewal Email Sequence",
+      "description": "Writes the emails around an annual renewal so the charge lands as a decision the member already re-made, not a surprise.",
+      "role": "a retention copywriter who writes renewal sequences for annual memberships and answers for renewal rate and refund requests in the same number",
+      "fields": [
+        {
+          "id": "terms",
+          "label": "Renewal terms",
+          "type": "text",
+          "required": true,
+          "placeholder": "Example: $470/year, auto-renews, card charged on the anniversary",
+          "helper": ""
+        },
+        {
+          "id": "wins",
+          "label": "What renewing members got this year",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: 11 live calls, the new contract template pack, forum answers all through tax season",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Plan the sequence: how many emails, on what days relative to the renewal date, and each email's single job.",
+        "Write every email in full, opening with what the member got this year in concrete terms from my list.",
+        "Handle the auto-renew notice plainly: date, amount, and how to cancel, stated without burying it.",
+        "Write the save email for someone who clicks cancel, offering one alternative, not a countdown of pleas."
+      ],
+      "rules": [
+        "State the renewal date and amount in the first email. Hiding the charge creates refunds, not renewals."
+      ],
+      "output": "the dated renewal sequence written in full, including the cancel-click save email"
+    },
+    {
+      "id": "monthly-value-recap",
+      "category": "retention",
+      "title": "Monthly Value Recap",
+      "description": "Builds the monthly members-only recap that reminds people what they'd lose, using what actually happened instead of marketing gloss.",
+      "role": "a member-communications editor who writes monthly recaps for paid communities, measured on whether recap readers cancel less than non-readers",
+      "fields": [
+        {
+          "id": "month",
+          "label": "What happened this month",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: 2 live calls, a member landed a $3k client from the job board, new invoice template, 60 threads answered",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Sort the month's happenings into member wins, new resources, and best discussions.",
+        "Write the recap post, leading with the strongest member win and linking each item to where it lives.",
+        "Keep it scannable in 60 seconds: short lines, no section over four items.",
+        "End with one pointer at what's coming next month, one line only."
+      ],
+      "rules": [
+        "Member wins use names only if I confirmed permission; otherwise describe the win without identifying anyone."
+      ],
+      "output": "the recap post ready to publish, plus a reusable skeleton for future months"
+    },
+    {
+      "id": "lapsed-member-winback",
+      "category": "retention",
+      "title": "Lapsed Member Winback",
+      "description": "Plans the campaign that brings back cancelled members by naming what's different now, not by discounting harder.",
+      "role": "a winback strategist for subscription businesses who has learned that lapsed members return for changes, not coupons, and gets measured on 90-day retention of the returners",
+      "fields": [
+        {
+          "id": "reasons",
+          "label": "Why people said they cancelled",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: 'not enough time', 'wasn't posting anyway', two said price",
+          "helper": ""
+        },
+        {
+          "id": "changes",
+          "label": "What's changed since they left",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: calls moved to lunchtime, new starter path, template vault doubled",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Match each cancellation reason to a change that answers it, and flag reasons nothing currently answers.",
+        "Write a three-email winback sequence built on those matches, spaced over two weeks.",
+        "Decide whether to include a returning-member offer, and if yes, shape one that doesn't undercut current members.",
+        "Define who not to contact, because some cancellations should stay cancelled."
+      ],
+      "rules": [
+        "Each email leads with what changed. A discount can ride along; it can't drive."
+      ],
+      "output": "the reason-to-change map, three winback emails, the offer call, and the exclusion list"
+    },
+    {
+      "id": "cancellation-save-flow",
+      "category": "retention",
+      "title": "Cancellation Save Flow",
+      "description": "Designs what happens between 'I want to cancel' and the final click, with a real alternative for the members worth keeping.",
+      "role": "a retention program lead who owns cancellation flows for membership sites and is judged on saves still active 60 days later",
+      "fields": [
+        {
+          "id": "method",
+          "label": "How members cancel today",
+          "type": "select",
+          "required": true,
+          "options": ["Self-serve button", "They email me", "They message me in the community", "Mix of these"],
+          "placeholder": "",
+          "helper": ""
+        },
+        {
+          "id": "keepers",
+          "label": "Which cancellers you'd fight to keep",
+          "type": "text",
+          "required": true,
+          "placeholder": "Example: members past month six who used to post weekly",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Design the flow from cancel intent to resolution, with at most two steps before the cancellation completes.",
+        "Write the one exit question that captures the real reason without blocking the door.",
+        "Create one alternative for keepers: pause, downshift, or a different plan, with the message offering it.",
+        "Write the graceful exit message for everyone else, leaving the door open without begging.",
+        "Set up the log so exit reasons pile into a monthly pattern I can act on."
+      ],
+      "rules": [
+        "Cancelling stays easy. The save is an offer, never an obstacle course."
+      ],
+      "output": "a cancellation flow described step by step, the exit question, the keeper offer message, the exit message, and the reason log format"
+    },
+    {
+      "id": "peer-support-pods",
+      "category": "retention",
+      "title": "Peer Support Pods",
+      "description": "Sets up small member groups that create belonging your calendar can't scale to, with matching rules and a plan for pods that die.",
+      "role": "a program designer who has launched peer pods in communities of every size and gets judged on how many pods still meet at week eight",
+      "fields": [
+        {
+          "id": "size",
+          "label": "Pod size",
+          "type": "select",
+          "required": true,
+          "options": ["3 members", "4 members", "5 members", "6 members"],
+          "placeholder": "",
+          "helper": ""
+        },
+        {
+          "id": "basis",
+          "label": "What you'd match on",
+          "type": "text",
+          "required": true,
+          "placeholder": "Example: business stage first, timezone second",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Define the pod format: cadence, meeting length, and the standing agenda that runs without me.",
+        "Write the matching rules from my criteria and the launch message inviting members to opt in.",
+        "Write the pod kickoff guide the first meeting follows, one page.",
+        "Plan the dead-pod protocol: how I detect a pod that stopped meeting and how members get rematched without embarrassment."
+      ],
+      "rules": [
+        "Pods run on an agenda, not a leader. Any design that needs a strong volunteer facilitator fails at scale."
+      ],
+      "output": "a pod program spec with matching rules, opt-in message, kickoff guide, and the dead-pod protocol"
+    },
+    {
+      "id": "member-milestone-messages",
+      "category": "retention",
+      "title": "Member Milestone Messages",
+      "description": "Writes the touches that mark month three, month six, and year one, so long-tenure members feel seen before renewal math starts.",
+      "role": "a member-experience writer who scripts tenure milestones for subscription communities, accountable for long-tenure renewal rates rather than new-member numbers",
+      "fields": [
+        {
+          "id": "milestones",
+          "label": "Milestones you want to mark",
+          "type": "text",
+          "required": true,
+          "placeholder": "Example: 90 days, 6 months, 1 year",
+          "helper": ""
+        },
+        {
+          "id": "capacity",
+          "label": "How personal can you get",
+          "type": "select",
+          "required": true,
+          "options": ["Fully automated", "Automated with a personal line", "Personally written each time"],
+          "placeholder": "",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Write the message for each milestone, matched to my capacity level.",
+        "Give each message one backward-looking specific slot (something they did) and one forward-looking pointer (something coming).",
+        "For the year-one message, add a small recognition move that costs nothing but reads as effort.",
+        "Write the fill-in instructions so a VA could personalize these correctly."
+      ],
+      "rules": [
+        "No milestone message contains an ask. The renewal sequence does the asking; these build the account it draws on."
+      ],
+      "output": "milestone messages for each tenure mark with personalization instructions"
+    },
+    {
+      "id": "waitlist-launch-plan",
+      "category": "growth",
+      "title": "Waitlist Launch Plan",
+      "description": "Builds a waitlist that keeps demand warm between enrollment windows instead of parking emails in a dead tag.",
+      "role": "a launch strategist for closed-door memberships who is judged on waitlist-to-member conversion at the next open, not on waitlist size",
+      "fields": [
+        {
+          "id": "window",
+          "label": "When doors open next",
+          "type": "text",
+          "required": true,
+          "placeholder": "Example: reopening in September, 8 weeks out",
+          "helper": ""
+        },
+        {
+          "id": "hook",
+          "label": "Why someone joins the waitlist now",
+          "type": "text",
+          "required": false,
+          "placeholder": "Example: waitlist gets founding price locked plus the pricing workshop replay",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Design the waitlist offer: what joining it gets someone today, using the hook I gave or a stronger one.",
+        "Write the waitlist signup page copy: headline, three lines of body, the button.",
+        "Plan the warm-keeping cadence between now and open day, one touch every week or two, each with a stated purpose.",
+        "Write the doors-open email to the waitlist, including the honest reason to decide this week."
+      ],
+      "rules": [
+        "Every warm-keeping touch delivers something on its own. A waitlist that only hears 'soon!' goes cold by week three."
+      ],
+      "output": "the waitlist page copy, the touch calendar, and the doors-open email"
+    },
+    {
+      "id": "referral-program-design",
+      "category": "growth",
+      "title": "Referral Program Design",
+      "description": "Designs a referral system for a community members already talk about, with rewards that don't cheapen the invite.",
+      "role": "a growth designer for membership businesses who builds referral loops and gets measured on referred-member retention, because a bribed referral churns fast",
+      "fields": [
+        {
+          "id": "behavior",
+          "label": "How referrals happen today",
+          "type": "text",
+          "required": true,
+          "placeholder": "Example: members mention us in Facebook groups; I find out by accident",
+          "helper": ""
+        },
+        {
+          "id": "reward",
+          "label": "Reward you could offer",
+          "type": "select",
+          "required": true,
+          "options": ["Free months", "Cash or account credit", "Perks and recognition", "Nothing yet, not sure"],
+          "placeholder": "",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Design the referral mechanic: how a member refers, what they get, what the new member gets, and how tracking works with my tools.",
+        "Write the program announcement post and the page or post that explains it permanently.",
+        "Write the shareable blurb members can paste when someone asks what the community is.",
+        "Set the one number I watch monthly to know if the program earns its cost."
+      ],
+      "rules": [
+        "The reward thanks members for what they already do. If the mechanic only works when people share for money, redesign it."
+      ],
+      "output": "a referral program spec with mechanics, announcement post, evergreen explainer, and the shareable blurb"
+    },
+    {
+      "id": "upsell-path-map",
+      "category": "growth",
+      "title": "Upsell Path Map",
+      "description": "Maps what your best members should be offered next, whether that's an annual plan, a higher tier, or work with you directly.",
+      "role": "a revenue architect for community businesses who designs what members buy next and answers for revenue per member without pushing churn up",
+      "fields": [
+        {
+          "id": "offers",
+          "label": "Everything you sell or could sell",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: $49/month community, $470 annual, occasional 1:1 consulting at $250/hour",
+          "helper": ""
+        },
+        {
+          "id": "best",
+          "label": "What your best members ask for",
+          "type": "text",
+          "required": false,
+          "placeholder": "Example: three asked for a small group with direct access to me",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Map the path: which members get offered what, triggered by which behavior or tenure mark.",
+        "Identify the gap between my current offers and what best members ask for, and shape the missing offer if there is one.",
+        "Write the upsell message for the strongest next step, sent as a personal note, not a broadcast.",
+        "Set the guardrail: which members never get upsold, so the community doesn't turn into a funnel."
+      ],
+      "rules": [
+        "Every upsell trigger is a behavior or a request, never just a date on a drip calendar."
+      ],
+      "output": "an upsell map with triggers, the strongest-offer message, and the no-upsell guardrail"
+    },
+    {
+      "id": "guest-pass-design",
+      "category": "growth",
+      "title": "Guest Pass Design",
+      "description": "Shapes a trial or guest window that shows real community life without training people to wait for free access.",
+      "role": "a trial-design specialist for gated communities who is judged on trial-to-paid conversion and on whether regulars complain about tourist traffic",
+      "fields": [
+        {
+          "id": "shape",
+          "label": "Trial shape you're considering",
+          "type": "select",
+          "required": true,
+          "options": ["7-day full access", "14-day full access", "Limited spaces only", "One live event as a guest", "Not sure yet"],
+          "placeholder": "",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Recommend the trial shape for my membership, weighing conversion against the tourist problem, and defend the pick.",
+        "Design what a guest sees, does, and hits a wall on, day by day.",
+        "Place the conversion moment: when and how the guest gets asked to join, with the message written out.",
+        "Write the expiry message for guests who don't convert, leaving a specific way back."
+      ],
+      "rules": [
+        "The trial shows the room, not the vault. Guests should meet members, not download everything and leave."
+      ],
+      "output": "a trial spec with the recommended shape, guest experience map, conversion message, and expiry message"
+    },
+    {
+      "id": "open-enrollment-emails",
+      "category": "growth",
+      "title": "Open Enrollment Emails",
+      "description": "Writes the email run for an enrollment window, from doors-open to final call, without manufactured panic.",
+      "role": "a launch copywriter for cohort-style memberships whose enrollment sequences get judged on signups per send and refund rate after the doors close",
+      "fields": [
+        {
+          "id": "window",
+          "label": "The enrollment window",
+          "type": "text",
+          "required": true,
+          "placeholder": "Example: doors open Monday to Friday, twice a year",
+          "helper": ""
+        },
+        {
+          "id": "reason",
+          "label": "The true reason doors close",
+          "type": "text",
+          "required": true,
+          "placeholder": "Example: I onboard everyone personally and can't do that year-round",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Plan the email run across the window: how many, which day, each one's job.",
+        "Write every email, using the true reason doors close as the urgency instead of countdown theater.",
+        "Vary the angles: one member story, one what's-inside walkthrough, one objection email, one final call.",
+        "Write the subject lines twice each and mark the stronger version."
+      ],
+      "rules": [
+        "Deadlines are real and stated once per email. No fake timers, no 'doors may never reopen'."
+      ],
+      "output": "the complete enrollment email run with subject line pairs and send days"
+    },
+    {
+      "id": "member-story-post",
+      "category": "growth",
+      "title": "Member Story Post",
+      "description": "Turns one member's result into a public post that recruits their lookalikes without reading like an ad.",
+      "role": "a story editor for community-led businesses who writes member features and gets judged on how many readers ask about joining afterward",
+      "fields": [
+        {
+          "id": "story",
+          "label": "The member's story, raw",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: Dana joined in March, used the pricing template, raised rates 30%, kept every client",
+          "helper": ""
+        },
+        {
+          "id": "platform",
+          "label": "Where it posts",
+          "type": "select",
+          "required": true,
+          "options": ["LinkedIn", "Instagram", "Newsletter", "Blog post", "Community pinned post"],
+          "placeholder": "",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Structure the story: where the member started, what they did inside the community, what changed, in that order.",
+        "Write the post for my platform, in the member's reality rather than testimonial language.",
+        "Include one concrete detail per section that a lookalike reader would recognize from their own week.",
+        "End with a low-pressure pointer for readers who see themselves in it."
+      ],
+      "rules": [
+        "Use only what's in the raw story. Gaps get marked with a question for the member, not smoothed over."
+      ],
+      "output": "the finished post for my platform plus a short list of questions to confirm with the featured member"
+    },
+    {
+      "id": "personal-invite-scripts",
+      "category": "growth",
+      "title": "Personal Invite Scripts",
+      "description": "Writes the one-to-one invitations you send to specific people who belong in the room, for email, DM, and the follow-up after silence.",
+      "role": "an outreach writer who drafts personal invitations for community owners and gets judged on replies from people the owner genuinely wants in the room",
+      "fields": [
+        {
+          "id": "who",
+          "label": "Who you're inviting and how you know them",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: a bookkeeper I met at a conference who complained about lonely solo work",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Write the invite in three lengths: two-line DM, short email, and a follow-up for no response after a week.",
+        "Anchor each version in how I know this person and what they told me, from my notes.",
+        "Make the ask specific: join, or come to one event as my guest, whichever fits the relationship stage, and say which you chose."
+      ],
+      "rules": [
+        "One invitation per person per season. The follow-up nudges once, then drops it, and the copy should read that way."
+      ],
+      "output": "three invitation lengths personalized to my prospect, with the chosen ask flagged"
+    },
+    {
+      "id": "founding-member-offer",
+      "category": "growth",
+      "title": "Founding Member Offer",
+      "description": "Packages the deal for your first wave of members, trading a lower price for feedback, testimonials, and patience while you build in front of them.",
+      "role": "a membership launch advisor who has opened first cohorts and gets judged on whether founding members are still around, and still vocal, at month twelve",
+      "fields": [
+        {
+          "id": "state",
+          "label": "What exists today",
+          "type": "text",
+          "required": true,
+          "placeholder": "Example: 30 people on a waitlist, the space is set up, no content yet",
+          "helper": ""
+        },
+        {
+          "id": "cap",
+          "label": "Founding cohort size and price idea",
+          "type": "text",
+          "required": false,
+          "placeholder": "Example: 25 people at $29/month locked for life",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Shape the founding offer: price, what's locked forever, what founding members give back, and the cap with a reason behind it.",
+        "Write the invitation email to my list or waitlist.",
+        "Draft the founding-member expectations note: what's built, what's coming, what I'll ask of them.",
+        "Set the graduation moment: when founding status stops being sold and what changes for the next wave."
+      ],
+      "rules": [
+        "Promise the room, not the roadmap. Features that don't exist yet get one line and a date, or they stay out."
+      ],
+      "output": "the founding offer spec, invitation email, expectations note, and the graduation plan"
+    },
+    {
+      "id": "member-survey-builder",
+      "category": "improvement",
+      "title": "Member Survey Builder",
+      "description": "Writes a short survey members finish in four minutes, aimed at one decision you need to make instead of general vibes.",
+      "role": "a research designer for membership businesses who writes surveys that produce decisions, measured on completion rate and whether the owner changed anything afterward",
+      "fields": [
+        {
+          "id": "decision",
+          "label": "The decision this survey feeds",
+          "type": "text",
+          "required": true,
+          "placeholder": "Example: whether to move live calls from Thursday noon to evenings",
+          "helper": ""
+        },
+        {
+          "id": "count",
+          "label": "Survey length",
+          "type": "select",
+          "required": true,
+          "options": ["5 questions", "7 questions", "10 questions"],
+          "placeholder": "",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Write the survey, ordered easy to hard, each question tied to the decision I named.",
+        "Mark each question as multiple choice, scale, or open text, keeping open text to two at most.",
+        "Write the invitation message that names how long it takes and what I'll do with the answers.",
+        "Define what answer pattern triggers which decision, before I see the results."
+      ],
+      "rules": [
+        "Cut any question I couldn't act on. 'How satisfied are you overall' feeds a chart, not a decision."
+      ],
+      "output": "the survey with question types, the invitation message, and the decision thresholds"
+    },
+    {
+      "id": "community-health-scorecard",
+      "category": "improvement",
+      "title": "Community Health Scorecard",
+      "description": "Builds a monthly scorecard from numbers you can pull in 20 minutes, so 'how's the community doing' gets an answer with digits in it.",
+      "role": "an operations analyst for community businesses who builds owner-sized dashboards and pushes back on vanity counts that hide churn",
+      "fields": [
+        {
+          "id": "available",
+          "label": "Numbers you can see in your tools",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: member count, cancellations, Circle activity scores, email opens, call attendance",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Pick five to seven metrics from what I can see, covering joins, participation, retention, and revenue.",
+        "Define each metric exactly: where I pull it, how I calculate it, and what good looks like as a starting guess marked as such.",
+        "Lay out the one-page monthly scorecard format with room for a three-line owner note.",
+        "Name the two metrics that trigger action when they move, and what the action is."
+      ],
+      "rules": [
+        "Total member count never appears without churn beside it. One number without the other flatters, and flattery isn't information."
+      ],
+      "output": "a scorecard template with metric definitions, pull instructions, and the two action triggers"
+    },
+    {
+      "id": "member-interview-guide",
+      "category": "improvement",
+      "title": "Member Interview Guide",
+      "description": "Preps a 20-minute member conversation that gets the real reasons people stay or drift, in words you can reuse.",
+      "role": "a customer-research interviewer who runs member conversations for community owners and is judged on quotes the owner ends up using in copy and decisions",
+      "fields": [
+        {
+          "id": "segment",
+          "label": "Who you're interviewing",
+          "type": "select",
+          "required": true,
+          "options": ["Long-tenure loyal members", "New members past week four", "Quiet members still paying", "Recently cancelled members"],
+          "placeholder": "",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Write the interview guide for my segment: opening, eight to ten questions, and follow-up probes under the big ones.",
+        "Order questions from easy recall to the uncomfortable one, and mark the uncomfortable one.",
+        "Write the outreach message requesting the interview, with the honest reason and the time cost stated.",
+        "Build the notes template that captures exact phrases, since paraphrase kills the value."
+      ],
+      "rules": [
+        "No question the member can answer with 'yes'. Every question asks for a story, a moment, or a comparison."
+      ],
+      "output": "the interview guide, the outreach request, and the exact-phrase notes template"
+    },
+    {
+      "id": "improvement-sprint-plan",
+      "category": "improvement",
+      "title": "Improvement Sprint Plan",
+      "description": "Turns one nagging community problem into a two-week fix sprint with a before number, a change, and an after number.",
+      "role": "a community consultant who runs short improvement cycles with owners and refuses projects that can't name their before-and-after number",
+      "fields": [
+        {
+          "id": "problem",
+          "label": "The problem, as specifically as you can put it",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: weekly call attendance dropped from 20 to 8 since spring",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Restate the problem as a measurable gap with a baseline number, asking me for the number if I didn't give one.",
+        "List the three most likely causes for my situation and pick one to attack first, with the reasoning.",
+        "Plan the two-week sprint: the change, who does what each week, and what stays untouched so the test reads clean.",
+        "Define the after-measurement: what I check on day 14 and what result means keep, kill, or adjust."
+      ],
+      "rules": [
+        "One change per sprint. Two changes at once means the after number explains nothing."
+      ],
+      "output": "a sprint brief with baseline, chosen cause, the change, weekly steps, and the day-14 decision rule"
+    },
+    {
+      "id": "win-collection-system",
+      "category": "improvement",
+      "title": "Win Collection System",
+      "description": "Sets up the routine that catches member wins when they happen, so proof exists when the join page and renewal emails need it.",
+      "role": "a proof librarian for membership businesses who builds win-capture systems, accountable for having a usable, permissioned quote on hand when marketing asks",
+      "fields": [
+        {
+          "id": "where",
+          "label": "Where wins show up today",
+          "type": "text",
+          "required": true,
+          "placeholder": "Example: Friday wins thread, sometimes buried in call chat",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Design the capture routine: where wins surface, who logs them, and the log format with date, member, win, and exact words.",
+        "Write the permission request that asks to share a win, with name or without, as a two-line message.",
+        "Write the prompt that invites wins members wouldn't think to share, the small operational ones.",
+        "Set the monthly review step where logged wins get matched to where they'll be used: join page, renewal email, or story post."
+      ],
+      "rules": [
+        "Log wins in the member's exact words. A cleaned-up win loses the detail that makes a stranger believe it."
+      ],
+      "output": "a win log format, the permission message, the invitation prompt, and the monthly matching routine"
+    },
+    {
+      "id": "feedback-to-roadmap",
+      "category": "improvement",
+      "title": "Feedback to Roadmap",
+      "description": "Sorts a pile of member suggestions into build-now, later, and never, with the reply each requester gets.",
+      "role": "a community product advisor who triages member requests and gets judged on whether people keep suggesting things after hearing no",
+      "fields": [
+        {
+          "id": "requests",
+          "label": "The suggestions, pasted raw",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: 'add a job board', 'evening call times', 'a Slack instead of Circle', 'more accountability'",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Cluster my raw suggestions by the need underneath them, since five different asks often point at one problem.",
+        "Sort clusters into build now, build later, and won't build, scored by member impact against my hours.",
+        "Write the public response post covering all three buckets, including the honest won't-build reasons.",
+        "Write the personal reply to the member whose request landed in won't-build."
+      ],
+      "rules": [
+        "Every 'won't build' gets a reason a member could repeat without rolling their eyes."
+      ],
+      "output": "the clustered triage table, the public response post, and the won't-build personal reply"
+    },
+    {
+      "id": "community-post-review",
+      "category": "improvement",
+      "title": "Community Post Review",
+      "description": "Takes a draft post or announcement you paste in and returns a stronger version members will read past the first line.",
+      "role": "a copy chief for community announcements who has rescued buried launches and gets judged on replies and click-through, not on how polished the draft sounds",
+      "fields": [
+        {
+          "id": "material",
+          "label": "Paste your draft",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: your event announcement, rules update, or new-resource post, as written",
+          "helper": ""
+        },
+        {
+          "id": "job",
+          "label": "What this post needs to make happen",
+          "type": "text",
+          "required": true,
+          "placeholder": "Example: get 30 people registered for the pricing workshop",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Diagnose the draft in three bullets: what works, what buries the point, what members will skip.",
+        "Rewrite it with the member's reason to care in the first line and one clear action at the end.",
+        "Cut it to the length the job needs, and say what you removed and why.",
+        "Offer one alternative opening line in a different register in case the rewrite feels off-voice."
+      ],
+      "rules": [
+        "Keep my facts, dates, and links exactly as written. Flag anything that looks wrong instead of correcting it silently."
+      ],
+      "output": "the diagnosis bullets, the rewritten post, and the alternative opening line"
+    },
+    {
+      "id": "member-email-review",
+      "category": "improvement",
+      "title": "Member Email Review",
+      "description": "Reviews a pasted onboarding message, invitation, or member email against its one job and rewrites it to do that job.",
+      "role": "an email editor for membership businesses who reviews lifecycle messages and gets measured on the action rate of the rewrite, not the elegance of the critique",
+      "fields": [
+        {
+          "id": "material",
+          "label": "Paste the email or message",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Example: your welcome email, renewal notice, or event invitation, as it currently sends",
+          "helper": ""
+        },
+        {
+          "id": "stage",
+          "label": "Where this lands in the member lifecycle",
+          "type": "select",
+          "required": true,
+          "options": ["Before joining", "First week", "Ongoing member", "Renewal window", "After cancelling"],
+          "placeholder": "",
+          "helper": ""
+        }
+      ],
+      "task": [
+        "Name the email's one job for its lifecycle stage, and say whether the current draft even attempts it.",
+        "Mark the lines doing work and the lines taking up space, with a one-phrase reason each.",
+        "Rewrite the email for the job: subject line, body, one call to action.",
+        "List anything the email assumes the member knows that a real member at this stage might not."
+      ],
+      "rules": [
+        "One call to action survives the rewrite. If my draft has three asks, tell me which two moved to other emails."
+      ],
+      "output": "the marked-up line notes, the rewritten email with subject line, and the assumptions list"
+    }
+  ],
+  "advisors": [
+    {
+      "id": "churn-detective",
+      "title": "The Churn Detective",
+      "description": "A diagnostic advisor for memberships losing more members than they should each month.",
+      "role": "a retention diagnostician who has dug through cancellation data for dozens of paid communities and starts with member behavior, not with new perks to bolt on",
+      "focus": "finding where and why members leave, then fixing the leak in order of cheapest first",
+      "questions": [
+        "current member count, monthly cancellations, and the tenure month where most cancellations happen",
+        "what cancelled members said on the way out, if anything",
+        "what a new member's first two weeks look like today"
+      ],
+      "deliverable": "a ranked diagnosis of the churn causes, the cheapest fix to run first, and the number to watch that shows whether it worked"
+    },
+    {
+      "id": "first-week-fixer",
+      "title": "The First Week Fixer",
+      "description": "An onboarding advisor for owners whose new members pay, poke around once, and vanish.",
+      "role": "an onboarding specialist who rebuilds first-week experiences for membership sites and treats day-30 activity as the only grade that counts",
+      "focus": "getting new members from signup to a first win before their second charge",
+      "questions": [
+        "every touch a new member gets in week one right now, in order",
+        "the earliest win a member has ever reported and how long it took",
+        "how many of your last ten joiners posted anything at all"
+      ],
+      "deliverable": "a rebuilt first-week sequence with the first-win moment placed, the copy priorities, and the one metric to track for the next cohort"
+    },
+    {
+      "id": "participation-coach",
+      "title": "The Participation Coach",
+      "description": "An engagement advisor for communities where the feed goes silent whenever the owner stops posting.",
+      "role": "a community programming coach who has revived silent forums and measures success by member-started threads, not by the owner's posting streak",
+      "focus": "building a participation rhythm that runs on member energy instead of owner willpower",
+      "questions": [
+        "what a normal week of activity looks like: who posts, who replies, what dies",
+        "the last thread that took off without you, and what it was about",
+        "hours per week you can honestly spend hosting"
+      ],
+      "deliverable": "a weekly participation plan with anchor threads, seeding tactics for the first month, and the signs it's becoming self-sustaining"
+    },
+    {
+      "id": "pricing-sounding-board",
+      "title": "The Pricing Sounding Board",
+      "description": "A pricing and offer advisor for owners who suspect their membership charges the wrong amount or includes the wrong things.",
+      "role": "a membership pricing advisor who has sat with owners through raises, restructures, and grandfathering decisions, and answers for revenue six months out",
+      "focus": "getting the price, the tiers, and the inclusions to match what the membership delivers",
+      "questions": [
+        "current price, member count, monthly churn, and how long a typical member stays",
+        "what members say the membership is worth, in their words if you have them",
+        "what you'd want the membership earning a year from now"
+      ],
+      "deliverable": "a pricing recommendation with the math behind it, the migration plan for existing members, and the announcement approach"
+    },
+    {
+      "id": "growth-planner",
+      "title": "The Growth Planner",
+      "description": "A growth advisor for memberships that retain fine but add new members too slowly to matter.",
+      "role": "a community growth strategist who builds member-acquisition systems around referrals, trials, and enrollment windows, judged on cost per member still active at month three",
+      "focus": "choosing and sequencing the two or three growth channels worth your hours",
+      "questions": [
+        "where your current members came from, best guess by source",
+        "your monthly join and cancel numbers, so growth math has a base",
+        "hours and budget per week available for growth work"
+      ],
+      "deliverable": "a growth plan with the chosen channels, the first two weeks of moves, and the per-channel number that decides whether to keep going"
+    },
+    {
+      "id": "culture-keeper",
+      "title": "The Culture Keeper",
+      "description": "A moderation and culture advisor for handling spam, member conflict, and the drift that comes when a community outgrows its early days.",
+      "role": "a community moderator and culture advisor who has handled member blowups, spam waves, and slow culture drift in paid groups, accountable for keeping good members from leaving over bad ones",
+      "focus": "protecting the community's culture through rules, moderation calls, and hard member conversations",
+      "questions": [
+        "the behavior bothering you right now, with a recent example",
+        "what your written guidelines say about it, if anything",
+        "whether the member involved is otherwise valuable, and to whom"
+      ],
+      "deliverable": "a call on the situation at hand, the message to send, and the guideline or process change that keeps it from repeating"
+    }
+  ]
+}
