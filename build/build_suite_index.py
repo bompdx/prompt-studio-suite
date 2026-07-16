@@ -22,6 +22,8 @@ doc = f'''<!DOCTYPE html>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1f7a5a" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='16'%20fill='%231f7a5a'/%3E%3Cpath%20d='M18%2021h28M18%2032h28M18%2043h18'%20stroke='white'%20stroke-width='6'%20stroke-linecap='round'/%3E%3C/svg%3E" />
   <title>Prompt Studio Suite</title>
   <style>
     :root {{ color-scheme:light; --ink:#16201c; --muted:#607068; --paper:#f2f0e9; --panel:#fffefa; --line:rgba(22,32,28,.14); --shadow:0 24px 70px rgba(20,31,26,.11); }}
