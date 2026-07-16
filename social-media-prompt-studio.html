@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<!--
+  PROMPT STUDIO ENGINE
+  Built from the micro-app-builder scaffold. One file, no backend,
+  no third-party JavaScript. Data bank injected by build_studio.py
+  at the __STUDIO_DATA__ marker.
+-->
+<html lang="en" data-theme="auto">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1f7a5a" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='16'%20fill='%231f7a5a'/%3E%3Cpath%20d='M18%2021h28M18%2032h28M18%2043h18'%20stroke='white'%20stroke-width='6'%20stroke-linecap='round'/%3E%3C/svg%3E" />
+  <title>Social Media Prompt Studio</title>
+  <script>try { const theme = localStorage.getItem("prompt-suite-theme"); if (theme === "light" || theme === "dark") document.documentElement.dataset.theme = theme; } catch (error) {}</script>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #16201c;
+      --muted: #607068;
+      --paper: #f2f0e9;
+      --panel: rgba(255, 254, 249, 0.94);
+      --card: #fffefa;
+      --card-strong: #ffffff;
+      --accent: #37718a;
+      --accent-2: #d6a11f;
+      --accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
+      --line: rgba(22, 32, 28, 0.14);
+      --line-strong: rgba(22, 32, 28, 0.25);
+      --shadow: 0 24px 70px rgba(20, 31, 26, 0.10);
+      --shadow-small: 0 8px 24px rgba(20, 31, 26, 0.08);
+      --radius: 20px;
+      --max: 1240px;
+    }
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --ink: #f5f1e8;
+      --muted: #b8c4bd;
+      --paper: #0d1310;
+      --panel: rgba(19, 27, 23, 0.94);
+      --card: #17201b;
+      --card-strong: #1b2620;
+      --line: rgba(245, 241, 232, 0.13);
+      --line-strong: rgba(245, 241, 232, 0.24);
+      --shadow: 0 26px 80px rgba(0, 0, 0, 0.38);
+      --shadow-small: 0 8px 28px rgba(0, 0, 0, 0.28);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Avenir Next, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 2%, color-mix(in srgb, var(--accent) 17%, transparent), transparent 26rem),
+        radial-gradient(circle at 92% 18%, color-mix(in srgb, var(--accent-2) 15%, transparent), transparent 24rem),
+        var(--paper);
+      line-height: 1.5;
+    }
+    body::before {
+      content: ""; position: fixed; inset: 0; pointer-events: none; opacity: 0.28;
+      background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+      background-size: 64px 64px; mask-image: linear-gradient(to bottom, black, transparent 72%); z-index: -1;
+    }
+    body::after {
+      content: ""; position: fixed; width: 34rem; height: 34rem; right: -17rem; top: 20%; pointer-events: none; z-index: -1;
+      border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--accent) 14%, transparent), transparent 68%);
+      animation: ambient-drift 14s cubic-bezier(.4,0,.2,1) 2 alternate both;
+    }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; border: 0; touch-action: manipulation; }
+    button, input, select, textarea { transition: border-color 180ms ease, background 180ms ease, color 180ms ease, box-shadow 180ms ease, transform 180ms ease; }
+    :focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 55%, white); outline-offset: 3px; }
+    .skip-link { position: fixed; left: 16px; top: -80px; z-index: 1000; padding: 10px 14px; border-radius: 10px; background: var(--ink); color: var(--paper); font-weight: 800; }
+    .skip-link:focus { top: 16px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .shell { width: min(100% - 40px, var(--max)); margin: 0 auto; padding: 18px 0 40px; }
+    .topbar { position: sticky; top: 10px; z-index: 40; display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 18px; padding: 8px; border: 1px solid var(--line); border-radius: 18px; background: color-mix(in srgb, var(--panel) 88%, transparent); box-shadow: var(--shadow-small); backdrop-filter: blur(18px); }
+    .brand { display: inline-flex; align-items: center; gap: 11px; padding: 4px 8px 4px 5px; color: var(--ink); }
+    .brand-mark { position: relative; width: 34px; height: 34px; border-radius: 10px; background: var(--accent); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.2); }
+    .brand-mark::before, .brand-mark::after { content: ""; position: absolute; left: 8px; right: 8px; height: 3px; border-radius: 99px; background: white; }
+    .brand-mark::before { top: 10px; box-shadow: 0 6px 0 rgba(255,255,255,0.72); }
+    .brand-mark::after { top: 22px; right: 14px; }
+    .brand-copy { display: grid; line-height: 1.05; }
+    .brand-copy b { font-size: 0.9rem; letter-spacing: -0.01em; }
+    .brand-copy span { margin-top: 4px; color: var(--muted); font: 700 0.68rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; text-transform: uppercase; letter-spacing: 0.09em; }
+    .theme-toggle { display: inline-flex; gap: 4px; padding: 4px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+    .theme-toggle button { min-width: 54px; min-height: 36px; padding: 7px 10px; border-radius: 9px; color: var(--muted); background: transparent; font-weight: 800; font-size: 0.82rem; }
+    html[data-theme="light"] [data-theme-choice="light"], html[data-theme="dark"] [data-theme-choice="dark"] { background: var(--ink); color: var(--paper); }
+    .hero {
+      display: block;
+      align-items: stretch;
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      padding: clamp(26px, 5vw, 64px);
+      overflow: hidden;
+      position: relative;
+    }
+    .hero::after { content: ""; position: absolute; width: 260px; height: 260px; right: -120px; bottom: -150px; border-radius: 50%; border: 42px solid color-mix(in srgb, var(--accent-2) 22%, transparent); animation: ring-drift 16s ease-in-out 2 alternate both; }
+    .hero-copy { align-self: center; position: relative; z-index: 1; }
+    .kicker { margin: 0 0 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.12em; font: 900 0.72rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace; }
+    h1 { margin: 0; max-width: 780px; font-size: clamp(2.5rem, 6vw, 5.2rem); line-height: 0.92; letter-spacing: -0.06em; text-wrap: balance; }
+    .subtitle { max-width: 700px; margin: 21px 0 0; color: var(--muted); font-size: clamp(1.02rem, 2vw, 1.2rem); font-weight: 620; line-height: 1.65; }
+    .layout { display: grid; grid-template-columns: minmax(290px, 0.72fr) minmax(0, 1.45fr); gap: 20px; align-items: start; margin-top: 20px; }
+    .panel { border: 1px solid var(--line); border-radius: 24px; background: var(--panel); box-shadow: var(--shadow-small); padding: clamp(20px, 3vw, 30px); }
+    .form-panel { position: sticky; top: 84px; }
+    .section-title { margin: 0; font-size: clamp(1.35rem, 3vw, 1.8rem); line-height: 1.05; letter-spacing: -0.035em; }
+    .section-note { margin: 9px 0 20px; color: var(--muted); font-weight: 620; }
+    form { display: grid; gap: 15px; }
+    .field { display: grid; gap: 7px; }
+    label { font-weight: 850; font-size: 0.91rem; }
+    .req { color: var(--accent); }
+    .helper { margin: 0; color: var(--muted); font-size: 0.82rem; }
+    input, select, textarea { width: 100%; min-height: 48px; padding: 12px 13px; border: 1px solid var(--line-strong); border-radius: 12px; background: var(--card); color: var(--ink); }
+    input:hover, select:hover, textarea:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+    input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); outline: none; }
+    textarea { min-height: 104px; resize: vertical; }
+    .button-row, .result-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .primary, .secondary, .mini { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 15px; border-radius: 11px; font-weight: 900; }
+    .primary { background: var(--accent); color: white; box-shadow: 0 7px 18px color-mix(in srgb, var(--accent) 26%, transparent); }
+    .primary:hover { filter: brightness(1.06); transform: translateY(-1px); }
+    .secondary, .mini { border: 1px solid var(--line-strong); background: var(--card); color: var(--ink); }
+    .secondary:hover, .mini:hover { border-color: var(--accent); background: var(--accent-soft); }
+    .mini { min-height: 40px; padding: 8px 12px; font-size: 0.86rem; }
+    .mini.primary-mini { background: var(--accent); color: white; border-color: transparent; }
+    button:active { transform: scale(0.98); }
+    .validation { display: none; padding: 11px 12px; border-radius: 14px; background: rgba(180, 46, 46, 0.1); color: #b42e2e; font-weight: 800; }
+    .validation.show { display: block; }
+    .saved-note { color: var(--muted); font-size: 0.85rem; font-weight: 700; margin: 4px 0 0; }
+    .stale-note { display: none; margin-bottom: 14px; padding: 11px 12px; border-radius: 14px; background: color-mix(in srgb, var(--accent-2) 22%, var(--card)); border: 1px solid var(--line); font-weight: 800; }
+    .stale-note.show { display: block; }
+    footer { display: flex; justify-content: space-between; gap: 16px; margin-top: 24px; padding: 12px 4px; color: var(--muted); font: 700 0.75rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .entrance { animation: rise-in 420ms cubic-bezier(.16,1,.3,1) both; }
+    .content-enter { animation: content-reveal 260ms cubic-bezier(.16,1,.3,1) both; }
+    @keyframes rise-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes content-reveal { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes ring-drift { to { transform: translate3d(-24px,-18px,0) rotate(14deg); } }
+    @keyframes ambient-drift { to { transform: translate3d(-14vw,8vh,0) scale(1.12); } }
+    @media (max-width: 900px) { .hero, .layout { grid-template-columns: 1fr; } .form-panel { position: static; } }
+    @media (max-width: 640px) { .shell { width: min(100% - 22px, var(--max)); padding-top: 10px; } .topbar { top: 6px; } .brand-copy span { display: none; } .hero { padding: 27px 21px; border-radius: 22px; } h1 { font-size: clamp(2.35rem, 13vw, 3.6rem); } .primary, .secondary { width: 100%; } footer { text-align: center; display: block; } footer span { display: block; margin: 4px 0; } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+    }
+    /* ============ TYPE STYLES START ============ */
+    .tab-row { display: inline-flex; flex-wrap: wrap; gap: 4px; margin-bottom: 22px; padding: 4px; border: 1px solid var(--line); border-radius: 13px; background: color-mix(in srgb, var(--paper) 65%, transparent); }
+    .tab {
+      min-height: 40px; padding: 8px 14px; border-radius: 9px;
+      background: transparent; color: var(--muted); font-weight: 900;
+    }
+    .tab:hover { color: var(--ink); }
+    .tab.active { background: var(--card-strong); color: var(--ink); box-shadow: var(--shadow-small); }
+    .browse-toolbar { display: grid; grid-template-columns: minmax(220px, 1fr); gap: 12px; margin: 18px 0; }
+    .search-wrap { position: relative; }
+    .search-wrap::before { content: ""; position: absolute; left: 15px; top: 50%; width: 12px; height: 12px; border: 2px solid var(--muted); border-radius: 50%; transform: translateY(-62%); pointer-events: none; }
+    .search-wrap::after { content: ""; position: absolute; left: 27px; top: 29px; width: 7px; height: 2px; border-radius: 2px; background: var(--muted); transform: rotate(45deg); pointer-events: none; }
+    .search-wrap input { padding-left: 43px; }
+    .cat-row { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; }
+    .cat-chip {
+      min-height: 40px; padding: 8px 12px; border-radius: 10px; border: 1px solid var(--line);
+      background: var(--card); color: var(--muted); font-weight: 800; font-size: 0.84rem;
+    }
+    .cat-chip.active { background: var(--accent); color: #fff; border-color: transparent; }
+    .cat-note { margin: 0 0 16px; color: var(--muted); font-weight: 620; }
+    .wf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(235px, 1fr)); gap: 11px; }
+    .wf-card {
+      position: relative; min-height: 184px; text-align: left; display: grid; gap: 8px; align-content: start;
+      border: 1px solid var(--line); border-radius: 16px; padding: 17px;
+      background: var(--card); color: var(--ink); overflow: hidden;
+    }
+    .wf-card::after { content: ""; position: absolute; inset: auto 0 0; height: 3px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 200ms ease; }
+    .wf-card:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); box-shadow: var(--shadow-small); }
+    .wf-card:hover::after { transform: scaleX(1); }
+    .wf-card b { font-size: 1.04rem; letter-spacing: -0.025em; }
+    .wf-card span { color: var(--muted); font-size: 0.86rem; font-weight: 620; }
+    .wf-card .go { align-self: end; margin-top: auto; color: var(--accent); font-weight: 900; font-size: 0.82rem; }
+    .no-results { grid-column: 1 / -1; min-height: 180px; display: grid; place-items: center; padding: 24px; border: 1px dashed var(--line-strong); border-radius: 16px; text-align: center; color: var(--muted); }
+    .detail-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
+    .crumb { min-height: 44px; background: transparent; color: var(--accent); font-weight: 900; padding: 7px 0; }
+    .detail-meta { margin: 0 0 8px; color: var(--accent); font: 850 0.7rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; text-transform: uppercase; letter-spacing: 0.1em; }
+    .result-ready { display: flex; align-items: center; gap: 9px; margin: 22px 0 10px; font-weight: 900; }
+    .result-ready::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 5px var(--accent-soft); }
+    .prompt-box {
+      margin-top: 12px; border: 1px solid var(--line); border-radius: 16px;
+      background: #101713; color: #eaf2ed; padding: 18px; max-height: 460px; overflow: auto; box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+    .prompt-box pre { margin: 0; white-space: pre-wrap; word-break: break-word; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.88rem; line-height: 1.55; }
+    .result-actions { margin-top: 12px; }
+    .adv-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+    .adv-card { min-height: 190px; border: 1px solid var(--line); border-radius: 16px; padding: 17px; background: var(--card); display: grid; gap: 9px; align-content: start; }
+    .adv-card:hover { border-color: color-mix(in srgb, var(--accent) 50%, var(--line)); box-shadow: var(--shadow-small); }
+    .adv-card b { font-size: 1.05rem; }
+    .adv-card p { margin: 0; color: var(--muted); font-size: 0.9rem; font-weight: 620; }
+    .adv-card .mini { align-self: end; margin-top: auto; }
+    .empty { min-height: 200px; display: grid; place-items: center; text-align: center; border: 1px dashed var(--line); border-radius: 20px; color: var(--muted); padding: 22px; }
+    .empty strong { display: block; color: var(--ink); margin-bottom: 5px; }
+    .manual-item { border: 1px solid var(--line); border-radius: 16px; background: var(--card); padding: 15px 16px; display: grid; gap: 9px; margin-bottom: 10px; }
+    .manual-item-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+    .manual-item-head b { font-size: 1rem; }
+    .manual-item-head span { color: var(--muted); font-size: 0.82rem; font-weight: 700; }
+    .manual-item pre { margin: 0; white-space: pre-wrap; word-break: break-word; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.8rem; line-height: 1.5; max-height: 130px; overflow: auto; color: var(--muted); }
+    .manual-title-field { display: grid; gap: 7px; margin-bottom: 14px; }
+    #printArea { display: none; }
+    @media (max-width: 640px) { .tab-row { display: grid; grid-template-columns: repeat(3, 1fr); width: 100%; } .tab { padding-inline: 7px; } .wf-grid { grid-template-columns: 1fr; } .wf-card { min-height: 0; } }
+    @media print {
+      body * { visibility: hidden; }
+      #printArea, #printArea * { visibility: visible; }
+      #printArea {
+        display: block; position: absolute; inset: 0; padding: 0;
+        color: #111; background: #fff; font-family: Georgia, serif;
+      }
+      #printArea .print-cover { padding: 40vh 0 0; text-align: center; page-break-after: always; }
+      #printArea .print-cover h1 { font-size: 2.2rem; letter-spacing: 0; line-height: 1.2; }
+      #printArea .print-cover p { color: #555; }
+      #printArea .print-prompt { page-break-inside: avoid; page-break-before: always; padding: 24px 0; }
+      #printArea .print-prompt h2 { font-size: 1.2rem; margin: 0 0 4px; }
+      #printArea .print-prompt .print-source { color: #666; font-size: 0.85rem; margin: 0 0 12px; }
+      #printArea .print-prompt pre { white-space: pre-wrap; word-break: break-word; font-family: "Courier New", monospace; font-size: 0.82rem; line-height: 1.5; border: 1px solid #ccc; border-radius: 8px; padding: 14px; }
+    }
+    /* ============ TYPE STYLES END ============ */
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#studioWorkspace">Skip to the studio</a>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="index.html" aria-label="Back to Prompt Studio home" title="Prompt Studio home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-copy"><b>Prompt Studio</b><span>Prompt workbench</span></span>
+      </a>
+      <div class="theme-toggle" role="group" aria-label="Theme selection">
+        <button type="button" data-theme-choice="light" aria-pressed="false">Light</button>
+        <button type="button" data-theme-choice="dark" aria-pressed="false">Dark</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero entrance" id="hero">
+        <div class="hero-copy">
+          <h1>Social Media Prompt Studio</h1>
+        </div>
+      </section>
+
+      <!-- ============ TYPE BODY START ============ -->
+      <div class="layout entrance" id="studioWorkspace">
+        <section class="panel form-panel" aria-labelledby="profileTitle">
+          <p class="kicker">Your context</p><h2 class="section-title" id="profileTitle">Your business profile</h2>
+          <form id="profileForm" novalidate></form>
+          <p class="saved-note" id="savedNote">Saved on this device as you type.</p>
+        </section>
+
+        <section class="panel">
+          <div class="tab-row" role="tablist">
+            <button class="tab active" type="button" role="tab" aria-selected="true" data-tab="workflows">Workflows</button>
+            <button class="tab" type="button" role="tab" aria-selected="false" data-tab="advisors">Advisors</button>
+            <button class="tab" type="button" role="tab" aria-selected="false" data-tab="manual">Manual <span id="manualCount"></span></button>
+          </div>
+
+          <div id="tab-workflows">
+            <div id="workflowBrowse">
+              <h2 class="section-title">Pick a workflow</h2>
+              <div class="browse-toolbar"><label class="search-wrap"><span class="sr-only">Search workflows</span><input type="search" id="wfSearch" placeholder="Search workflows" autocomplete="off" /></label></div>
+              <div class="cat-row" id="catRow"></div>
+              <p class="cat-note" id="catNote"></p>
+              <div class="wf-grid" id="wfGrid"></div>
+            </div>
+
+            <div id="workflowDetail" hidden>
+              <div class="detail-head">
+                <button class="crumb" type="button" id="backToGrid">&larr; Back to workflows</button>
+              </div>
+              <p class="detail-meta" id="wfMeta"></p>
+              <h2 class="section-title" id="wfTitle"></h2>
+              <p class="section-note" id="wfDescription"></p>
+              <form id="wfForm" novalidate>
+                <div id="wfFields"></div>
+                <div id="wfValidation" class="validation"></div>
+                <div class="button-row">
+                  <button class="primary" type="submit">Build my prompt</button>
+                </div>
+              </form>
+              <div id="wfResultWrap" hidden>
+                <div class="result-ready">Your prompt is ready</div>
+                <div id="staleNote" class="stale-note" role="status">Your inputs changed after this prompt was built. Build it again to refresh it.</div>
+                <div class="prompt-box"><pre id="wfPrompt"></pre></div>
+                <div class="result-actions">
+                  <button class="mini primary-mini" type="button" id="copyPrompt">Copy prompt</button>
+                  <button class="mini" type="button" id="copyOpen">Copy + open ChatGPT</button>
+                  <button class="mini" type="button" id="addToManual">Add to manual</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="tab-advisors" hidden>
+            <h2 class="section-title">Sit down with an advisor</h2>
+            <div class="adv-grid" id="advGrid"></div>
+            <div id="advResultWrap" hidden>
+              <h2 class="section-title" id="advResultTitle" style="margin-top:18px;"></h2>
+              <div class="prompt-box"><pre id="advPrompt"></pre></div>
+              <div class="result-actions">
+                <button class="mini primary-mini" type="button" id="advCopy">Copy prompt</button>
+                <button class="mini" type="button" id="advCopyOpen">Copy + open ChatGPT</button>
+                <button class="mini" type="button" id="advAddToManual">Add to manual</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="tab-manual" hidden>
+            <h2 class="section-title">Prompt manual</h2>
+            <p class="section-note">Save useful prompts here.</p>
+            <div class="manual-title-field field">
+              <label for="manualTitle">Manual title</label>
+              <input type="text" id="manualTitle" placeholder="Example: Q3 launch prompt playbook" />
+            </div>
+            <div id="manualEmpty" class="empty"><div><strong>Nothing saved yet</strong>Build a prompt in Workflows or Advisors, then hit "Add to manual".</div></div>
+            <div id="manualList"></div>
+            <div class="result-actions">
+              <button class="mini primary-mini" type="button" id="printManual">Print / save as PDF</button>
+              <button class="mini" type="button" id="downloadManual">Download as HTML</button>
+              <button class="mini" type="button" id="clearManual">Clear manual</button>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div id="printArea" aria-hidden="true"></div>
+      <!-- ============ TYPE BODY END ============ -->
+    </main>
+
+    <footer><span>Prompt Studio</span></footer>
+  </div>
+
+  <script>
+    const STUDIO = {"slug": "social-media", "title": "Social Media Prompt Studio", "kicker": "Guided prompt system for social that converts", "subtitle": "For marketers, creators, and owner-run brands that post every week. Fill in your business once, pick a workflow, and copy a finished prompt that produces a usable post, script, or plan the same day.", "badge": "48 guided workflows", "accent": "#37718a", "accent2": "#d6a11f", "footer": "Prompt Studio", "profile": [{"id": "business", "label": "What you sell and who buys it", "type": "textarea", "required": true, "placeholder": "Example: bookkeeping for restaurants, $650/month, owners with 1 to 3 locations", "helper": "One or two sentences. Every prompt in this studio uses this."}, {"id": "platforms", "label": "Where you post and how often", "type": "text", "required": false, "placeholder": "Example: LinkedIn daily, Instagram 3x a week, about 4,800 followers combined", "helper": ""}, {"id": "audience", "label": "Your audience in their own words", "type": "textarea", "required": false, "placeholder": "Example: they say 'I know I should post more but I stare at the blank caption box' and they follow competitors without commenting", "helper": "Phrases from comments, DMs, and sales calls beat your own summary."}, {"id": "offer", "label": "The offer your content points to right now", "type": "textarea", "required": false, "placeholder": "Example: free kitchen-margin audit, booked through the link in bio", "helper": ""}, {"id": "voice", "label": "Voice notes and hard limits", "type": "text", "required": false, "placeholder": "Example: dry humor, first person, never the word 'journey', no dancing trends", "helper": ""}], "categories": [{"id": "direction", "title": "Strategy & Direction", "note": "Decide what you post about, where you post it, and in whose voice, before writing anything."}, {"id": "posts", "title": "Posts & Captions", "note": "Hooks, captions, and text posts people read past the first line."}, {"id": "video", "title": "Video & Carousels", "note": "Reels, carousels, and scripts planned down to the shot and the slide."}, {"id": "engagement", "title": "Engagement & Community", "note": "Posts and replies built for comments, saves, shares, and actual conversation."}, {"id": "selling", "title": "Selling on Social", "note": "Lead magnets, proof, offers, and DMs that convert without torching trust."}, {"id": "improve", "title": "Audit & Improve", "note": "Paste what you have and find out what to fix, cut, or run again."}], "workflows": [{"id": "content-pillar-map", "category": "direction", "title": "Content Pillar Map", "description": "Pick the three to five topics your account keeps coming back to, each tied to a reason someone would hire you.", "role": "a social content strategist who builds organic programs for small service brands and gets judged on whether content produces inquiries, not follower counts", "fields": [{"id": "topics", "label": "Topics you could talk about for an hour", "type": "textarea", "required": true, "placeholder": "Example: lawn pricing mistakes, crew hiring, before-and-after yards, why spring quotes come in high", "helper": ""}, {"id": "known-for", "label": "What you want to be known for", "type": "text", "required": false, "placeholder": "Example: the lawn care contractor who explains the quote line by line", "helper": ""}], "task": ["Sort my topic list into three to five pillars, each named in plain words a follower would use.", "For each pillar, state the job it does: builds trust, proves skill, starts conversations, or sells.", "Give three example post ideas per pillar so I can see the pillar in action.", "Flag any pillar that entertains my peers but means nothing to buyers, and say what replaces it.", "End with a rough weekly mix, like two trust posts, one proof post, one seller."], "rules": ["Every pillar has to connect to a reason someone would hire or buy from me, even the fun ones.", "Name pillars in follower language, not marketing labels like 'thought leadership'."], "output": "a pillar map with three to five named pillars, the job each does, three post ideas per pillar, and a weekly posting mix"}, {"id": "platform-positioning", "category": "direction", "title": "Platform Positioning Plan", "description": "Decide how the same business shows up differently on each platform, so posts feel native instead of syndicated.", "role": "a multi-platform content lead who has run one brand across LinkedIn, Instagram, and TikTok at the same time and can spot a cross-posted caption from the hashtag pile alone", "fields": [{"id": "platform-jobs", "label": "What each platform is for, as far as you can tell", "type": "textarea", "required": true, "placeholder": "Example: LinkedIn brings client leads, Instagram mostly proves we're alive, TikTok is an experiment", "helper": ""}], "task": ["For each platform I named, define who's actually there for me: their role, their buying power, and what they scroll for.", "Set a per-platform stance: format mix, tone shift, and the one thing I do there that I skip everywhere else.", "List the tells that make a post feel imported on each platform, like LinkedIn hashtag piles landing on Instagram, so I can strip them.", "Rank my platforms by likely payoff for my offer and say which one, if any, I should park."], "rules": ["Treat each platform as a different room with different manners, not a different aspect ratio.", "If a platform earns a 'park it' call, say so plainly instead of handing me a plan for everything."], "output": "a one-page platform plan with audience, format mix, tone notes, and a keep-or-park call per platform"}, {"id": "voice-rulebook", "category": "direction", "title": "Brand Voice Rulebook", "description": "Turn scattered voice instincts into written rules with go-to phrases, banned words, and reply styles anyone posting for you can follow.", "role": "a brand voice editor who writes voice guides for founder-led accounts and gets blamed personally when a ghostwritten post makes the founder cringe", "fields": [{"id": "samples", "label": "Three pieces that sound like you", "type": "textarea", "required": true, "placeholder": "Example: paste two posts you liked and one email a client said sounded exactly like you", "helper": ""}, {"id": "refusals", "label": "Words and moves you refuse", "type": "text", "required": false, "placeholder": "Example: no 'game-changer', no fake questions, no clapping-hands emoji", "helper": ""}], "task": ["Read my samples and name the five strongest voice traits, each backed by a quoted line from my own writing.", "Write ten go-to phrases and sentence starters that match the samples.", "Write the banned list: words, emoji, and formats that would make regulars think someone else has the password.", "Define three reply styles with an example each: agreeing with a comment, pushing back, and handling a troll.", "Compress everything into a half-page cheat sheet a new team member could follow on day one."], "rules": ["Quote my actual samples as evidence. A trait with no quote behind it gets cut."], "output": "a voice rulebook with five quoted traits, ten phrases, a banned list, three reply styles with examples, and a half-page cheat sheet"}, {"id": "audience-research-sheet", "category": "direction", "title": "Audience Research Sheet", "description": "Map what your followers want, fear, object to, and ask, in their own words, so posts start from their head instead of yours.", "role": "an audience researcher who mines comments, DMs, and reviews for buyer language and refuses to write a persona that lacks a supporting quote", "fields": [{"id": "raw-language", "label": "Raw audience language you've collected", "type": "textarea", "required": true, "placeholder": "Example: paste comments, DM questions, review lines, and things brides said on consult calls", "helper": "Messy is fine. Exact wording matters more than tidiness."}], "task": ["Sort my raw language into wants, frustrations, objections, and open questions, keeping the exact wording.", "Pull the ten phrases with the most emotional charge and mark which would work as post hooks.", "List the five questions that keep repeating; each one is a post I should already have written.", "Flag the topics my audience raises that my current content skips.", "Summarize the audience in six lines I can paste into future prompts as context."], "rules": ["Keep their spelling and phrasing. 'My food cost is eating me alive' beats any cleaned-up version."], "output": "a research sheet with wants, frustrations, objections, repeat questions, ten hook-ready quotes, and a six-line audience summary"}, {"id": "competitor-teardown", "category": "direction", "title": "Competitor Content Teardown", "description": "Break down what two or three competing accounts do that works, what they skip, and where you win by being different.", "role": "a content analyst who audits competitor accounts for agencies and reports patterns and gaps, never vibes", "fields": [{"id": "competitors", "label": "Competitor accounts and what you've noticed", "type": "textarea", "required": true, "placeholder": "Example: @kitchenledger posts client numbers weekly, @restobooks does talking-head rants, both ignore their comments", "helper": ""}], "task": ["For each competitor I described, name their apparent pillars, formats, and posting rhythm.", "Identify what earns them engagement, judged by what I reported, and what they post that clearly lands flat.", "List the topics and formats none of them touch that fit my offer, ranked by how winnable each gap is.", "Point out anything they do that works but that I shouldn't copy, and say why it fails for my voice or buyer.", "Give me three moves for the next 30 days based on the gaps."], "rules": ["Differentiation has to be visible in three seconds of scrolling, not buried in a positioning statement."], "output": "a teardown with a per-competitor breakdown, a gap list ranked by winnability, and three moves for the next 30 days"}, {"id": "thirty-day-calendar", "category": "direction", "title": "30-Day Content Calendar", "description": "Plan a month of posts with themes, hooks, formats, and CTAs, so you never open the app wondering what to say.", "role": "a content planner who builds monthly calendars for accounts run by one busy person, so every entry has to survive a week when clients get loud", "fields": [{"id": "cadence", "label": "How many posts a week you can honestly sustain", "type": "text", "required": true, "placeholder": "Example: 4 a week, one can be a reel, Sundays off", "helper": ""}, {"id": "month-focus", "label": "Anything this month needs to feature", "type": "text", "required": false, "placeholder": "Example: class schedule drops the 18th, open house on the 25th", "helper": ""}], "task": ["Lay out the month week by week at my honest cadence, with a working title and pillar for each post.", "Write the opening hook line for every post, not just the topic, so drafting starts from a sentence instead of a blank box.", "Assign each post a format (text, carousel, reel, story set) and vary the mix within every week.", "Mark each post's CTA as conversation, save, follow, or offer, and keep offer CTAs to roughly one in four.", "Add two backup post ideas for the week everything goes sideways."], "rules": ["Schedule around my real cadence. A calendar I abandon by week two is worth nothing.", "If a promo or launch date exists in my context, make the two weeks before it warm that topic up."], "output": "a week-by-week calendar with title, pillar, hook line, format, and CTA type per post, plus two backup ideas"}, {"id": "trend-fit-check", "category": "direction", "title": "Trend Fit Check", "description": "Decide in one sitting whether a trend deserves your production time or a hard skip, scored against your buyer and your voice.", "role": "a social lead who once burned an afternoon on a trending audio that brought 40,000 views and zero inquiries, and now scores every trend before filming", "fields": [{"id": "trend", "label": "The trend and why it's tempting", "type": "textarea", "required": true, "placeholder": "Example: the 'things I'd never do as a bookkeeper' format is everywhere and a peer got 200k views with it", "helper": ""}], "task": ["Score the trend 1 to 5 on three axes: buyer overlap, voice fit, and shelf life, with one line of reasoning each.", "Estimate what the trend costs me in production time versus what a win realistically returns for my offer.", "If it passes, write the adaptation: my angle, the first line, and how the format bends toward one of my pillars.", "If it fails, name the itch that makes the trend spread and suggest a non-trend post that scratches the same itch."], "rules": ["Views from people who will never buy count as a cost, not a win, because they skew who the account gets shown to next."], "output": "a go-or-skip call with scores and reasoning, plus either an adapted trend brief or a replacement post idea"}, {"id": "launch-roadmap", "category": "direction", "title": "Launch Content Roadmap", "description": "Sequence three weeks of social content around a launch: warm-up, open cart, and close, each phase with its own job.", "role": "a launch content manager who has run open-cart weeks where the social calendar was the entire traffic plan, and plans backward from cart close", "fields": [{"id": "launch-details", "label": "What's launching and the key dates", "type": "textarea", "required": true, "placeholder": "Example: group coaching program, $1,200, cart opens March 3 and closes March 10", "helper": ""}, {"id": "assets", "label": "Proof and assets you already have", "type": "text", "required": false, "placeholder": "Example: 6 client screenshots, one case study video, a waitlist of 90", "helper": ""}], "task": ["Split the runway into warm-up, open cart, and close, and state the single job of each phase.", "Plan every post in each phase with format, hook line, and the objection or desire it works on.", "Place my proof assets where they carry the most weight, usually mid-cart when skepticism peaks.", "Write the close-day sequence: reminder post, story set, and the final post, with rough timing.", "List what to post the week after close so the account neither goes silent nor sounds sorry."], "rules": ["Every open-cart post names the offer plainly. Teasing without a link is warm-up behavior, not cart behavior.", "Cap pure countdown posts at two. Scarcity repeated daily reads as begging by day three."], "output": "a dated three-phase roadmap with per-post format, hook, and target objection, plus a close-day sequence and a post-launch week"}, {"id": "hook-bank", "category": "posts", "title": "Hook Bank", "description": "Generate 18 opening lines for one topic across six styles: curiosity, pain, contrarian, proof, story, and direct.", "role": "a hook writer who drafts first lines for feeds that truncate captions at two lines, and treats the opener as most of the outcome", "fields": [{"id": "topic", "label": "The topic or post you need hooks for", "type": "textarea", "required": true, "placeholder": "Example: most restaurant owners find out about a losing month six weeks too late", "helper": ""}], "task": ["Write three hooks in each style: curiosity, pain, contrarian, proof, story, and direct, 18 total.", "Keep every hook under 12 words with zero setup; the first word starts the tension.", "Mark the three strongest overall and note what each one commits the rest of the post to deliver.", "Flag any hook that overpromises what the topic can back up, and pull it down to what's true."], "rules": ["No fake cliffhangers. Every hook has to be cashable by the post behind it.", "Write for the truncation point: the first eight words carry the load."], "output": "18 hooks grouped by style, the top three marked, each with a one-line note on the promise it makes"}, {"id": "caption-blueprint", "category": "posts", "title": "Caption Blueprint", "description": "Build a reusable caption structure for your account: hook, body beats, line breaks, and CTA, tuned to how your platform truncates and scrolls.", "role": "a caption editor who formats posts for phone screens and knows exactly where readers bail when a paragraph runs four lines deep", "fields": [{"id": "sample-caption", "label": "One recent caption, good or bad", "type": "textarea", "required": true, "placeholder": "Example: paste the caption from your best post last month, exactly as it ran", "helper": ""}], "task": ["Diagnose my sample caption: where it holds attention, where it leaks, and what the line breaks are doing.", "Design my caption structure: hook line, one-line bridge, body in two or three short beats, then CTA.", "Set formatting rules for my main platform: line length, break rhythm, emoji budget, and hashtag placement.", "Rewrite my sample caption inside the new structure so I can see before and after.", "Write the structure as a fill-in skeleton I can keep next to my drafts."], "rules": ["Format for a phone screen. Any paragraph over three mobile lines gets split."], "output": "a caption diagnosis, a named structure, platform formatting rules, my rewritten sample, and a fill-in skeleton"}, {"id": "micro-story-post", "category": "posts", "title": "Micro-Story Post", "description": "Turn one small real moment, a client call, a mistake, an odd request, into a post under 150 words with a point.", "role": "a story editor who cuts 800-word anecdotes down to 150 words that keep the turn, and kills any story that exists only to humble-brag", "fields": [{"id": "moment", "label": "The moment, told plainly", "type": "textarea", "required": true, "placeholder": "Example: a client apologized for 'bothering me' with a question that saved her $9k in taxes", "helper": ""}, {"id": "takeaway", "label": "What you want the reader to take from it", "type": "text", "required": false, "placeholder": "Example: the dumb question is usually the expensive one", "helper": ""}], "task": ["Find the turn in my moment, the line where expectation breaks, and build the post around it.", "Draft the post in under 150 words: scene in one or two lines, turn, consequence, then a takeaway that earns its place.", "Cut every line that explains the story instead of telling it.", "Write two alternative first lines: one starting mid-scene, one starting with the aftermath."], "rules": ["Keep the details small and real. A specific dollar figure or a quoted sentence beats any dramatic framing.", "If the takeaway repeats what the story already showed, delete the takeaway."], "output": "a post under 150 words plus two alternative opening lines"}, {"id": "contrarian-take", "category": "posts", "title": "Contrarian Take Post", "description": "Write a post that pushes against a common belief in your market, with enough evidence to survive the comment section.", "role": "an opinion editor who publishes takes under a founder's name and makes every one pass a single test: would you defend this line to an angry peer on a call", "fields": [{"id": "belief", "label": "The common advice you disagree with", "type": "textarea", "required": true, "placeholder": "Example: 'post every day' advice, which burns out solo owners by week three", "helper": ""}, {"id": "evidence", "label": "Why you're right, from experience", "type": "textarea", "required": false, "placeholder": "Example: my best quarter came from 2 posts a week plus 30 daily comments on other accounts", "helper": ""}], "task": ["State my position in one line sharp enough to disagree with, no hedging words.", "Steelman the common belief in two lines so readers see I understand what I'm rejecting.", "Make my case with the evidence I gave: the specifics, the numbers, and the situation where the standard advice breaks.", "Name the exception honestly: who the common advice still works for.", "End with a question that invites disagreement rather than applause."], "rules": ["No strawmen. If the opposing view sounds stupid in my post, rewrite it until a smart person would nod at it first.", "Sharpen the take only as far as my evidence supports; a line I can't defend in comments costs more than it earns."], "output": "a full contrarian post: position line, steelman, case, honest exception, and closing question"}, {"id": "how-to-post", "category": "posts", "title": "How-To Post", "description": "Teach one narrow thing your buyer can do this week, specific enough to prove you know your trade.", "role": "an educational content writer who turns practitioner knowledge into steps a stranger could follow, judged on saves and 'tried this' replies", "fields": [{"id": "skill", "label": "The one thing you're teaching", "type": "textarea", "required": true, "placeholder": "Example: how to spot-check your food cost in 15 minutes using last week's invoices", "helper": ""}, {"id": "common-mistake", "label": "The mistake people make attempting it", "type": "text", "required": false, "placeholder": "Example: they average the whole month and miss the one vendor who crept up 12%", "helper": ""}], "task": ["Narrow the topic until it fits one post: one task, one tool, one situation.", "Write the steps as a numbered list a reader could follow without asking me anything, three to six steps.", "Work the common mistake in at the step where people actually hit it, not as a disclaimer at the end.", "Open with the outcome and the time it takes, because 'in 15 minutes' is half the hook.", "Close with what to do with the result, pointing at my offer only if my context includes one."], "rules": ["Give away the whole method. Held-back steps read as an ad and get scrolled."], "output": "a complete how-to post with hook, numbered steps, the mistake handled inline, and a next-step close"}, {"id": "faq-answer-post", "category": "posts", "title": "FAQ Answer Post", "description": "Answer the question prospects keep asking, once, publicly, and better than you manage live on calls.", "role": "a service marketer who tracks presale questions and turns each repeat question into a post that shortens the next sales call", "fields": [{"id": "question", "label": "The exact question, as they phrase it", "type": "text", "required": true, "placeholder": "Example: 'do I really need a bookkeeper if I have QuickBooks?'", "helper": ""}, {"id": "honest-answer", "label": "Your honest answer, unpolished", "type": "textarea", "required": true, "placeholder": "Example: software records what happened, it won't tell you the Tuesday special is losing money", "helper": ""}], "task": ["Open the post with the question verbatim, quotation marks and all, because recognition is the hook.", "Give the direct answer in the first three lines, no wind-up.", "Add the texture from my honest answer: the example, the number, the case where the answer flips.", "Close by telling readers what to check in their own situation this week."], "rules": ["Answer like I would across a table, not like a website FAQ page.", "If the honest answer is 'it depends', name the two or three things it depends on instead of dodging."], "output": "a post that quotes the question, answers it straight, and gives readers one thing to check"}, {"id": "platform-native-rewrite", "category": "posts", "title": "Platform-Native Rewrite", "description": "Take one idea and write it fresh for each platform, so every version reads like it was born in that feed.", "role": "a cross-platform writer who adapts one idea a day for three feeds and can spot a LinkedIn paragraph wearing an Instagram costume", "fields": [{"id": "source-idea", "label": "The idea or draft post", "type": "textarea", "required": true, "placeholder": "Example: paste your LinkedIn draft about the client who saved $9k on vendor contracts", "helper": ""}, {"id": "targets", "label": "Platforms to adapt for", "type": "text", "required": true, "placeholder": "Example: Instagram caption plus an X thread", "helper": ""}], "task": ["Identify the core claim and the strongest detail in my idea; both survive every version.", "Write each platform version from scratch in that platform's shape: length, line breaks, hashtag and emoji norms, CTA style.", "Give each version its own first line, because the same hook rarely survives the trip between feeds.", "Note the one visual or format change each platform wants, like turning the list into slides."], "rules": ["No version is a trim of another. Each gets rebuilt from the core claim up."], "output": "one rebuilt version per target platform, each with its own hook and a format note"}, {"id": "post-batch-sprint", "category": "posts", "title": "Post Batch Sprint", "description": "Draft five posts from one pillar in a single sitting, so one focused hour covers a week and a half of posting.", "role": "a content producer who drafts in batches for time-starved owners and ships five usable posts per sitting instead of one perfect one", "fields": [{"id": "pillar", "label": "The pillar or theme for this batch", "type": "text", "required": true, "placeholder": "Example: pricing questions dog groomers get wrong", "helper": ""}, {"id": "raw-material", "label": "Raw material: notes, stories, one-liners", "type": "textarea", "required": false, "placeholder": "Example: the doodle-with-mats story, the $15 upcharge argument, my rant about 'just a quick trim'", "helper": ""}], "task": ["Split my pillar into five distinct angles so the batch avoids producing the same post five times.", "Draft all five posts complete: hook, body, CTA, using my raw material where it fits.", "Vary the format across the batch: at least one list, one story, and one take or question.", "Order them across the week so back-to-back posts read as different thoughts, not siblings.", "List the leftover raw material and what it wants to become next batch."], "rules": ["Ship-ready beats polished. Each draft should need at most a two-minute edit before posting."], "output": "five finished posts with a suggested posting order, plus a leftovers list for the next batch"}, {"id": "carousel-outline", "category": "video", "title": "Carousel Outline", "description": "Structure a carousel slide by slide: cover headline, one idea per slide, a visual note for each, and a last-slide CTA.", "role": "a carousel writer who scripts ten-slide documents for designers and knows slide two is where swipes go to die", "fields": [{"id": "carousel-topic", "label": "What the carousel teaches or argues", "type": "textarea", "required": true, "placeholder": "Example: 5 numbers every restaurant owner should check each Monday morning", "helper": ""}, {"id": "slide-count", "label": "Slide count", "type": "select", "required": false, "options": ["6 slides", "8 slides", "10 slides"], "placeholder": "", "helper": ""}], "task": ["Write the cover slide headline under eight words with a built-in reason to swipe.", "Give every slide one idea, a headline under ten words, and up to 25 words of support text.", "Make slide two pay off the cover immediately; context and backstory move to later slides or get cut.", "Add a one-line visual note per slide: chart, icon, screenshot, big number, or plain text.", "Write the last slide as the CTA: save, share, or offer, matched to what my context needs most."], "rules": ["Each slide has to work if someone lands on it alone, because shares strip the order.", "No slide exists just to set up the next one."], "output": "a numbered slide plan with headline, support text, and visual note per slide, cover through CTA"}, {"id": "reel-idea-bench", "category": "video", "title": "Reel Idea Bench", "description": "Get ten short-form video ideas with the opening shot, talking points, and on-screen text sketched for each one.", "role": "a short-form producer who pitches reels in batches and includes the first shot in every pitch, because an idea without an opener is a topic, not an idea", "fields": [{"id": "focus-area", "label": "Topic area for this batch", "type": "text", "required": true, "placeholder": "Example: mistakes owners make reading their P&L", "helper": ""}, {"id": "camera-style", "label": "How you like to appear", "type": "select", "required": false, "options": ["Talking to camera", "Voiceover with B-roll", "Screen recordings", "Mix of all three"], "placeholder": "", "helper": ""}], "task": ["Pitch ten reel ideas, each with a working title and the specific opening shot or line.", "For each idea, list two or three talking points and the on-screen text for the first three seconds.", "Match every idea to the on-camera style I picked.", "Mark the three ideas easiest to film this week with no new gear or location.", "Expand the strongest idea into a full 30-second beat sheet: shot, line, cut, close."], "rules": ["Every idea has to make sense on mute, since most viewers start without sound."], "output": "ten reel pitches with opener, talking points, and on-screen text, three flagged easiest to film, one expanded into a beat sheet"}, {"id": "talking-head-script", "category": "video", "title": "Talking-Head Script", "description": "Script a to-camera video with spoken rhythm, marked pauses, and a first line that earns the next ten seconds.", "role": "a video scriptwriter who writes for founders reading off phone teleprompters and cuts any sentence that can't be said in one breath", "fields": [{"id": "message", "label": "The point of the video", "type": "textarea", "required": true, "placeholder": "Example: why I tell new clients to ignore revenue for the first 90 days", "helper": ""}, {"id": "target-length", "label": "Target length", "type": "select", "required": false, "options": ["30 seconds", "60 seconds", "90 seconds"], "placeholder": "", "helper": ""}], "task": ["Write the script to my target length at natural speaking pace, roughly 140 words per minute.", "Open with the payoff or the tension in the first line; no introductions, no 'hey guys'.", "Write in spoken sentences: short, contraction-heavy, one breath each, with [pause] marks where a beat helps.", "Add a mid-video re-hook around the halfway mark, where drop-off usually spikes.", "End with one CTA phrased the way I'd say it to a friend, matched to my offer if my context has one."], "rules": ["Read-aloud test: any sentence I'd stumble on gets rewritten shorter.", "One idea per video. Lines serving a second idea move to a leftover list at the bottom."], "output": "a timed script with [pause] marks, a mid-video re-hook, one CTA, and a leftover-ideas list"}, {"id": "broll-shot-list", "category": "video", "title": "B-Roll Shot List", "description": "Plan the B-roll for a voiceover or montage video: every shot, its length in seconds, and the script line it plays under.", "role": "a video editor who assembles reels from founders' camera rolls and has learned to demand the shot list before the footage", "fields": [{"id": "voiceover", "label": "The voiceover script or the video's message", "type": "textarea", "required": true, "placeholder": "Example: paste your 60-second voiceover about slow Tuesdays being a data problem", "helper": ""}, {"id": "locations", "label": "Where you can realistically film", "type": "text", "required": false, "placeholder": "Example: my office, the client's kitchen during prep, my truck", "helper": ""}], "task": ["Break the script into beats and assign each beat a specific shot from my available locations.", "Describe each shot in filmable terms: angle, action, and duration, with no shot over four seconds.", "Pick the two shots worth extra setup time because they carry the video's feel.", "List which shots to bank as reusable B-roll for future videos in the same locations."], "rules": ["Only call for shots I can get in my named locations with a phone. No drone requests."], "output": "a beat-by-beat shot list with angle, action, and duration, two priority shots flagged, and a reusable B-roll bank"}, {"id": "voiceover-video-script", "category": "video", "title": "Voiceover Video Script", "description": "Write a faceless video script where the voiceover and the visuals split the work, for the days the camera stays off.", "role": "a faceless-content writer who scripts voiceover reels for owners who hate being on camera and refuses to let visuals wallpaper the audio", "fields": [{"id": "video-point", "label": "What the video says", "type": "textarea", "required": true, "placeholder": "Example: three numbers on your POS report that predict a bad month", "helper": ""}], "task": ["Write the voiceover to about 60 seconds in spoken rhythm, with an opening line that works over any footage.", "Pair every voiceover line with a visual instruction: B-roll, screen text, screenshot, or a number on screen.", "Put the strongest visual proof, a screenshot or a figure, at the moment the script makes its biggest claim.", "Write the on-screen caption text separately, since a third of viewers read instead of listen."], "rules": ["The visuals have to carry meaning of their own. Any shot swappable for stock coffee-pouring footage gets a new instruction."], "output": "a two-column script with voiceover on the left and visuals on the right, plus separate on-screen caption text"}, {"id": "reel-series-plan", "category": "video", "title": "Reel Series Plan", "description": "Design a repeating video series with a fixed format and a name, so viewers know what they're getting and you stop reinventing weekly.", "role": "a series producer who builds repeatable episode formats for small accounts, because a recognizable format compounds and one-off hits don't", "fields": [{"id": "series-concept", "label": "The rough series idea", "type": "textarea", "required": true, "placeholder": "Example: I review a real anonymized restaurant P&L for 60 seconds every Friday", "helper": ""}], "task": ["Offer three series names that describe the format in follower language.", "Lock the format: fixed opener line, segment order, runtime, and the visual signature that repeats every episode.", "Write episode one as a full script inside that format.", "List the next eight episode topics so the series survives past week two.", "Define the success check: what to measure after six episodes to decide continue, adjust, or kill."], "rules": ["The format has to be filmable in under 30 minutes per episode, or it dies the first busy week."], "output": "three name options, a locked format spec, a full episode-one script, eight future topics, and a six-episode success check"}, {"id": "reel-cover-opener", "category": "video", "title": "Reel Cover and Opener", "description": "Write the cover text, first spoken line, and first on-screen caption for a reel, the three seconds that decide the rest.", "role": "a retention editor who watches drop-off graphs for a living and rewrites openers until the three-second hold stops bleeding", "fields": [{"id": "video-summary", "label": "What the video is about and its best moment", "type": "textarea", "required": true, "placeholder": "Example: reel about vendor price creep; best moment is the invoice showing the same case of chicken up 14%", "helper": ""}], "task": ["Write five cover-text options under six words each, readable as a thumbnail at feed size.", "Write five first spoken lines that start mid-thought or mid-claim; introductions get cut.", "Write the matching on-screen text for the first three seconds of each pairing.", "Recommend one combination and name the promise it makes, because the rest of the edit now owes that promise."], "rules": ["Cover text and spoken opener never repeat each other; each carries different information."], "output": "five cover options, five openers, matched on-screen text, and one recommended combination with the promise it makes"}, {"id": "filming-batch-plan", "category": "video", "title": "Filming Batch Plan", "description": "Plan one filming session that banks a month of video: setups grouped, outfits planned, and scripts stacked to shoot fast.", "role": "a production coordinator who schedules batch shoot days for solo creators and plans by location and setup, never by topic order", "fields": [{"id": "video-list", "label": "The videos you want to bank", "type": "textarea", "required": true, "placeholder": "Example: 4 talking-head reels, 2 FAQ answers, B-roll for future voiceovers", "helper": ""}, {"id": "constraints", "label": "Time, gear, and location limits", "type": "text", "required": false, "placeholder": "Example: 3 hours on Sunday, phone and one lamp, office only", "helper": ""}], "task": ["Group my videos by setup: location, framing, and outfit, so nothing gets rebuilt twice.", "Order the session with the highest-energy pieces first, since delivery flattens after hour two.", "Build the minute-by-minute schedule inside my time limit, with a buffer after every third video.", "List the B-roll to grab in the dead minutes between setups.", "Write the checklist to run before the first take: framing, audio, light, battery, teleprompter."], "rules": ["If the plan overruns my stated hours, cut videos from the list rather than compressing the buffers."], "output": "a setup-grouped shoot schedule with timings, a between-setups B-roll list, and a pre-record checklist"}, {"id": "comment-starter-post", "category": "engagement", "title": "Comment Starter Post", "description": "Write a post engineered for replies: a light position or prompt people can answer in one line without it feeling like homework.", "role": "a community manager who gets graded on comments per post and has learned that easy-to-answer beats interesting-to-read", "fields": [{"id": "subject", "label": "The topic you want people talking about", "type": "textarea", "required": true, "placeholder": "Example: what owners actually do with their P&L each month (mostly nothing)", "helper": ""}], "task": ["Write the post so the ask is answerable in under ten words; nobody drafts an essay in a comment box.", "Take a light position first, because replies come easier as agreement or pushback than as cold starts.", "Write the first comment I should leave on my own post to set the tone and lower the bar.", "Write my reply plan: how I answer the first ten comments so threads stay open instead of closing on a thank-you."], "rules": ["One ask per post. Two questions splits the thread and halves both."], "output": "the post, my own first comment, and a reply plan for the first ten responses"}, {"id": "save-worthy-post", "category": "engagement", "title": "Save-Worthy Post", "description": "Build a reference post people save for later and send to a colleague: a checklist, cheat sheet, or numbers table that fits one screenshot.", "role": "a content writer who optimizes for saves and shares because those signals outlive likes, and formats everything to be findable again in six months", "fields": [{"id": "resource", "label": "The useful thing you're packaging", "type": "textarea", "required": true, "placeholder": "Example: the 7 questions to ask before signing a POS contract", "helper": ""}], "task": ["Package my material as a scannable reference: numbered or bulleted, one line per item, no paragraphs.", "Write a hook that names who should save it and for what future moment, like 'save this for your next vendor negotiation'.", "Trim each item until the whole list fits one screenshot, because saves travel as screenshots.", "Add the share nudge: name, by role, the person the reader should send it to."], "rules": ["Complete beats clever. A missing step earns a correction comment; a complete list earns the save."], "output": "a screenshot-sized reference post with a save hook and a role-specific share nudge"}, {"id": "reply-playbook", "category": "engagement", "title": "Comment Reply Playbook", "description": "Write your standard responses for the comments you get every week: praise, questions, pushback, spam, and the occasional jerk.", "role": "a social account manager who answers comments in a founder's voice and treats every reply as a post the next hundred lurkers will read", "fields": [{"id": "typical-comments", "label": "Comments you actually receive", "type": "textarea", "required": true, "placeholder": "Example: 'great post!', 'does this apply to food trucks?', 'my accountant says the opposite', crypto spam", "helper": ""}], "task": ["Sort my real comments into types and write two reply templates per type in my voice.", "For praise replies, add one line that extends the conversation instead of closing it with thanks.", "For pushback, write the de-escalation reply that concedes what's true and holds what isn't.", "Set the moderation line: what gets no reply, what gets hidden, what gets blocked."], "rules": ["Write every reply for the lurker reading over the commenter's shoulder, not just the commenter."], "output": "a reply playbook grouped by comment type, two templates each, plus a moderation line for ignore, hide, and block"}, {"id": "dm-openers", "category": "engagement", "title": "DM Conversation Openers", "description": "Write first messages to new followers and engaged commenters that start conversations instead of triggering the sales-pitch flinch.", "role": "an outreach writer who opens DM conversations for service providers, gets measured on replies, and holds a standing rule against pitching in message one", "fields": [{"id": "trigger", "label": "Who you're messaging", "type": "select", "required": true, "options": ["New follower", "Frequent commenter", "Someone who shared my post", "Lead magnet requester", "Old connection gone cold"], "placeholder": "", "helper": ""}, {"id": "person-notes", "label": "What you know about them", "type": "text", "required": false, "placeholder": "Example: she runs two taco spots and comments on every food-cost post", "helper": ""}], "task": ["Write three opener options matched to the trigger, each referencing the specific action the person took.", "Keep every opener under 40 words, ending with a question that's easy to answer and about them, not me.", "Write the second message for each branch: they reply warmly, they reply flatly, they stay silent for a week.", "Mark the earliest acceptable moment to mention what I sell, and write the line that does it without the swerve feeling gross."], "rules": ["Message one contains no link, no offer, and no 'quick question' fake-out."], "output": "three openers, branch replies for warm, flat, and silent responses, and the earliest-pitch line with its timing"}, {"id": "poll-question-pack", "category": "engagement", "title": "Poll Question Pack", "description": "Write a month of poll and question-sticker prompts that get taps and teach you what your audience wants next.", "role": "an audience researcher who uses polls as cheap market research and writes options people tap because one of them is clearly 'that's me'", "fields": [{"id": "learning-goal", "label": "What you want to learn from your audience", "type": "textarea", "required": true, "placeholder": "Example: whether they struggle more with pricing menus or paying vendors, and which content to make next", "helper": ""}], "task": ["Write eight polls with two to four options each, where every option is an answer someone would proudly tap.", "Sequence them from low-stakes fun to genuinely useful research so the audience warms up.", "For each poll, note what the result tells me and the follow-up post it should trigger.", "Write two open question-sticker prompts for the answers a poll can't capture."], "rules": ["No poll where one option is obviously correct. Lopsided results teach nothing and look like fishing."], "output": "eight polls with options and follow-up post triggers, plus two open question prompts, ordered across the month"}, {"id": "weekly-ritual-post", "category": "engagement", "title": "Weekly Ritual Post", "description": "Create a recurring community moment, same day, same format, that regulars start showing up for on schedule.", "role": "a community builder who runs weekly rituals for niche audiences and knows a ritual dies the week the host phones it in", "fields": [{"id": "ritual-idea", "label": "Your ritual idea or the goal behind it", "type": "textarea", "required": true, "placeholder": "Example: 'Win Wednesday' where owners post one number that improved this week", "helper": ""}], "task": ["Shape the ritual: name, day, the exact ask, and what participation looks like in one comment.", "Write the first three editions in full so the format is proven before week one.", "Plan the cold start: how editions one and two feel alive before regulars exist, using my own network honestly.", "Define my host duties per edition: replies, highlights, and the shout-out that brings participants back.", "Set the kill criteria: the participation level and week count that mean retire it and try another."], "rules": ["The ask has to be answerable by a first-time participant in under a minute with zero preparation."], "output": "a ritual spec with name, day, and ask, three full editions, a cold-start plan, host duties, and kill criteria"}, {"id": "outbound-comment-plan", "category": "engagement", "title": "Outbound Comment Plan", "description": "Plan a daily commenting routine on accounts your buyers already follow, so the right people meet you before you've posted a thing.", "role": "a growth operator who built accounts through comment sections before posting schedules existed for them, and treats each comment as a tiny guest post", "fields": [{"id": "target-accounts", "label": "Accounts your buyers already follow", "type": "textarea", "required": true, "placeholder": "Example: two restaurant-industry newsletters, a POS company's page, three chef influencers", "helper": ""}, {"id": "daily-minutes", "label": "Minutes per day you'll give it", "type": "text", "required": false, "placeholder": "Example: 20 minutes with morning coffee", "helper": ""}], "task": ["Sort my target list into tiers: buyer watering holes, peer accounts, and big accounts, with a visit cadence for each tier.", "Define three comment types I rotate: add-a-detail, respectful counterpoint, and short story from experience, with a written example of each for my niche.", "Fit the routine into my stated minutes, down to comments per tier per day.", "List what never to do: the comment patterns that read as reply-guy or engagement farming.", "Set the 30-day check: profile visits and follows from targets, and what to change if the line stays flat."], "rules": ["Every comment adds something the post didn't say. 'Great post' is invisible; a two-line addition gets profile taps."], "output": "a tiered target list with cadence, three comment types with written examples, a daily routine sized to my minutes, and a 30-day check"}, {"id": "story-sequence-plan", "category": "engagement", "title": "Story Sequence Plan", "description": "Plan a day of stories that runs like a mini episode: opening beat, middle interaction, and a close that points somewhere.", "role": "a stories producer who plans daily sequences for small brands and builds every set around one tap-through arc instead of scattered one-offs", "fields": [{"id": "story-theme", "label": "What today's story set covers", "type": "textarea", "required": true, "placeholder": "Example: behind the scenes of month-end close for my biggest client, anonymized", "helper": ""}], "task": ["Plan five to eight frames with one job each: hook frame, context, the meat, an interactive frame, and the close.", "Script the text overlay for every frame, under 20 words each, written for viewers watching on mute.", "Place the poll or question sticker where curiosity peaks, not on frame one when nobody's invested yet.", "Write the close frame with one tap action: reply, link, or 'watch tomorrow', matched to my offer context."], "rules": ["Each frame earns the next tap. A pure filler frame gets cut even if the set drops to five."], "output": "a frame-by-frame story plan with overlay text, sticker placement, and a one-action close"}, {"id": "lead-magnet-post", "category": "selling", "title": "Lead Magnet Post", "description": "Write the post that gives away a genuinely useful freebie and turns commenters into a follow-up list.", "role": "a demand-gen writer who runs comment-to-receive campaigns and knows the magnet's promise matters more than the delivery automation", "fields": [{"id": "magnet", "label": "The freebie and what it does", "type": "textarea", "required": true, "placeholder": "Example: a one-page food-cost spot-check sheet owners fill in with last week's invoices", "helper": ""}, {"id": "keyword", "label": "The comment keyword", "type": "text", "required": false, "placeholder": "Example: comment MARGIN and I'll send it over", "helper": ""}], "task": ["Open the post with the problem the magnet kills, in the audience's words, before the freebie appears at all.", "Describe the magnet by outcome and effort: what they'll know after using it and how long it takes.", "Add one line of proof it works, drawn from my context, or flag that I need to supply one.", "Write the comment-keyword CTA plainly, plus the follow note where the platform requires following for DM delivery.", "Write the delivery DM: the message that sends the magnet and asks one light qualifying question."], "rules": ["The post has to be worth reading for someone who never comments. Value first, mechanics last."], "output": "the full post, the keyword CTA, and the delivery DM with one qualifying question"}, {"id": "client-proof-post", "category": "selling", "title": "Client Proof Post", "description": "Turn one client result into a post that reads as a useful story, with the mechanism shown instead of a trophy shot.", "role": "a case-story writer who documents client wins for service firms and leads with how it happened, because readers steal methods and skim applause", "fields": [{"id": "result", "label": "The result and the numbers you can share", "type": "textarea", "required": true, "placeholder": "Example: cut a cafe's food cost from 38% to 31% in nine weeks; owner said 'first month I didn't dread the report'", "helper": ""}, {"id": "method", "label": "What actually made the difference", "type": "textarea", "required": true, "placeholder": "Example: weekly invoice spot-checks and renegotiating two vendor contracts", "helper": ""}], "task": ["Open with the before-state a reader will recognize, not with the win.", "Show the method in two or three concrete moves, enough that a reader could try the first one alone.", "Place the numbers where they land as evidence for the method, and use the client quote if I gave one.", "Name what the client did that made it work, since shared credit reads honest and screens for good-fit leads.", "Close with an observation or question that lets similar businesses see themselves, not a pitch."], "rules": ["No result appears without its mechanism beside it. Outcome-only posts read as ads and get scrolled.", "Anonymize to the level my context implies; keep details real but non-identifying unless I said the client is public."], "output": "a proof story post with before-state, method, evidenced numbers, and a soft close"}, {"id": "offer-bridge-post", "category": "selling", "title": "Offer Bridge Post", "description": "Write the post that walks from free value to your offer in one motion, so the pitch reads as the obvious next paragraph.", "role": "a conversion copywriter who writes soft-sell posts for expertise businesses and gets judged on DMs and link taps from warm followers, not reach", "fields": [{"id": "value-lead", "label": "The useful insight the post leads with", "type": "textarea", "required": true, "placeholder": "Example: the three vendor contract clauses that let prices creep without notice", "helper": ""}], "task": ["Deliver the value completely in the first two-thirds, so a reader who leaves early still takes something usable.", "Build the bridge line: the sentence connecting the insight to the deeper problem my offer handles.", "Present the offer in two or three lines: who it's for, what it does, and what happens after they act.", "Write the CTA as the next logical step for someone nodding along, with the friction named honestly, like 'takes 20 minutes'.", "Check the ratio: if the sell exceeds a third of the post, cut sell lines, never value lines."], "rules": ["The bridge has to be true. If the insight can't honestly lead to my offer, say so and suggest an insight that can."], "output": "a full post with a complete value section, one bridge line, a three-line offer, and a plain CTA"}, {"id": "story-selling-sequence", "category": "selling", "title": "Story Selling Sequence", "description": "Plan a story set that sells: problem, proof, offer, and the ask, paced so viewers don't bail at the first whiff of pitch.", "role": "a stories seller who runs offer days on Instagram for small brands and paces every sequence by watching where viewers tap out", "fields": [{"id": "sell-angle", "label": "The angle for this sell", "type": "textarea", "required": true, "placeholder": "Example: booking spring clients now; two spots open after a strong result with a similar business", "helper": ""}], "task": ["Sequence six to nine frames: relatable problem, my take, proof, the offer, one objection handled, then the ask.", "Script the overlay text and talking points per frame, mute-friendly, under 20 words of overlay each.", "Put an interactive frame right before the offer, a poll or a 'which one are you' tap, so the sell lands on participants.", "Handle the top objection from my context in its own frame, phrased as answering a real DM.", "Write two ask frames: a link version and a reply-to-this-story version, and say when each works better."], "rules": ["One offer per sequence. A second CTA splits intent and drops both."], "output": "a frame-by-frame selling sequence with overlays, an interaction before the offer, one objection frame, and two ask variants"}, {"id": "lead-dm-followup", "category": "selling", "title": "Lead DM Follow-Up", "description": "Write the follow-up messages for people who grabbed your freebie or asked about your offer and then went silent.", "role": "a DM pipeline manager who follows up with warm leads for service providers and writes every nudge to be easy to answer and easy to ignore without shame", "fields": [{"id": "lead-situation", "label": "Who's gone silent", "type": "select", "required": true, "options": ["Downloaded the lead magnet", "Commented on an offer post", "Asked about price, then vanished", "Said 'maybe next month'"], "placeholder": "", "helper": ""}, {"id": "lead-notes", "label": "Anything you know about them", "type": "text", "required": false, "placeholder": "Example: runs a bakery, asked twice about the payroll add-on", "helper": ""}], "task": ["Write a three-touch follow-up for day 2, day 6, and day 14, each with a different reason to reply, never 'just checking in'.", "Make touch one about their situation, touch two a useful extra like a tip or relevant example, and touch three the honest closer.", "Write the closer to end cleanly: door open, zero guilt, one line about when I'll be worth messaging again.", "Add response lines for the three likely replies: interested, not now, and price pushback."], "rules": ["Every touch works standalone, since they may only read the latest one.", "No manufactured urgency. If real scarcity exists in my context, state it as fact with the date."], "output": "a three-touch DM sequence with day markers, plus response lines for interested, not-now, and price pushback"}, {"id": "launch-countdown-posts", "category": "selling", "title": "Launch Countdown Posts", "description": "Write the cart-week posts: doors open, mid-cart proof, fit check, and last call, each doing a different job than the one before.", "role": "a launch copywriter who writes cart-week social posts and tracks which day each objection shows up, because Tuesday's doubt isn't Friday's", "fields": [{"id": "cart-details", "label": "The offer and cart dates", "type": "textarea", "required": true, "placeholder": "Example: 'Menu Math' course, $400, open May 5 through May 12", "helper": ""}, {"id": "launch-proof", "label": "Proof you can deploy during the week", "type": "textarea", "required": false, "placeholder": "Example: two student results, a testimonial video, my own numbers from last spring", "helper": ""}], "task": ["Write the doors-open post: the offer in plain terms, who it's for, the price, and the honest reason it exists now.", "Write two mid-cart posts, one proof-led and one objection-led, using what I gave and naming the objection out loud.", "Write the 48-hour post as a fit check: who should buy and who should skip it, said plainly.", "Write the last-call post with the real deadline and what changes after it, no countdown theatrics.", "Suggest posting times across the week and mark which posts get a story-set echo."], "rules": ["Each post assumes the reader missed all the others. Recap the offer in one line every time.", "'Who should skip this' appears at least once. It reads honest and it filters refunds."], "output": "five cart-week posts (open, proof, objection, fit check, last call) with a posting-time plan"}, {"id": "objection-answer-post", "category": "selling", "title": "Objection Answer Post", "description": "Take the objection that kills most of your sales and answer it in public, once, well, before the next prospect has to ask.", "role": "a sales-enablement writer who turns the objections reps keep hearing into content, so the next buyer arrives with the doubt already handled", "fields": [{"id": "objection", "label": "The objection, verbatim", "type": "text", "required": true, "placeholder": "Example: 'I can't afford a bookkeeper until I'm bigger'", "helper": ""}, {"id": "live-answer", "label": "How you answer it live, honestly", "type": "textarea", "required": true, "placeholder": "Example: staying small is usually the symptom; most clients find my fee inside 60 days of vendor fixes", "helper": ""}], "task": ["Open by voicing the objection more sympathetically than the prospect would, so they feel understood before argued with.", "Concede the true part explicitly; the objection survives because it's partly right.", "Answer with my live-call logic tightened up, letting the number or example do the heavy lifting.", "Name who the objection is actually right for, because that honesty makes the rest believable.", "Close with a self-check question the reader can run on their own situation."], "rules": ["Argue with the objection, never with the person. No 'if you think this, you're not ready' framing."], "output": "a post that voices the objection, concedes the true part, answers with specifics, and ends with a self-check question"}, {"id": "cta-line-bank", "category": "selling", "title": "CTA Line Bank", "description": "Write 20 closing lines matched to your real offers and platforms, so posts stop dying at 'thoughts?'", "role": "a direct-response editor who rewrites the last line of other people's posts for a living, because that's where most of them leak", "fields": [{"id": "actions", "label": "The actions you actually want people to take", "type": "textarea", "required": true, "placeholder": "Example: book the audit call, download the margin sheet, reply to the post, follow for the Friday series", "helper": ""}], "task": ["Write five CTA lines per action I listed, in my voice, none of them 'link in bio' standing alone.", "Vary the pressure: some lines for cold readers, some for regulars who've seen the offer before.", "Match phrasing to platform norms where my platforms differ, like reply-focused on LinkedIn versus save-focused on Instagram.", "Mark the five strongest across the bank and note which post type each belongs under."], "rules": ["Every line names a concrete action and what happens after it. 'Learn more' is an unfinished sentence."], "output": "a CTA bank grouped by action, with platform notes and the top five flagged"}, {"id": "account-content-audit", "category": "improve", "title": "Account Content Audit", "description": "Paste your recent posts and get a straight read on what's working, what's wallpaper, and what to change next month.", "role": "a content auditor hired to tell owners what their last month of posting accomplished, paid for candor rather than encouragement", "fields": [{"id": "material", "label": "Your last 10 to 15 post captions", "type": "textarea", "required": true, "placeholder": "Example: paste recent captions in order, with rough engagement numbers if you have them", "helper": ""}], "task": ["Sort my posts into working, neutral, and dead weight, naming the pattern behind each group.", "Identify my accidental pillars: what I actually post about, versus what I probably think I post about.", "Flag voice drift: posts that read like a different account wrote them, quoting the offending lines.", "Point out the missing post types given my offer: proof, objection handling, or plain asks.", "Give five specific changes for next month, each tied to evidence in the pasted posts."], "rules": ["Quote my own lines when judging them. Verdicts without quoted evidence carry no weight."], "output": "a sorted audit with named patterns, voice-drift examples, missing post types, and five evidence-backed changes"}, {"id": "metrics-decision-memo", "category": "improve", "title": "Metrics Decision Memo", "description": "Turn a month of platform numbers into three calls: do more of this, stop that, test this next.", "role": "a performance analyst for small accounts who separates signal from noise and won't let one viral post rewrite the strategy", "fields": [{"id": "numbers", "label": "Your numbers for the period", "type": "textarea", "required": true, "placeholder": "Example: 14 posts, reach 22k, profile visits 310, link taps 24, followers +85, best post was the invoice screenshot", "helper": ""}, {"id": "account-goal", "label": "What the account is supposed to produce", "type": "text", "required": false, "placeholder": "Example: 5 discovery calls a month", "helper": ""}], "task": ["Translate my numbers into the funnel: reached, stopped scrolling, visited profile, took the action I care about.", "Name where the funnel leaks worst relative to my stated goal, and which content type usually fixes that stage.", "Judge which results are signal and which are noise at my account size, and list the numbers to ignore this month.", "Write the memo: three do-more items, two stop items, and one test for next month, each tied to a number I gave."], "rules": ["Never prescribe chasing reach when the leak sits at profile visits or link taps. Fix the leaking stage."], "output": "a one-page memo with the funnel read, the worst leak, signal-versus-noise notes, and a do-more, stop, and test list"}, {"id": "flopped-post-rework", "category": "improve", "title": "Flopped Post Rework", "description": "Paste the post that deserved better, find out why it died, and get a rebuilt version worth running again.", "role": "a post surgeon who does autopsies on underperformers for creators and finds the cause in the first two lines more often than in the algorithm", "fields": [{"id": "material", "label": "The post that flopped", "type": "textarea", "required": true, "placeholder": "Example: paste the caption exactly as it ran, plus the format and what it got versus your normal", "helper": ""}], "task": ["Diagnose the likeliest cause of death in order: hook, promise mismatch, format, ask, or timing, ruling each in or out from the text.", "Say what the post wanted to be, because burying two ideas in one post is a top killer.", "Rebuild it: new hook, tightened body, one idea, the right ask, keeping every line of mine that was pulling weight.", "Recommend the repost timing and what to change in format or platform for round two."], "rules": ["Blame the craft before the algorithm. Reach explanations come up only after the writing is cleared."], "output": "a cause-of-death diagnosis, the rebuilt post, and a repost plan"}, {"id": "video-script-punch-up", "category": "improve", "title": "Video Script Punch-Up", "description": "Paste a video script and get it tightened for the ear: shorter lines, an earlier hook, and a midpoint that re-earns attention.", "role": "a script doctor for short-form video who cuts scripts by a third on the first pass and reads every surviving line out loud before approving it", "fields": [{"id": "material", "label": "The script draft", "type": "textarea", "required": true, "placeholder": "Example: paste your 60-second talking-head script about late invoices", "helper": ""}], "task": ["Move the strongest moment into the first line and show what got demoted to make room.", "Cut the filler, separating spoken warmth (keep) from throat-clearing (cut), and show the cuts.", "Break any sentence that can't be said in one breath.", "Add a re-hook near the midpoint where attention sags: a turn, a number, or a 'here's the part nobody mentions'.", "Deliver the tightened script with a timed word count and [pause] marks."], "rules": ["Keep my phrasing wherever it already sounds spoken. This is a tightening pass, not a rewrite in someone else's voice."], "output": "the tightened script with timing, [pause] marks, and a list of what was cut and why"}, {"id": "pre-publish-check", "category": "improve", "title": "Pre-Publish Post Check", "description": "Paste a draft before it goes live and get a post-it or fix-first verdict with the exact lines to change.", "role": "a copy chief who does final reads on posts before they ship and limits herself to the three changes that matter most, because ship dates are real", "fields": [{"id": "material", "label": "The draft post", "type": "textarea", "required": true, "placeholder": "Example: paste the caption, then note the platform and what you want the post to do", "helper": ""}], "task": ["Give the verdict first: post it, fix first, or rethink, with one sentence of reasoning.", "Check the hook against the two-line truncation, the promise against the body, and the CTA against the post's goal.", "Mark at most three fixes, quoting my line and giving the replacement line for each.", "Note anything that risks reading wrong to a cold audience: inside jokes, missing context, accidental condescension."], "rules": ["Three fixes maximum. If it needs ten, the verdict is 'rethink', not a line-edit list.", "Rewrites stay in my voice, matched to the draft's phrasing, never upgraded into copywriter-speak."], "output": "a verdict, up to three quoted fixes with replacement lines, and a cold-reader risk note"}, {"id": "winner-repurposing-plan", "category": "improve", "title": "Winner Repurposing Plan", "description": "Paste your best-performing post and turn the thing that worked into four more pieces across formats.", "role": "a repurposing editor who treats every hit post as a research result and builds next month's briefs from what the audience already voted for", "fields": [{"id": "material", "label": "The winning post plus its numbers", "type": "textarea", "required": true, "placeholder": "Example: paste the caption; it did 4x normal reach and 30 saves, mostly off the invoice screenshot", "helper": ""}], "task": ["Name what actually worked: the topic, the hook, the format, or the proof, judged from the text and numbers I gave.", "Plan four follow-ups: the same idea in a new format, the sequel that answers the comments, the prequel context, and the counterpoint to itself.", "Write the hook line for each follow-up now, carrying over the element that made the original hit.", "Space them across the next month with rough dates, so they read as a theme instead of reruns."], "rules": ["Repurposing changes the entry point, not just the aspect ratio. Each follow-up needs its own reason to exist."], "output": "a what-worked call, four follow-up briefs with written hooks, and a spacing plan for the month"}, {"id": "social-ad-review", "category": "improve", "title": "Social Ad Review", "description": "Paste a social ad before you fund it and get the weak points found while the fix still costs nothing.", "role": "a paid-social reviewer who reads ad copy the way a scroller does, thumb hovering, and flags anything that smells like ad-speak in the first line", "fields": [{"id": "material", "label": "The ad copy and headline", "type": "textarea", "required": true, "placeholder": "Example: paste the primary text, headline, and CTA button choice for the retargeting ad", "helper": ""}, {"id": "destination", "label": "Where the click goes", "type": "text", "required": false, "placeholder": "Example: the audit booking page with the calendar embed", "helper": ""}], "task": ["Read the first line as a stranger mid-scroll and say honestly whether it survives the thumb.", "Check message match: whether the ad's promise appears at the destination I described, in the same words.", "Flag ad-speak, vague claims, and any line a platform reviewer or a skeptic would punish.", "Rewrite the weakest two elements and offer one alternative angle worth split-testing."], "rules": ["Judge it as interruption copy. Standards that work for followers don't apply to strangers who never asked for this."], "output": "a survives-the-thumb verdict, a message-match check, flagged lines, two rewrites, and one test-worthy alternative angle"}, {"id": "profile-bio-rework", "category": "improve", "title": "Profile Bio Rework", "description": "Paste your current bio and rebuild it so a visitor knows in five seconds who you help and why to follow.", "role": "a profile optimizer who rewrites bios for service businesses and measures them by one number: profile visits that turn into follows", "fields": [{"id": "material", "label": "Your current bio, exactly as it reads", "type": "textarea", "required": true, "placeholder": "Example: paste your bio, your name line or handle, and your current link setup", "helper": ""}], "task": ["Diagnose the current bio: what a cold visitor can and can't figure out in five seconds.", "Rewrite the bio in three versions: plain-clear, personality-forward, and offer-forward, all inside platform character limits.", "Fix the name or headline line for search: the words buyers type when hunting for what I do.", "Match the link and CTA line to my current offer so the bio ends with one obvious action."], "rules": ["Clarity beats cleverness in the first line; the joke can live in line two if it earns the space."], "output": "a five-second diagnosis and three rewritten bios with a search-friendly name line and one CTA"}], "advisors": [{"id": "reach-mechanic", "title": "The Reach Mechanic", "description": "A diagnostic advisor for accounts that post consistently and still feel invisible.", "role": "a growth diagnostician who has watched hundreds of small accounts stall and checks the content and the funnel before ever blaming the algorithm", "focus": "finding why your content doesn't travel and fixing the biggest leak first", "questions": ["your last 30 days: posts published, average reach, and your single best and worst performer", "what a stranger sees in five seconds on your profile: bio, pinned content, last three posts", "how much of your engagement comes from peers versus actual buyers"], "deliverable": "a diagnosis of the biggest leak, three fixes in priority order, and the one metric to watch for the next two weeks"}, {"id": "consistency-coach", "title": "The Consistency Coach", "description": "An advisor for people who post in bursts, vanish for three weeks, and restart from guilt.", "role": "a content operations coach who builds posting systems around real calendars and treats a missed week as a design flaw, not a willpower failure", "focus": "building a posting rhythm that survives your busiest week", "questions": ["your honest history: longest posting streak, longest gap, and what caused the last gap", "the hours per week you can give this on your worst week, not your best", "which part of creating drains you most: ideas, drafting, filming, or hitting publish"], "deliverable": "a posting system sized to your worst week, with a batching schedule, an idea backlog method, and a rule for missed days"}, {"id": "voice-sharpener", "title": "The Voice Sharpener", "description": "An advisor for accounts that sound like everyone else in the niche and want to sound like one specific person.", "role": "a voice editor who works with founders whose spoken personality never survives the trip into their captions, and closes that gap line by line", "focus": "making your posts recognizable without the name attached", "questions": ["three posts you've published and one voice memo or email where you sound like yourself", "the accounts you catch yourself imitating, and what you like about them", "opinions you hold that your competitors would push back on"], "deliverable": "a gap analysis between your spoken and written voice, five rules to close it, and two of your own posts rewritten as proof"}, {"id": "social-seller", "title": "The Social Seller", "description": "An advisor for turning an engaged audience into inquiries without becoming the account everyone mutes.", "role": "a social selling strategist who builds DM and content pipelines for service businesses and tracks revenue per post, not likes", "focus": "converting attention into booked calls and sales at a pace your audience will tolerate", "questions": ["your offer, its price, and how a stranger currently becomes a customer, step by step", "how often you make a direct ask, and what happened the last three times you did", "the size and warmth of your audience: followers, average engagers, and open DM conversations"], "deliverable": "a selling rhythm with a content-to-ask ratio, a DM approach, and your first three selling posts sketched for this month"}, {"id": "community-host", "title": "The Community Host", "description": "An advisor for building regulars: the people who comment every week, defend you in threads, and bring friends.", "role": "a community strategist who grows niche audiences through rituals and replies, and values ten regulars over a thousand silent followers", "focus": "turning passive followers into a participating community around your account", "questions": ["who your current regulars are and what they respond to most", "how you handle comments and DMs today, and how much time that takes each week", "whether you want the community on the platform itself or moved somewhere you control"], "deliverable": "a community plan with one weekly ritual, a reply routine, and a 60-day path from silent followers to named regulars"}, {"id": "channel-strategist", "title": "The Channel Strategist", "description": "An advisor for deciding where your effort goes: which platforms, which formats, and what to drop this quarter.", "role": "a channel strategist who allocates content effort like a budget and has told plenty of clients to kill the platform they liked most", "focus": "matching your limited hours to the platforms and formats most likely to produce buyers", "questions": ["every platform you're on, hours spent on each, and what each produced in the last 90 days", "where your last five customers actually came from", "which formats you enjoy enough to sustain and which you dread"], "deliverable": "a channel allocation with keep, cut, and test calls per platform, plus a 90-day effort plan matched to your hours"}]};
+
+    const toolConfig = {
+      storageKey: "prompt-suite-theme",
+      profileKey: STUDIO.slug + "-profile",
+      manualKey: STUDIO.slug + "-manual",
+      chatGptUrl: "https://chatgpt.com/"
+    };
+    const html = document.documentElement;
+
+    /* ---------- Shared helpers ---------- */
+    function clean(value) { return String(value || "").trim(); }
+    function escapeHtml(value) {
+      return String(value || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+    async function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        return;
+      }
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.left = "-9999px";
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      textarea.remove();
+    }
+    function feedback(button, message) {
+      const original = button.dataset.originalText || button.textContent;
+      button.dataset.originalText = original;
+      button.textContent = message;
+      setTimeout(() => button.textContent = original, 1200);
+    }
+    async function copyAndOpen(button, text) {
+      try {
+        await copyText(text);
+        feedback(button, "Copied");
+        window.open(toolConfig.chatGptUrl, "_blank", "noopener,noreferrer");
+      } catch (error) {
+        feedback(button, "Copy failed");
+      }
+    }
+
+    /* ---------- Field rendering (shared by profile + workflows) ---------- */
+    function fieldHtml(field, prefix) {
+      const id = prefix + "-" + field.id;
+      const req = field.required ? ' <span class="req">*</span>' : "";
+      const helper = field.helper ? `<p class="helper">${escapeHtml(field.helper)}</p>` : "";
+      let control = "";
+      if (field.type === "textarea") {
+        control = `<textarea id="${id}" data-field="${escapeHtml(field.id)}" ${field.required ? 'aria-required="true"' : ""} placeholder="${escapeHtml(field.placeholder || "")}"></textarea>`;
+      } else if (field.type === "select") {
+        const opts = ['<option value="">Choose one</option>']
+          .concat((field.options || []).map(o => `<option value="${escapeHtml(o)}">${escapeHtml(o)}</option>`)).join("");
+        control = `<select id="${id}" data-field="${escapeHtml(field.id)}" ${field.required ? 'aria-required="true"' : ""}>${opts}</select>`;
+      } else {
+        control = `<input type="text" id="${id}" data-field="${escapeHtml(field.id)}" ${field.required ? 'aria-required="true"' : ""} placeholder="${escapeHtml(field.placeholder || "")}" />`;
+      }
+      return `<div class="field"><label for="${id}">${escapeHtml(field.label)}${req}</label>${control}${helper}</div>`;
+    }
+    function readFields(container) {
+      const values = {};
+      container.querySelectorAll("[data-field]").forEach(el => { values[el.dataset.field] = clean(el.value); });
+      return values;
+    }
+
+    /* ---------- Business profile ---------- */
+    const profileForm = document.getElementById("profileForm");
+    profileForm.innerHTML = STUDIO.profile.map(f => fieldHtml(f, "profile")).join("");
+    function loadProfile() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(toolConfig.profileKey) || "{}");
+        profileForm.querySelectorAll("[data-field]").forEach(el => {
+          if (saved[el.dataset.field]) el.value = saved[el.dataset.field];
+        });
+      } catch (error) { /* corrupted storage: start clean */ }
+    }
+    function saveProfile() {
+      localStorage.setItem(toolConfig.profileKey, JSON.stringify(readFields(profileForm)));
+    }
+    loadProfile();
+    profileForm.addEventListener("input", () => { saveProfile(); markStaleIfGenerated(); });
+    profileForm.addEventListener("change", () => { saveProfile(); markStaleIfGenerated(); });
+
+    /* ---------- Prompt assembly (the back end) ---------- */
+    const SHARED_RULES = [
+      "Work from my context above. Don't invent numbers, results, or customer quotes I didn't give you.",
+      "Plain language. No hype words, no filler sentences, no advice so generic it would fit any business."
+    ];
+    function contextLines(workflowValues, workflowFields) {
+      const lines = [];
+      STUDIO.profile.forEach(f => {
+        const v = clean(profileValues()[f.id]);
+        if (v) lines.push(`- ${f.label}: ${v}`);
+      });
+      (workflowFields || []).forEach(f => {
+        if (f.id === "material") return;
+        const v = clean(workflowValues[f.id]);
+        if (v) lines.push(`- ${f.label}: ${v}`);
+      });
+      return lines;
+    }
+    function profileValues() { return readFields(profileForm); }
+    function buildWorkflowPrompt(wf, values) {
+      const parts = [];
+      parts.push(`You are ${wf.role}.`);
+      parts.push("");
+      parts.push("MY CONTEXT");
+      parts.push(contextLines(values, wf.fields).join("\n"));
+      const material = clean(values.material);
+      if (material) {
+        parts.push("");
+        parts.push("WORK WITH THIS MATERIAL");
+        parts.push("---");
+        parts.push(material);
+        parts.push("---");
+      }
+      parts.push("");
+      parts.push("YOUR TASK");
+      wf.task.forEach((step, i) => parts.push(`${i + 1}. ${step}`));
+      parts.push("");
+      parts.push("RULES");
+      (wf.rules || []).concat(SHARED_RULES).forEach(r => parts.push(`- ${r}`));
+      parts.push("");
+      parts.push("OUTPUT");
+      parts.push(`Give me ${wf.output}.`);
+      parts.push("");
+      parts.push("Before you start: if any part of my context is too thin to do this well, ask me up to 3 specific questions first, then produce the deliverable.");
+      return parts.join("\n");
+    }
+    function buildAdvisorPrompt(adv) {
+      const parts = [];
+      parts.push(`You are ${adv.role}. Act as my ongoing advisor for ${adv.focus}.`);
+      parts.push("");
+      parts.push("MY CONTEXT");
+      const lines = contextLines({}, []);
+      parts.push(lines.length ? lines.join("\n") : "- I'll give you context as we talk.");
+      parts.push("");
+      parts.push("HOW THIS SESSION WORKS");
+      parts.push("Interview me before you advise. Ask one question at a time and wait for my answer. Start with what you most need to know, including:");
+      adv.questions.forEach(q => parts.push(`- ${q}`));
+      parts.push("");
+      parts.push(`After you have enough to work with (usually 4 to 6 answers), give me ${adv.deliverable}. Then stay in this role: I'll bring you follow-up situations and you keep advising with the same standards.`);
+      parts.push("");
+      parts.push("RULES");
+      parts.push("- One question per message while interviewing.");
+      parts.push("- Don't invent numbers or facts I didn't give you. If you assume something, say so in one line.");
+      parts.push("- Plain language. No hype, no filler, no generic advice.");
+      return parts.join("\n");
+    }
+
+    /* ---------- Tabs ---------- */
+    function revealContent(element) {
+      element.classList.remove("content-enter");
+      void element.offsetWidth;
+      element.classList.add("content-enter");
+    }
+    const tabs = document.querySelectorAll(".tab");
+    tabs.forEach(tab => tab.addEventListener("click", () => {
+      tabs.forEach(t => { t.classList.toggle("active", t === tab); t.setAttribute("aria-selected", String(t === tab)); });
+      ["workflows", "advisors", "manual"].forEach(name => {
+        document.getElementById("tab-" + name).hidden = tab.dataset.tab !== name;
+      });
+      revealContent(document.getElementById("tab-" + tab.dataset.tab));
+    }));
+
+    /* ---------- Workflow browse ---------- */
+    const catRow = document.getElementById("catRow");
+    const catNote = document.getElementById("catNote");
+    const wfGrid = document.getElementById("wfGrid");
+    const browse = document.getElementById("workflowBrowse");
+    const detail = document.getElementById("workflowDetail");
+    const wfSearch = document.getElementById("wfSearch");
+    let currentCat = STUDIO.categories[0].id;
+    let currentWf = null;
+    let generated = false;
+    let searchTerm = "";
+
+    function renderCats() {
+      catRow.innerHTML = STUDIO.categories.map(c =>
+        `<button type="button" class="cat-chip${!searchTerm && c.id === currentCat ? " active" : ""}" data-cat="${escapeHtml(c.id)}">${escapeHtml(c.title)}</button>`
+      ).join("");
+      const cat = STUDIO.categories.find(c => c.id === currentCat);
+      catNote.textContent = searchTerm ? `Showing matches across all ${STUDIO.categories.length} categories.` : (cat && cat.note ? cat.note : "");
+      catRow.querySelectorAll("[data-cat]").forEach(chip => chip.addEventListener("click", () => {
+        currentCat = chip.dataset.cat;
+        searchTerm = "";
+        wfSearch.value = "";
+        renderCats();
+        renderGrid();
+      }));
+    }
+    function renderGrid() {
+      const matches = STUDIO.workflows.filter(w => searchTerm
+        ? (w.title + " " + w.description).toLowerCase().includes(searchTerm)
+        : w.category === currentCat);
+      if (!matches.length) {
+        wfGrid.innerHTML = `<div class="no-results"><div><strong>No workflow matches that search.</strong><br />Try the artifact you need, such as audit, plan, email, or offer.</div></div>`;
+        return;
+      }
+      wfGrid.innerHTML = matches.map(w =>
+        `<button type="button" class="wf-card" data-wf="${escapeHtml(w.id)}">
+          <b>${escapeHtml(w.title)}</b>
+          <span>${escapeHtml(w.description)}</span>
+          <span class="go">Open &rarr;</span>
+        </button>`
+      ).join("");
+      wfGrid.querySelectorAll("[data-wf]").forEach(card => card.addEventListener("click", () => openWorkflow(card.dataset.wf)));
+    }
+    wfSearch.addEventListener("input", () => {
+      searchTerm = clean(wfSearch.value).toLowerCase();
+      renderCats();
+      renderGrid();
+    });
+    renderCats();
+    renderGrid();
+
+    /* ---------- Workflow detail ---------- */
+    const wfFields = document.getElementById("wfFields");
+    const wfForm = document.getElementById("wfForm");
+    const wfValidation = document.getElementById("wfValidation");
+    const wfResultWrap = document.getElementById("wfResultWrap");
+    const wfPromptEl = document.getElementById("wfPrompt");
+    const staleNote = document.getElementById("staleNote");
+
+    function openWorkflow(id) {
+      currentWf = STUDIO.workflows.find(w => w.id === id);
+      generated = false;
+      const category = STUDIO.categories.find(c => c.id === currentWf.category);
+      document.getElementById("wfMeta").textContent = category ? category.title : "Workflow";
+      document.getElementById("wfTitle").textContent = currentWf.title;
+      document.getElementById("wfDescription").textContent = currentWf.description;
+      wfFields.innerHTML = currentWf.fields.map(f => fieldHtml(f, "wf")).join("");
+      wfFields.style.display = "grid";
+      wfFields.style.gap = "15px";
+      wfValidation.classList.remove("show");
+      wfResultWrap.hidden = true;
+      staleNote.classList.remove("show");
+      browse.hidden = true;
+      detail.hidden = false;
+      revealContent(detail);
+      detail.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    document.getElementById("backToGrid").addEventListener("click", () => {
+      detail.hidden = true;
+      browse.hidden = false;
+      revealContent(browse);
+      generated = false;
+    });
+
+    function markStaleIfGenerated() {
+      if (generated) {
+        staleNote.classList.add("show");
+        wfPromptEl.style.opacity = "0.55";
+      }
+    }
+    wfForm.addEventListener("input", markStaleIfGenerated);
+    wfForm.addEventListener("change", markStaleIfGenerated);
+
+    wfForm.addEventListener("submit", event => {
+      event.preventDefault();
+      if (!currentWf) return;
+      const missing = [];
+      STUDIO.profile.filter(f => f.required).forEach(f => {
+        if (!clean(profileValues()[f.id])) missing.push(f.label);
+      });
+      const values = readFields(wfFields);
+      currentWf.fields.filter(f => f.required).forEach(f => {
+        if (!clean(values[f.id])) missing.push(f.label);
+      });
+      if (missing.length) {
+        wfValidation.textContent = "Still needed: " + missing.join(", ") + ".";
+        wfValidation.classList.add("show");
+        const firstMissingProfile = STUDIO.profile.find(f => f.required && !clean(profileValues()[f.id]));
+        const firstMissingWorkflow = currentWf.fields.find(f => f.required && !clean(values[f.id]));
+        const target = firstMissingProfile ? document.getElementById("profile-" + firstMissingProfile.id) : (firstMissingWorkflow ? document.getElementById("wf-" + firstMissingWorkflow.id) : null);
+        if (target) target.focus();
+        return;
+      }
+      wfValidation.classList.remove("show");
+      wfPromptEl.textContent = buildWorkflowPrompt(currentWf, values);
+      wfPromptEl.style.opacity = "";
+      wfResultWrap.hidden = false;
+      revealContent(wfResultWrap);
+      staleNote.classList.remove("show");
+      generated = true;
+      wfResultWrap.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+
+    document.getElementById("copyPrompt").addEventListener("click", async event => {
+      try { await copyText(wfPromptEl.textContent); feedback(event.target, "Copied"); }
+      catch (error) { feedback(event.target, "Copy failed"); }
+    });
+    document.getElementById("copyOpen").addEventListener("click", event => copyAndOpen(event.target, wfPromptEl.textContent));
+    document.getElementById("addToManual").addEventListener("click", event => {
+      addManualEntry(currentWf.title, "Workflow", wfPromptEl.textContent);
+      feedback(event.target, "Saved to manual");
+    });
+
+    /* ---------- Advisors ---------- */
+    const advGrid = document.getElementById("advGrid");
+    const advResultWrap = document.getElementById("advResultWrap");
+    const advPromptEl = document.getElementById("advPrompt");
+    let currentAdv = null;
+    advGrid.innerHTML = STUDIO.advisors.map(a =>
+      `<div class="adv-card">
+        <b>${escapeHtml(a.title)}</b>
+        <p>${escapeHtml(a.description)}</p>
+        <button class="mini primary-mini" type="button" data-adv="${escapeHtml(a.id)}">Start this session</button>
+      </div>`
+    ).join("");
+    advGrid.querySelectorAll("[data-adv]").forEach(btn => btn.addEventListener("click", () => {
+      currentAdv = STUDIO.advisors.find(a => a.id === btn.dataset.adv);
+      document.getElementById("advResultTitle").textContent = currentAdv.title;
+      advPromptEl.textContent = buildAdvisorPrompt(currentAdv);
+      advResultWrap.hidden = false;
+      revealContent(advResultWrap);
+      advResultWrap.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }));
+    document.getElementById("advCopy").addEventListener("click", async event => {
+      try { await copyText(advPromptEl.textContent); feedback(event.target, "Copied"); }
+      catch (error) { feedback(event.target, "Copy failed"); }
+    });
+    document.getElementById("advCopyOpen").addEventListener("click", event => copyAndOpen(event.target, advPromptEl.textContent));
+    document.getElementById("advAddToManual").addEventListener("click", event => {
+      addManualEntry(currentAdv.title, "Advisor", advPromptEl.textContent);
+      feedback(event.target, "Saved to manual");
+    });
+
+    /* ---------- Prompt manual ---------- */
+    const manualList = document.getElementById("manualList");
+    const manualEmpty = document.getElementById("manualEmpty");
+    const manualCount = document.getElementById("manualCount");
+    const manualTitle = document.getElementById("manualTitle");
+    let manual = [];
+    try { manual = JSON.parse(localStorage.getItem(toolConfig.manualKey) || "[]"); } catch (error) { manual = []; }
+    const savedManualTitle = localStorage.getItem(toolConfig.manualKey + "-title");
+    if (savedManualTitle) manualTitle.value = savedManualTitle;
+    manualTitle.addEventListener("input", () => localStorage.setItem(toolConfig.manualKey + "-title", manualTitle.value));
+
+    function saveManual() { localStorage.setItem(toolConfig.manualKey, JSON.stringify(manual)); }
+    function addManualEntry(title, source, text) {
+      manual.push({ id: "m" + (manual.length + 1) + "-" + text.length, title, source, text });
+      saveManual();
+      renderManual();
+    }
+    function renderManual() {
+      manualCount.textContent = manual.length ? "(" + manual.length + ")" : "";
+      manualEmpty.style.display = manual.length ? "none" : "grid";
+      manualList.innerHTML = manual.map((entry, i) =>
+        `<div class="manual-item">
+          <div class="manual-item-head">
+            <b>${i + 1}. ${escapeHtml(entry.title)}</b>
+            <span>${escapeHtml(entry.source)}</span>
+          </div>
+          <pre>${escapeHtml(entry.text)}</pre>
+          <div class="result-actions">
+            <button class="mini" type="button" data-up="${i}">Move up</button>
+            <button class="mini" type="button" data-down="${i}">Move down</button>
+            <button class="mini" type="button" data-copy="${i}">Copy</button>
+            <button class="mini" type="button" data-remove="${i}">Remove</button>
+          </div>
+        </div>`
+      ).join("");
+      manualList.querySelectorAll("[data-up]").forEach(b => b.addEventListener("click", () => {
+        const i = Number(b.dataset.up);
+        if (i > 0) { [manual[i - 1], manual[i]] = [manual[i], manual[i - 1]]; saveManual(); renderManual(); }
+      }));
+      manualList.querySelectorAll("[data-down]").forEach(b => b.addEventListener("click", () => {
+        const i = Number(b.dataset.down);
+        if (i < manual.length - 1) { [manual[i + 1], manual[i]] = [manual[i], manual[i + 1]]; saveManual(); renderManual(); }
+      }));
+      manualList.querySelectorAll("[data-copy]").forEach(b => b.addEventListener("click", async () => {
+        try { await copyText(manual[Number(b.dataset.copy)].text); feedback(b, "Copied"); }
+        catch (error) { feedback(b, "Copy failed"); }
+      }));
+      manualList.querySelectorAll("[data-remove]").forEach(b => b.addEventListener("click", () => {
+        manual.splice(Number(b.dataset.remove), 1);
+        saveManual();
+        renderManual();
+      }));
+    }
+    renderManual();
+
+    function manualDocTitle() { return clean(manualTitle.value) || STUDIO.title + " Prompt Manual"; }
+    function buildPrintArea() {
+      const printArea = document.getElementById("printArea");
+      const cover = document.createElement("div");
+      cover.className = "print-cover";
+      const h1 = document.createElement("h1");
+      h1.textContent = manualDocTitle();
+      const p = document.createElement("p");
+      p.textContent = manual.length + " prompts, built with " + STUDIO.title;
+      cover.append(h1, p);
+      printArea.replaceChildren(cover);
+      manual.forEach((entry, i) => {
+        const block = document.createElement("div");
+        block.className = "print-prompt";
+        const h2 = document.createElement("h2");
+        h2.textContent = (i + 1) + ". " + entry.title;
+        const src = document.createElement("p");
+        src.className = "print-source";
+        src.textContent = entry.source;
+        const pre = document.createElement("pre");
+        pre.textContent = entry.text;
+        block.append(h2, src, pre);
+        printArea.append(block);
+      });
+    }
+    document.getElementById("printManual").addEventListener("click", event => {
+      if (!manual.length) { feedback(event.target, "Manual is empty"); return; }
+      buildPrintArea();
+      window.print();
+    });
+    document.getElementById("downloadManual").addEventListener("click", event => {
+      if (!manual.length) { feedback(event.target, "Manual is empty"); return; }
+      const body = manual.map((entry, i) =>
+        `<section><h2>${escapeHtml((i + 1) + ". " + entry.title)}</h2><p class="src">${escapeHtml(entry.source)}</p><pre>${escapeHtml(entry.text)}</pre></section>`
+      ).join("\n");
+      const doc = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>${escapeHtml(manualDocTitle())}</title>
+<style>body{font-family:Georgia,serif;max-width:760px;margin:40px auto;padding:0 20px;color:#111;}h1{letter-spacing:-0.02em;}.src{color:#666;font-size:0.9rem;}pre{white-space:pre-wrap;word-break:break-word;font-family:"Courier New",monospace;font-size:0.85rem;line-height:1.5;border:1px solid #ccc;border-radius:8px;padding:14px;}section{margin:34px 0;}</style>
+</head><body><h1>${escapeHtml(manualDocTitle())}</h1><p class="src">${manual.length} prompts, built with ${escapeHtml(STUDIO.title)}</p>\n${body}\n</body></html>`;
+      const blob = new Blob([doc], { type: "text/html" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = STUDIO.slug + "-prompt-manual.html";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      feedback(event.target, "Downloaded");
+    });
+    document.getElementById("clearManual").addEventListener("click", event => {
+      if (!manual.length) { feedback(event.target, "Manual is empty"); return; }
+      manual = [];
+      saveManual();
+      renderManual();
+      feedback(event.target, "Cleared");
+    });
+
+    /* ---------- Theme ---------- */
+    function syncThemeButtons(theme) {
+      document.querySelectorAll("[data-theme-choice]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.themeChoice === theme)));
+    }
+    function setTheme(theme, persist = true) {
+      if (theme !== "light" && theme !== "dark") return;
+      html.setAttribute("data-theme", theme);
+      if (persist) localStorage.setItem(toolConfig.storageKey, theme);
+      syncThemeButtons(theme);
+    }
+    document.querySelectorAll("[data-theme-choice]").forEach(button => {
+      button.addEventListener("click", () => setTheme(button.dataset.themeChoice));
+    });
+    window.addEventListener("storage", event => {
+      if (event.key === toolConfig.storageKey) setTheme(event.newValue, false);
+    });
+    const savedTheme = localStorage.getItem(toolConfig.storageKey) || localStorage.getItem(STUDIO.slug + "-theme");
+    const initialTheme = savedTheme === "light" || savedTheme === "dark" ? savedTheme : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    setTheme(initialTheme);
+  </script>
+</body>
+</html>

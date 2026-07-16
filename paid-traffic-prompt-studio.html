@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<!--
+  PROMPT STUDIO ENGINE
+  Built from the micro-app-builder scaffold. One file, no backend,
+  no third-party JavaScript. Data bank injected by build_studio.py
+  at the __STUDIO_DATA__ marker.
+-->
+<html lang="en" data-theme="auto">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1f7a5a" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='16'%20fill='%231f7a5a'/%3E%3Cpath%20d='M18%2021h28M18%2032h28M18%2043h18'%20stroke='white'%20stroke-width='6'%20stroke-linecap='round'/%3E%3C/svg%3E" />
+  <title>Paid Traffic Prompt Studio</title>
+  <script>try { const theme = localStorage.getItem("prompt-suite-theme"); if (theme === "light" || theme === "dark") document.documentElement.dataset.theme = theme; } catch (error) {}</script>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #16201c;
+      --muted: #607068;
+      --paper: #f2f0e9;
+      --panel: rgba(255, 254, 249, 0.94);
+      --card: #fffefa;
+      --card-strong: #ffffff;
+      --accent: #1f5a7a;
+      --accent-2: #d6a11f;
+      --accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
+      --line: rgba(22, 32, 28, 0.14);
+      --line-strong: rgba(22, 32, 28, 0.25);
+      --shadow: 0 24px 70px rgba(20, 31, 26, 0.10);
+      --shadow-small: 0 8px 24px rgba(20, 31, 26, 0.08);
+      --radius: 20px;
+      --max: 1240px;
+    }
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --ink: #f5f1e8;
+      --muted: #b8c4bd;
+      --paper: #0d1310;
+      --panel: rgba(19, 27, 23, 0.94);
+      --card: #17201b;
+      --card-strong: #1b2620;
+      --line: rgba(245, 241, 232, 0.13);
+      --line-strong: rgba(245, 241, 232, 0.24);
+      --shadow: 0 26px 80px rgba(0, 0, 0, 0.38);
+      --shadow-small: 0 8px 28px rgba(0, 0, 0, 0.28);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Avenir Next, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 2%, color-mix(in srgb, var(--accent) 17%, transparent), transparent 26rem),
+        radial-gradient(circle at 92% 18%, color-mix(in srgb, var(--accent-2) 15%, transparent), transparent 24rem),
+        var(--paper);
+      line-height: 1.5;
+    }
+    body::before {
+      content: ""; position: fixed; inset: 0; pointer-events: none; opacity: 0.28;
+      background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+      background-size: 64px 64px; mask-image: linear-gradient(to bottom, black, transparent 72%); z-index: -1;
+    }
+    body::after {
+      content: ""; position: fixed; width: 34rem; height: 34rem; right: -17rem; top: 20%; pointer-events: none; z-index: -1;
+      border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--accent) 14%, transparent), transparent 68%);
+      animation: ambient-drift 14s cubic-bezier(.4,0,.2,1) 2 alternate both;
+    }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; border: 0; touch-action: manipulation; }
+    button, input, select, textarea { transition: border-color 180ms ease, background 180ms ease, color 180ms ease, box-shadow 180ms ease, transform 180ms ease; }
+    :focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 55%, white); outline-offset: 3px; }
+    .skip-link { position: fixed; left: 16px; top: -80px; z-index: 1000; padding: 10px 14px; border-radius: 10px; background: var(--ink); color: var(--paper); font-weight: 800; }
+    .skip-link:focus { top: 16px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .shell { width: min(100% - 40px, var(--max)); margin: 0 auto; padding: 18px 0 40px; }
+    .topbar { position: sticky; top: 10px; z-index: 40; display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 18px; padding: 8px; border: 1px solid var(--line); border-radius: 18px; background: color-mix(in srgb, var(--panel) 88%, transparent); box-shadow: var(--shadow-small); backdrop-filter: blur(18px); }
+    .brand { display: inline-flex; align-items: center; gap: 11px; padding: 4px 8px 4px 5px; color: var(--ink); }
+    .brand-mark { position: relative; width: 34px; height: 34px; border-radius: 10px; background: var(--accent); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.2); }
+    .brand-mark::before, .brand-mark::after { content: ""; position: absolute; left: 8px; right: 8px; height: 3px; border-radius: 99px; background: white; }
+    .brand-mark::before { top: 10px; box-shadow: 0 6px 0 rgba(255,255,255,0.72); }
+    .brand-mark::after { top: 22px; right: 14px; }
+    .brand-copy { display: grid; line-height: 1.05; }
+    .brand-copy b { font-size: 0.9rem; letter-spacing: -0.01em; }
+    .brand-copy span { margin-top: 4px; color: var(--muted); font: 700 0.68rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; text-transform: uppercase; letter-spacing: 0.09em; }
+    .theme-toggle { display: inline-flex; gap: 4px; padding: 4px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+    .theme-toggle button { min-width: 54px; min-height: 36px; padding: 7px 10px; border-radius: 9px; color: var(--muted); background: transparent; font-weight: 800; font-size: 0.82rem; }
+    html[data-theme="light"] [data-theme-choice="light"], html[data-theme="dark"] [data-theme-choice="dark"] { background: var(--ink); color: var(--paper); }
+    .hero {
+      display: block;
+      align-items: stretch;
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      padding: clamp(26px, 5vw, 64px);
+      overflow: hidden;
+      position: relative;
+    }
+    .hero::after { content: ""; position: absolute; width: 260px; height: 260px; right: -120px; bottom: -150px; border-radius: 50%; border: 42px solid color-mix(in srgb, var(--accent-2) 22%, transparent); animation: ring-drift 16s ease-in-out 2 alternate both; }
+    .hero-copy { align-self: center; position: relative; z-index: 1; }
+    .kicker { margin: 0 0 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.12em; font: 900 0.72rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace; }
+    h1 { margin: 0; max-width: 780px; font-size: clamp(2.5rem, 6vw, 5.2rem); line-height: 0.92; letter-spacing: -0.06em; text-wrap: balance; }
+    .subtitle { max-width: 700px; margin: 21px 0 0; color: var(--muted); font-size: clamp(1.02rem, 2vw, 1.2rem); font-weight: 620; line-height: 1.65; }
+    .layout { display: grid; grid-template-columns: minmax(290px, 0.72fr) minmax(0, 1.45fr); gap: 20px; align-items: start; margin-top: 20px; }
+    .panel { border: 1px solid var(--line); border-radius: 24px; background: var(--panel); box-shadow: var(--shadow-small); padding: clamp(20px, 3vw, 30px); }
+    .form-panel { position: sticky; top: 84px; }
+    .section-title { margin: 0; font-size: clamp(1.35rem, 3vw, 1.8rem); line-height: 1.05; letter-spacing: -0.035em; }
+    .section-note { margin: 9px 0 20px; color: var(--muted); font-weight: 620; }
+    form { display: grid; gap: 15px; }
+    .field { display: grid; gap: 7px; }
+    label { font-weight: 850; font-size: 0.91rem; }
+    .req { color: var(--accent); }
+    .helper { margin: 0; color: var(--muted); font-size: 0.82rem; }
+    input, select, textarea { width: 100%; min-height: 48px; padding: 12px 13px; border: 1px solid var(--line-strong); border-radius: 12px; background: var(--card); color: var(--ink); }
+    input:hover, select:hover, textarea:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+    input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); outline: none; }
+    textarea { min-height: 104px; resize: vertical; }
+    .button-row, .result-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .primary, .secondary, .mini { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 15px; border-radius: 11px; font-weight: 900; }
+    .primary { background: var(--accent); color: white; box-shadow: 0 7px 18px color-mix(in srgb, var(--accent) 26%, transparent); }
+    .primary:hover { filter: brightness(1.06); transform: translateY(-1px); }
+    .secondary, .mini { border: 1px solid var(--line-strong); background: var(--card); color: var(--ink); }
+    .secondary:hover, .mini:hover { border-color: var(--accent); background: var(--accent-soft); }
+    .mini { min-height: 40px; padding: 8px 12px; font-size: 0.86rem; }
+    .mini.primary-mini { background: var(--accent); color: white; border-color: transparent; }
+    button:active { transform: scale(0.98); }
+    .validation { display: none; padding: 11px 12px; border-radius: 14px; background: rgba(180, 46, 46, 0.1); color: #b42e2e; font-weight: 800; }
+    .validation.show { display: block; }
+    .saved-note { color: var(--muted); font-size: 0.85rem; font-weight: 700; margin: 4px 0 0; }
+    .stale-note { display: none; margin-bottom: 14px; padding: 11px 12px; border-radius: 14px; background: color-mix(in srgb, var(--accent-2) 22%, var(--card)); border: 1px solid var(--line); font-weight: 800; }
+    .stale-note.show { display: block; }
+    footer { display: flex; justify-content: space-between; gap: 16px; margin-top: 24px; padding: 12px 4px; color: var(--muted); font: 700 0.75rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .entrance { animation: rise-in 420ms cubic-bezier(.16,1,.3,1) both; }
+    .content-enter { animation: content-reveal 260ms cubic-bezier(.16,1,.3,1) both; }
+    @keyframes rise-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes content-reveal { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes ring-drift { to { transform: translate3d(-24px,-18px,0) rotate(14deg); } }
+    @keyframes ambient-drift { to { transform: translate3d(-14vw,8vh,0) scale(1.12); } }
+    @media (max-width: 900px) { .hero, .layout { grid-template-columns: 1fr; } .form-panel { position: static; } }
+    @media (max-width: 640px) { .shell { width: min(100% - 22px, var(--max)); padding-top: 10px; } .topbar { top: 6px; } .brand-copy span { display: none; } .hero { padding: 27px 21px; border-radius: 22px; } h1 { font-size: clamp(2.35rem, 13vw, 3.6rem); } .primary, .secondary { width: 100%; } footer { text-align: center; display: block; } footer span { display: block; margin: 4px 0; } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+    }
+    /* ============ TYPE STYLES START ============ */
+    .tab-row { display: inline-flex; flex-wrap: wrap; gap: 4px; margin-bottom: 22px; padding: 4px; border: 1px solid var(--line); border-radius: 13px; background: color-mix(in srgb, var(--paper) 65%, transparent); }
+    .tab {
+      min-height: 40px; padding: 8px 14px; border-radius: 9px;
+      background: transparent; color: var(--muted); font-weight: 900;
+    }
+    .tab:hover { color: var(--ink); }
+    .tab.active { background: var(--card-strong); color: var(--ink); box-shadow: var(--shadow-small); }
+    .browse-toolbar { display: grid; grid-template-columns: minmax(220px, 1fr); gap: 12px; margin: 18px 0; }
+    .search-wrap { position: relative; }
+    .search-wrap::before { content: ""; position: absolute; left: 15px; top: 50%; width: 12px; height: 12px; border: 2px solid var(--muted); border-radius: 50%; transform: translateY(-62%); pointer-events: none; }
+    .search-wrap::after { content: ""; position: absolute; left: 27px; top: 29px; width: 7px; height: 2px; border-radius: 2px; background: var(--muted); transform: rotate(45deg); pointer-events: none; }
+    .search-wrap input { padding-left: 43px; }
+    .cat-row { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; }
+    .cat-chip {
+      min-height: 40px; padding: 8px 12px; border-radius: 10px; border: 1px solid var(--line);
+      background: var(--card); color: var(--muted); font-weight: 800; font-size: 0.84rem;
+    }
+    .cat-chip.active { background: var(--accent); color: #fff; border-color: transparent; }
+    .cat-note { margin: 0 0 16px; color: var(--muted); font-weight: 620; }
+    .wf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(235px, 1fr)); gap: 11px; }
+    .wf-card {
+      position: relative; min-height: 184px; text-align: left; display: grid; gap: 8px; align-content: start;
+      border: 1px solid var(--line); border-radius: 16px; padding: 17px;
+      background: var(--card); color: var(--ink); overflow: hidden;
+    }
+    .wf-card::after { content: ""; position: absolute; inset: auto 0 0; height: 3px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 200ms ease; }
+    .wf-card:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); box-shadow: var(--shadow-small); }
+    .wf-card:hover::after { transform: scaleX(1); }
+    .wf-card b { font-size: 1.04rem; letter-spacing: -0.025em; }
+    .wf-card span { color: var(--muted); font-size: 0.86rem; font-weight: 620; }
+    .wf-card .go { align-self: end; margin-top: auto; color: var(--accent); font-weight: 900; font-size: 0.82rem; }
+    .no-results { grid-column: 1 / -1; min-height: 180px; display: grid; place-items: center; padding: 24px; border: 1px dashed var(--line-strong); border-radius: 16px; text-align: center; color: var(--muted); }
+    .detail-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
+    .crumb { min-height: 44px; background: transparent; color: var(--accent); font-weight: 900; padding: 7px 0; }
+    .detail-meta { margin: 0 0 8px; color: var(--accent); font: 850 0.7rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; text-transform: uppercase; letter-spacing: 0.1em; }
+    .result-ready { display: flex; align-items: center; gap: 9px; margin: 22px 0 10px; font-weight: 900; }
+    .result-ready::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 5px var(--accent-soft); }
+    .prompt-box {
+      margin-top: 12px; border: 1px solid var(--line); border-radius: 16px;
+      background: #101713; color: #eaf2ed; padding: 18px; max-height: 460px; overflow: auto; box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+    .prompt-box pre { margin: 0; white-space: pre-wrap; word-break: break-word; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.88rem; line-height: 1.55; }
+    .result-actions { margin-top: 12px; }
+    .adv-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+    .adv-card { min-height: 190px; border: 1px solid var(--line); border-radius: 16px; padding: 17px; background: var(--card); display: grid; gap: 9px; align-content: start; }
+    .adv-card:hover { border-color: color-mix(in srgb, var(--accent) 50%, var(--line)); box-shadow: var(--shadow-small); }
+    .adv-card b { font-size: 1.05rem; }
+    .adv-card p { margin: 0; color: var(--muted); font-size: 0.9rem; font-weight: 620; }
+    .adv-card .mini { align-self: end; margin-top: auto; }
+    .empty { min-height: 200px; display: grid; place-items: center; text-align: center; border: 1px dashed var(--line); border-radius: 20px; color: var(--muted); padding: 22px; }
+    .empty strong { display: block; color: var(--ink); margin-bottom: 5px; }
+    .manual-item { border: 1px solid var(--line); border-radius: 16px; background: var(--card); padding: 15px 16px; display: grid; gap: 9px; margin-bottom: 10px; }
+    .manual-item-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+    .manual-item-head b { font-size: 1rem; }
+    .manual-item-head span { color: var(--muted); font-size: 0.82rem; font-weight: 700; }
+    .manual-item pre { margin: 0; white-space: pre-wrap; word-break: break-word; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.8rem; line-height: 1.5; max-height: 130px; overflow: auto; color: var(--muted); }
+    .manual-title-field { display: grid; gap: 7px; margin-bottom: 14px; }
+    #printArea { display: none; }
+    @media (max-width: 640px) { .tab-row { display: grid; grid-template-columns: repeat(3, 1fr); width: 100%; } .tab { padding-inline: 7px; } .wf-grid { grid-template-columns: 1fr; } .wf-card { min-height: 0; } }
+    @media print {
+      body * { visibility: hidden; }
+      #printArea, #printArea * { visibility: visible; }
+      #printArea {
+        display: block; position: absolute; inset: 0; padding: 0;
+        color: #111; background: #fff; font-family: Georgia, serif;
+      }
+      #printArea .print-cover { padding: 40vh 0 0; text-align: center; page-break-after: always; }
+      #printArea .print-cover h1 { font-size: 2.2rem; letter-spacing: 0; line-height: 1.2; }
+      #printArea .print-cover p { color: #555; }
+      #printArea .print-prompt { page-break-inside: avoid; page-break-before: always; padding: 24px 0; }
+      #printArea .print-prompt h2 { font-size: 1.2rem; margin: 0 0 4px; }
+      #printArea .print-prompt .print-source { color: #666; font-size: 0.85rem; margin: 0 0 12px; }
+      #printArea .print-prompt pre { white-space: pre-wrap; word-break: break-word; font-family: "Courier New", monospace; font-size: 0.82rem; line-height: 1.5; border: 1px solid #ccc; border-radius: 8px; padding: 14px; }
+    }
+    /* ============ TYPE STYLES END ============ */
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#studioWorkspace">Skip to the studio</a>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="index.html" aria-label="Back to Prompt Studio home" title="Prompt Studio home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-copy"><b>Prompt Studio</b><span>Prompt workbench</span></span>
+      </a>
+      <div class="theme-toggle" role="group" aria-label="Theme selection">
+        <button type="button" data-theme-choice="light" aria-pressed="false">Light</button>
+        <button type="button" data-theme-choice="dark" aria-pressed="false">Dark</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero entrance" id="hero">
+        <div class="hero-copy">
+          <h1>Paid Traffic Prompt Studio</h1>
+        </div>
+      </section>
+
+      <!-- ============ TYPE BODY START ============ -->
+      <div class="layout entrance" id="studioWorkspace">
+        <section class="panel form-panel" aria-labelledby="profileTitle">
+          <p class="kicker">Your context</p><h2 class="section-title" id="profileTitle">Your business profile</h2>
+          <form id="profileForm" novalidate></form>
+          <p class="saved-note" id="savedNote">Saved on this device as you type.</p>
+        </section>
+
+        <section class="panel">
+          <div class="tab-row" role="tablist">
+            <button class="tab active" type="button" role="tab" aria-selected="true" data-tab="workflows">Workflows</button>
+            <button class="tab" type="button" role="tab" aria-selected="false" data-tab="advisors">Advisors</button>
+            <button class="tab" type="button" role="tab" aria-selected="false" data-tab="manual">Manual <span id="manualCount"></span></button>
+          </div>
+
+          <div id="tab-workflows">
+            <div id="workflowBrowse">
+              <h2 class="section-title">Pick a workflow</h2>
+              <div class="browse-toolbar"><label class="search-wrap"><span class="sr-only">Search workflows</span><input type="search" id="wfSearch" placeholder="Search workflows" autocomplete="off" /></label></div>
+              <div class="cat-row" id="catRow"></div>
+              <p class="cat-note" id="catNote"></p>
+              <div class="wf-grid" id="wfGrid"></div>
+            </div>
+
+            <div id="workflowDetail" hidden>
+              <div class="detail-head">
+                <button class="crumb" type="button" id="backToGrid">&larr; Back to workflows</button>
+              </div>
+              <p class="detail-meta" id="wfMeta"></p>
+              <h2 class="section-title" id="wfTitle"></h2>
+              <p class="section-note" id="wfDescription"></p>
+              <form id="wfForm" novalidate>
+                <div id="wfFields"></div>
+                <div id="wfValidation" class="validation"></div>
+                <div class="button-row">
+                  <button class="primary" type="submit">Build my prompt</button>
+                </div>
+              </form>
+              <div id="wfResultWrap" hidden>
+                <div class="result-ready">Your prompt is ready</div>
+                <div id="staleNote" class="stale-note" role="status">Your inputs changed after this prompt was built. Build it again to refresh it.</div>
+                <div class="prompt-box"><pre id="wfPrompt"></pre></div>
+                <div class="result-actions">
+                  <button class="mini primary-mini" type="button" id="copyPrompt">Copy prompt</button>
+                  <button class="mini" type="button" id="copyOpen">Copy + open ChatGPT</button>
+                  <button class="mini" type="button" id="addToManual">Add to manual</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="tab-advisors" hidden>
+            <h2 class="section-title">Sit down with an advisor</h2>
+            <div class="adv-grid" id="advGrid"></div>
+            <div id="advResultWrap" hidden>
+              <h2 class="section-title" id="advResultTitle" style="margin-top:18px;"></h2>
+              <div class="prompt-box"><pre id="advPrompt"></pre></div>
+              <div class="result-actions">
+                <button class="mini primary-mini" type="button" id="advCopy">Copy prompt</button>
+                <button class="mini" type="button" id="advCopyOpen">Copy + open ChatGPT</button>
+                <button class="mini" type="button" id="advAddToManual">Add to manual</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="tab-manual" hidden>
+            <h2 class="section-title">Prompt manual</h2>
+            <p class="section-note">Save useful prompts here.</p>
+            <div class="manual-title-field field">
+              <label for="manualTitle">Manual title</label>
+              <input type="text" id="manualTitle" placeholder="Example: Q3 launch prompt playbook" />
+            </div>
+            <div id="manualEmpty" class="empty"><div><strong>Nothing saved yet</strong>Build a prompt in Workflows or Advisors, then hit "Add to manual".</div></div>
+            <div id="manualList"></div>
+            <div class="result-actions">
+              <button class="mini primary-mini" type="button" id="printManual">Print / save as PDF</button>
+              <button class="mini" type="button" id="downloadManual">Download as HTML</button>
+              <button class="mini" type="button" id="clearManual">Clear manual</button>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div id="printArea" aria-hidden="true"></div>
+      <!-- ============ TYPE BODY END ============ -->
+    </main>
+
+    <footer><span>Prompt Studio</span></footer>
+  </div>
+
+  <script>
+    const STUDIO = {"slug": "paid-traffic", "title": "Paid Traffic Prompt Studio", "kicker": "Guided prompt system for paid media", "subtitle": "Built for advertisers, agencies, and founders spending money on ads. Pick a job, answer a few fields, and copy out a finished prompt that plans budgets, writes ads, and diagnoses accounts in ChatGPT, Claude, or any assistant.", "badge": "48 guided workflows", "accent": "#1f5a7a", "accent2": "#d6a11f", "footer": "Prompt Studio", "profile": [{"id": "business", "label": "What you sell and who buys it", "type": "textarea", "required": true, "placeholder": "Example: a $97/month booking tool for salons with 2 to 10 chairs, sold through Meta ads", "helper": "One or two sentences. Every prompt in this studio uses this."}, {"id": "audience", "label": "Your buyer in their own words", "type": "textarea", "required": false, "placeholder": "Example: 'I'm tired of no-shows eating my Saturdays' is what they say right before they buy", "helper": "Phrases real buyers use. Skip it and the prompts lean harder on the field above."}, {"id": "campaign", "label": "The campaign or offer you're running right now", "type": "textarea", "required": false, "placeholder": "Example: relaunching cold Meta traffic to a free-trial offer after a summer pause"}, {"id": "budget", "label": "Monthly ad budget and target cost per result", "type": "text", "required": false, "placeholder": "Example: $4,500/month across Meta and Google, target $80 per booked call"}, {"id": "constraints", "label": "Voice, claims you can't make, or platform limits", "type": "text", "required": false, "placeholder": "Example: no income claims, we're in a restricted category on Meta, dry humor is fine"}], "categories": [{"id": "strategy", "title": "Campaign Strategy", "note": "Decide what the money is for before the platform starts spending it."}, {"id": "audience", "title": "Audience and Intent", "note": "Work out who should see the ads, who shouldn't, and what makes them act."}, {"id": "angles", "title": "Angles and Hooks", "note": "Build enough distinct angles that one stale creative can't sink the account."}, {"id": "creative", "title": "Creative Production", "note": "Turn angles into briefs and copy a designer, editor, or creator can run with."}, {"id": "landing", "title": "Landing and Conversion", "note": "Make the click land on a page that finishes the sale the ad started."}, {"id": "testing", "title": "Testing and Scaling", "note": "Read the numbers, run clean tests, and decide which ads earn more money."}], "workflows": [{"id": "campaign-direction-memo", "category": "strategy", "title": "Campaign Direction Memo", "description": "Names the one conversion action this campaign gets judged on before any money moves.", "role": "a senior media buyer who writes the campaign direction before anyone opens the ad account, and who owns the cost-per-acquisition number the campaign gets judged on", "fields": [{"id": "spend", "label": "Budget for this campaign", "type": "text", "required": true, "placeholder": "Example: $4,500/month across Meta and Google"}, {"id": "stage", "label": "Where this offer stands with paid ads", "type": "select", "required": true, "options": ["Never advertised before", "Ran ads, results were mixed", "Profitable but small", "Scaling an already profitable campaign"]}], "task": ["Name the single conversion action this campaign should be judged on, and say why softer actions like clicks or leads would hide the truth for this offer.", "Set a target cost per acquisition from my price and margin, and show the math.", "Say which traffic temperature this budget should focus on first: cold strangers, warm visitors, or past customers, and why.", "Write the campaign objective as two sentences a media buyer could read before touching the account.", "List the three most likely ways this campaign fails in its first 30 days."], "rules": ["If my budget is too small to measure the conversion action you chose, say so and name the cheaper action to optimize toward instead."], "output": "a one-page direction memo with sections for conversion action, target CPA with the math shown, traffic focus, objective, and the three biggest risks"}, {"id": "offer-strength-check", "category": "strategy", "title": "Offer Strength Check", "description": "Scores whether the offer can survive cold traffic before ad spend proves it can't.", "role": "a direct-response strategist who kills weak offers before launch, because ad spend on a weak offer is the most expensive way to find out", "fields": [{"id": "offer", "label": "The exact offer as the ad would state it", "type": "textarea", "required": true, "placeholder": "Example: 20% off your first order plus free shipping over $75"}, {"id": "price", "label": "Price and any guarantee", "type": "text", "required": false, "placeholder": "Example: $149 one-time, 30-day refund"}], "task": ["Score the offer 1 to 10 separately for cold, warm, and retargeted traffic, and justify each score with a specific weakness or strength.", "Name the strongest claim this offer can make that a stranger would believe without knowing the brand.", "List what's missing from the offer: risk reversal, deadline, reason to act now, proof, whichever apply.", "Propose two stronger versions of the offer that keep roughly the same margin."], "rules": ["Score against what a cold stranger scrolling past would think, not what an existing customer would think."], "output": "a scorecard with the three temperature scores and reasons, the strongest believable claim, the missing pieces, and two rebuilt offers"}, {"id": "funnel-map", "category": "strategy", "title": "Ad-to-Sale Funnel Map", "description": "Maps every step from first impression to money collected so the leak has an address.", "role": "a funnel analyst who traces every paid click to revenue and gets called in when spend goes up but sales don't", "fields": [{"id": "steps", "label": "Your funnel steps in order", "type": "textarea", "required": true, "placeholder": "Example: Meta ad > advertorial > product page > cart > checkout, plus an abandoned-cart email"}, {"id": "numbers", "label": "Any numbers you have per step", "type": "textarea", "required": false, "placeholder": "Example: 2.1% CTR, land-to-cart unknown, 2.4% of visitors purchase"}], "task": ["Lay out each step from impression to purchase, with the question the buyer is silently asking at that step.", "Mark where my numbers say buyers drop, and mark where I have no data, since a blind spot is itself a finding.", "Rank the three biggest fixes by expected impact against effort.", "Name the one number to watch weekly for each step."], "rules": ["Treat a missing number as a problem to fix, not a step to skip."], "output": "a step-by-step funnel map with buyer questions per step, drop-off flags, blind spots, three ranked fixes, and one metric per step"}, {"id": "campaign-hypothesis", "category": "strategy", "title": "Campaign Hypothesis Sheet", "description": "Turns a campaign idea into a falsifiable bet with a spend cap and a kill condition.", "role": "a growth lead who won't let a campaign launch without a written bet, because campaigns without a kill condition run until the card gets declined", "fields": [{"id": "idea", "label": "The campaign idea", "type": "textarea", "required": true, "placeholder": "Example: retargeting cart abandoners with a testimonial video will beat our current discount reminder"}, {"id": "testbudget", "label": "Test budget and window", "type": "text", "required": false, "placeholder": "Example: $600 over 10 days"}], "task": ["Restate the idea as a single if-then hypothesis with the one metric that proves or kills it.", "Set the spend cap and the minimum conversion count needed before the result means anything.", "Define the kill condition: the number and the date where we stop.", "List what we learn even if the test fails."], "rules": ["If the test budget can't buy enough conversions to read the result, say so and shrink the hypothesis instead of stretching the budget."], "output": "a one-page hypothesis sheet with the if-then bet, success metric, spend cap, kill condition, and the fallback learning"}, {"id": "budget-split-plan", "category": "strategy", "title": "Budget Split Plan", "description": "Divides the monthly budget across prospecting, retargeting, and testing in dollars, not just percentages.", "role": "a media buyer who allocates budgets for accounts between $2,000 and $50,000 a month and answers for every dollar that didn't come back", "fields": [{"id": "spend", "label": "Monthly budget and platforms", "type": "text", "required": true, "placeholder": "Example: $6,000/month, all on Meta right now"}, {"id": "history", "label": "What each bucket has returned so far", "type": "textarea", "required": false, "placeholder": "Example: retargeting returns about 4x, cold barely breaks even"}], "task": ["Split the budget into prospecting, retargeting, and testing, with dollar figures and one line of reasoning per bucket.", "Flag whether retargeting is being starved or overfed relative to my site traffic volume.", "State what each bucket must return within 30 days to keep its share.", "Give the reallocation rule: what moves where when one bucket over-delivers or under-delivers."], "rules": ["Anchor the split to my traffic volume and history, not a stock 70/20/10 formula."], "output": "a budget table with dollar amounts per bucket, 30-day return targets, and one written reallocation rule"}, {"id": "message-match-plan", "category": "strategy", "title": "Message Match Plan", "description": "Locks the promise so the ad, the landing page, and the first follow-up all say the same thing.", "role": "a conversion strategist who audits paid funnels where the ad promises one thing and the page sells another, and who owns the land-to-lead rate", "fields": [{"id": "promise", "label": "What the ad promises vs. what the page leads with", "type": "textarea", "required": true, "placeholder": "Example: ad promises a 15-minute setup, page leads with award badges"}, {"id": "path", "label": "The click path", "type": "text", "required": false, "placeholder": "Example: Meta ad > demo booking page > confirmation email"}], "task": ["Write the one promise every asset in this path must repeat.", "For each asset in the path, give the headline or first line that carries the promise forward.", "Flag every place the current setup switches promises mid-path.", "Write the first follow-up subject line that continues the same promise."], "rules": ["One promise per path. If my inputs contain two promises, pick the stronger one and say why."], "output": "a message match table with one row per asset and columns for promise line, supporting proof, and the mismatch it fixes"}, {"id": "channel-fit-call", "category": "strategy", "title": "Channel Fit Call", "description": "Picks which ad platform gets the first dollars based on how buyers shop for this offer.", "role": "a paid-media planner who has spent budgets on Meta, Google, YouTube, and LinkedIn, and who gets measured on where the first profitable dollar shows up fastest", "fields": [{"id": "buying", "label": "How buyers find offers like yours", "type": "select", "required": true, "options": ["They search for it when the problem hits", "They don't know it exists until they see it", "They research for weeks and compare options", "They buy on referral and social proof", "Mixed: some search, some discover"]}, {"id": "spend", "label": "Starting monthly budget", "type": "text", "required": false, "placeholder": "Example: $3,000/month to start"}], "task": ["Rank the two or three platforms worth considering for this offer, and say what disqualifies the rest.", "Name the campaign type to start with on the winning platform: search, prospecting video, retargeting, or whatever fits.", "State the minimum monthly budget the recommended platform needs before results are readable.", "Say what result within 60 days would justify adding a second platform."], "rules": ["Recommend one platform to start. Splitting a small budget across two platforms is a recommendation to fail slowly."], "output": "a ranked platform call with the disqualified options and reasons, the starting campaign type, the minimum viable budget, and the 60-day expansion trigger"}, {"id": "pre-spend-checklist", "category": "strategy", "title": "Pre-Spend Checklist", "description": "Catches the missing pixel, weak offer, or absent follow-up before the first dollar leaves.", "role": "a campaign launch reviewer who signs off on go-live and eats the blame when a campaign spends for a week with broken tracking", "fields": [{"id": "setup", "label": "Your current setup, honestly", "type": "textarea", "required": true, "placeholder": "Example: pixel installed but no purchase event yet, landing page live, no email follow-up written"}, {"id": "date", "label": "Planned launch date", "type": "text", "required": false, "placeholder": "Example: this Friday"}], "task": ["Run my setup against the launch blockers: tracking events, offer clarity, landing page, follow-up, budget floor, and creative count.", "Sort every finding into launch blockers and fix-after-launch items.", "For each blocker, give the specific fix and who typically does it: owner, developer, or designer.", "Give a plain go or no-go call for my launch date."], "rules": ["A missing purchase or lead event is always a blocker, never a fix-later."], "output": "a two-column checklist splitting blockers from fix-later items, with a fix per line and a go or no-go verdict"}, {"id": "intent-personas", "category": "audience", "title": "Intent-Based Personas", "description": "Builds two or three buyer profiles around what triggered the purchase, not age and hobbies.", "role": "an audience researcher who builds targeting profiles from purchase triggers and gets judged on whether the resulting ads convert, not on how detailed the persona deck looks", "fields": [{"id": "customers", "label": "Who actually buys, with any patterns you've noticed", "type": "textarea", "required": true, "placeholder": "Example: mostly gym owners with 50 to 300 members, several signed up right after a no-show streak"}, {"id": "bestbuyer", "label": "Your best recent customer's story", "type": "textarea", "required": false, "placeholder": "Example: our best buyer signed up the week a competitor gym opened two blocks away"}], "task": ["Build two or three personas, each defined by the trigger event that starts the buying process.", "For each persona, write the sentence they'd type into Google or say to a friend at that moment.", "List what each persona needs to see in an ad within three seconds.", "Name which persona this budget should target first, and why."], "rules": ["No demographic filler. Age and job title appear only when they change the message or the targeting."], "output": "two or three persona cards, each with a trigger event, an in-their-words problem statement, a three-second ad requirement, and a priority call"}, {"id": "buyer-trigger-map", "category": "audience", "title": "Buyer Trigger Map", "description": "Lists the specific events that flip someone from ignoring this offer to needing it this week.", "role": "a customer researcher who interviews recent buyers about the week they bought, because targeting the trigger beats targeting the demographic", "fields": [{"id": "buyers", "label": "Two or three recent buyers and what was happening when they bought", "type": "textarea", "required": true, "placeholder": "Example: one had a Google review crisis, one lost their office manager, one got quoted $12k by an agency"}], "task": ["Extract every trigger event from my examples and generalize each into a repeatable moment.", "For each trigger, write the ad opening line that names the moment.", "Rank the triggers by how targetable they are on ad platforms: searchable terms, behaviors, or lookalikes of trigger-stage buyers.", "Flag the triggers ads can't reach, and say which channel can: email, partnerships, or content."], "rules": ["Every trigger must be an event with a date attached, not a personality trait."], "output": "a trigger table with the moment, an ad opening line, a targetability rank, and the off-platform channel for unreachable triggers"}, {"id": "audience-exclusion-list", "category": "audience", "title": "Audience Exclusion List", "description": "Names who should never see these ads, so budget stops paying to annoy customers and tempt refunds.", "role": "a targeting specialist who has watched accounts spend 20% of budget showing acquisition ads to existing customers, and who now builds the exclusion list before the audience list", "fields": [{"id": "campaigntype", "label": "Campaign type", "type": "select", "required": true, "options": ["Cold prospecting", "Retargeting site visitors", "Lead generation", "Reactivating past customers", "Launch to a warm list"]}, {"id": "lists", "label": "Customer and lead lists you can upload", "type": "text", "required": false, "placeholder": "Example: 1,400 customer emails, already synced to Meta"}], "task": ["List every group to exclude for this campaign type, with the reason each one wastes money or causes harm.", "Name the audience source for each exclusion: customer list upload, purchase event, page visitors, or engaged followers.", "Flag which exclusions decay and how often each needs refreshing.", "Estimate which single exclusion saves the most budget for my setup."], "rules": ["Include the awkward exclusions too: recent refunders, serial discount buyers, and job applicants if they pollute the data."], "output": "an exclusion table with group, reason, audience source, and refresh schedule, with the single highest-value exclusion flagged"}, {"id": "awareness-ladder", "category": "audience", "title": "Awareness Ladder Map", "description": "Sorts the market by how much they already know, so each campaign speaks to one rung instead of shouting at all five.", "role": "a campaign planner who assigns every audience a single awareness level before writing a word of copy, because an ad that speaks to everyone converts no one", "fields": [{"id": "market", "label": "What your market already knows and believes", "type": "textarea", "required": true, "placeholder": "Example: most bookkeepers know cash-flow forecasting exists but assume it needs a CFO"}], "task": ["Place my market's segments on the five rungs: unaware, problem aware, solution aware, product aware, and ready to buy.", "Estimate which rung holds the most buyers for my offer and which holds the cheapest ones to convert.", "For each rung worth targeting, write the message job in one line: what the ad must accomplish, not the copy itself.", "Say which rung my campaign should own first given my budget."], "rules": ["Assign each segment exactly one rung. A segment that seems to span two rungs is two segments."], "output": "a five-rung ladder with my segments placed, volume and cost estimates per rung, one message job per rung, and a first-rung recommendation"}, {"id": "retargeting-segments", "category": "audience", "title": "Retargeting Segment Plan", "description": "Splits warm traffic by what people did on the site, each segment with its own message and day window.", "role": "a retargeting specialist who separates a cart abandoner from a blog skimmer, because showing both the same 10%-off ad burns margin on one and wastes impressions on the other", "fields": [{"id": "traffic", "label": "Your monthly traffic and what it does", "type": "textarea", "required": true, "placeholder": "Example: 9,000 monthly visitors, 400 add to cart, 180 purchase, the blog gets half the traffic"}, {"id": "cycle", "label": "Typical time from first visit to purchase", "type": "text", "required": false, "placeholder": "Example: about 12 days"}], "task": ["Define the retargeting segments my traffic supports, hottest to coolest, with the site behavior that defines each.", "Write the message job and one ad concept per segment.", "Set the day window per segment based on my sales cycle.", "Flag which segments are too small to serve and where to merge them."], "rules": ["Segment count follows traffic volume. If a segment collects fewer than about 1,000 people a month, merge it upward and say so."], "output": "a segment table with definition, day window, message job, and one ad concept per row, with thin segments flagged for merging"}, {"id": "cold-audience-shortlist", "category": "audience", "title": "Cold Audience Shortlist", "description": "Picks the first three cold audiences to test, with reasoning a media buyer would defend in a client call.", "role": "a prospecting media buyer who builds cold audiences from buying behavior and gets judged on cost per first purchase, not audience size", "fields": [{"id": "seed", "label": "What you know about where buyers come from", "type": "textarea", "required": true, "placeholder": "Example: 1,400 buyers so far, the best ones found us through a podcast about restaurant operations"}, {"id": "platform", "label": "Platform", "type": "select", "required": true, "options": ["Meta", "Google", "YouTube", "TikTok", "LinkedIn"]}], "task": ["Propose three cold audiences ranked by expected buyer density, each with exact targeting inputs: interests, lookalike source, keywords, or placements.", "For each audience, state the size range to aim for and why bigger or smaller fails here.", "Name the one obvious audience most advertisers in my category would pick first that I should skip, and why.", "Define the head-to-head test: budget split, duration, and the metric that picks the winner."], "rules": ["Every audience needs a stated connection to buying behavior, not topic interest. Liking fitness pages isn't buying supplements."], "output": "three ranked audience specs with targeting inputs and size ranges, one trap audience to skip with the reason, and a test design"}, {"id": "customer-language-mine", "category": "audience", "title": "Customer Language Mine", "description": "Pulls ready-to-use ad lines out of reviews, surveys, and support tickets in the buyer's own words.", "role": "a voice-of-customer researcher who lifts ad copy from reviews and refund emails, because words buyers wrote convert better than words marketers polished", "fields": [{"id": "material", "label": "Paste your raw customer words", "type": "textarea", "required": true, "placeholder": "Paste reviews, survey answers, or support emails. Example: 'I was drowning in DMs before this'"}], "task": ["Extract every phrase that names a pain, a desired outcome, or a moment of doubt, quoted exactly.", "Sort the phrases into three piles: hooks, benefit lines, and objection handlers.", "Mark the five strongest lines for cold traffic and say what makes each one work.", "Rewrite nothing unless a phrase needs trimming for an ad character limit, and mark any trim you make."], "rules": ["Keep the buyer's grammar and word choice intact. Cleaned-up quotes lose the thing that made them convert."], "output": "a sorted swipe list of hooks, benefit lines, and objection handlers, all quoted verbatim, with the top five cold-traffic lines flagged"}, {"id": "objection-inventory", "category": "audience", "title": "Objection Inventory", "description": "Catalogs why warm prospects don't buy, matched to the funnel asset whose job is to answer each doubt.", "role": "a conversion researcher who collects the reasons deals die and assigns each objection to the ad, page, or email responsible for killing it", "fields": [{"id": "objections", "label": "Objections you've heard, in the prospect's words", "type": "textarea", "required": true, "placeholder": "Example: 'too expensive vs. hiring a VA', 'will this work for a service business', 'I got burned by an agency before'"}, {"id": "price", "label": "Price and terms", "type": "text", "required": false, "placeholder": "Example: $299/month, no contract"}], "task": ["List every objection from my input, plus the standard ones my price point and category always raise.", "Classify each objection as price, trust, fit, or timing.", "Assign each objection to the funnel asset that should answer it: the ad, the landing page, the FAQ, an email, or the checkout.", "Write a one-line answer per objection using proof I actually have, and flag where proof is missing."], "rules": ["An objection without proof behind the answer gets flagged as a proof gap, not papered over with confident copy."], "output": "an objection table with objection, type, responsible funnel asset, a one-line answer, and proof gaps flagged"}, {"id": "ad-angle-bench", "category": "angles", "title": "Ad Angle Bench", "description": "Builds five genuinely different angles so the campaign isn't one creative fatigue away from dying.", "role": "a creative strategist who builds angle benches for accounts spending five figures a month, where a single angle going stale can drop returns in a week", "fields": [{"id": "currentad", "label": "Your current or best-performing ad, summarized", "type": "textarea", "required": true, "placeholder": "Example: our only running ad shows the dashboard and says 'know your numbers'"}, {"id": "proof", "label": "Proof assets you have", "type": "textarea", "required": false, "placeholder": "Example: 214 reviews, one case study with a 31% cost cut"}], "task": ["Generate five angles that differ by mechanism, not wording: problem-led, proof-led, identity-led, cost-of-inaction, and against-the-usual-way.", "For each angle, give the core claim, the emotion it works, and the buyer segment it fits best.", "Write one opening line per angle as a proof of concept.", "Rank the five by distance from my current ad, since the farthest angle teaches the most."], "rules": ["Two angles that could share a headline are one angle. Rebuild until each would need its own creative."], "output": "five angle cards with claim, emotion, best-fit segment, and a sample opening line, plus a distance ranking from my current ad"}, {"id": "hook-bank", "category": "angles", "title": "Scroll-Stopping Hook Bank", "description": "Writes 15 opening lines built to stop a thumb in the first second, sorted by hook type.", "role": "a short-form copywriter who writes first lines for feeds where an ad has under a second before the scroll continues, and who tracks hook-level thumbstop rates", "fields": [{"id": "angle", "label": "The angle these hooks serve", "type": "textarea", "required": true, "placeholder": "Example: proof angle, our case study gym filled 40 class slots in 3 weeks"}, {"id": "format", "label": "Format", "type": "select", "required": true, "options": ["Video with a spoken opener", "Static image with overlay text", "Carousel first slide", "Text-first feed ad"]}], "task": ["Write 15 hooks spread across at least five types: question, bold claim, specific number, moment-in-time story, and direct callout of the exact buyer.", "Keep each hook within the length the chosen format shows on screen.", "Mark the three most likely winners and the reason each earns attention honestly.", "Flag any hook that promises more than the landing page can back up."], "rules": ["Every hook must survive the so-what test from a stranger who's seen 40 ads today. Clever that never connects to the offer gets cut."], "output": "15 hooks grouped by type, the top three marked with reasons, and an overpromise flag wherever one applies"}, {"id": "pattern-break-openers", "category": "angles", "title": "Pattern Break Openers", "description": "Designs openers that don't look like ads, for feeds trained to skip anything that does.", "role": "a native-ad specialist who studies why some ads get watched like content, and who gets paid on three-second view rates", "fields": [{"id": "feed", "label": "Where this will run", "type": "select", "required": true, "options": ["Meta feed", "Instagram Reels", "TikTok", "YouTube pre-roll", "LinkedIn feed"]}, {"id": "cliche", "label": "What every competitor ad in your category looks like", "type": "textarea", "required": false, "placeholder": "Example: every competitor ad opens with a founder talking at a ring light"}], "task": ["Name the visual and verbal cliches my category's ads share, from my input plus what's typical for the platform.", "Design five openers that break the pattern: the first frame, the first line, and why the brain won't file it as an ad.", "For each opener, show how it hands off to the offer by second five without feeling like a bait and switch.", "Rank the five by production difficulty so I can ship the easiest one this week."], "rules": ["Pattern breaks that never connect back to the product are just expensive content. Every opener needs its handoff line."], "output": "five opener specs with first frame, first line, the cliche it breaks, the handoff to offer, and a production difficulty rank"}, {"id": "proof-first-ads", "category": "angles", "title": "Proof-First Ad Concepts", "description": "Turns reviews, numbers, and case studies into ads where the evidence is the creative.", "role": "a direct-response creative lead who opens with the receipt instead of the promise, because cold traffic believes screenshots before slogans", "fields": [{"id": "proof", "label": "Every piece of proof you have", "type": "textarea", "required": true, "placeholder": "Example: 4.8 stars from 214 reviews, a customer text saying 'we stopped missing calls entirely', before-and-after booking numbers"}], "task": ["Inventory my proof and grade each piece on three checks: verifiable, specific, and relevant to the buying decision.", "Build three ad concepts where a single piece of proof carries the whole ad: a review screenshot ad, a case-study number ad, and a customer-words voiceover ad.", "Write the copy that frames each proof piece without inflating it.", "Name the proof I'm missing that would beat everything I have, and how to get it within 30 days."], "rules": ["No composite or 'representative' proof. If the number needs an asterisk, pick different proof."], "output": "a graded proof inventory, three proof-led ad concepts with framing copy, and one 30-day proof acquisition move"}, {"id": "objection-killer-ads", "category": "angles", "title": "Objection Killer Ads", "description": "Writes retargeting ads that answer the exact doubt keeping warm prospects from buying.", "role": "a retargeting copywriter who writes for people who visited and left, and who treats every ad as the answer to a question the prospect didn't ask out loud", "fields": [{"id": "objection", "label": "The doubt to kill", "type": "textarea", "required": true, "placeholder": "Example: they assume onboarding takes weeks, ours takes one afternoon"}, {"id": "evidence", "label": "Evidence you can show", "type": "textarea", "required": false, "placeholder": "Example: the onboarding checklist screenshot, a client quote about going live same-day"}], "task": ["Restate the objection in the words the prospect would use to a colleague.", "Write three ads that answer it: one leading with evidence, one in a customer's voice, and one that names the doubt outright.", "Give each ad a headline, primary text, and the visual it needs.", "Say which of the three runs first and to which retargeting window."], "rules": ["Name the doubt plainly in at least one version. Dancing around an objection reads as having no answer."], "output": "three complete retargeting ads, each with headline, primary text, and visual direction, plus a first-to-run recommendation"}, {"id": "founder-story-ad", "category": "angles", "title": "Founder Story Ad", "description": "Shapes the origin story into a 45-second ad that earns trust without turning into a memoir.", "role": "a story editor who cuts founder stories down to the one scene that explains why the product exists, and who has watched three-minute brand films die at 2% view-through", "fields": [{"id": "story", "label": "The origin story, messy is fine", "type": "textarea", "required": true, "placeholder": "Example: started this after our restaurant lost $9k in one no-show weekend"}, {"id": "destination", "label": "Where the ad sends people", "type": "text", "required": false, "placeholder": "Example: a demo booking page"}], "task": ["Find the single scene in my story where the problem got personal, and open there.", "Structure the 45 seconds: the scene, what I tried that failed, what I built, who it now serves, one proof point, and the ask.", "Write the script in spoken-language sentences with on-screen text cues.", "Give the cutdown: the same story in 15 seconds for retargeting."], "rules": ["The story serves the buyer's doubt, not the founder's ego. Any line that exists to impress gets cut."], "output": "a timestamped 45-second script with on-screen text cues, plus a 15-second retargeting cutdown"}, {"id": "old-way-contrast-ads", "category": "angles", "title": "Versus-the-Old-Way Ads", "description": "Positions the offer against what buyers currently do instead, without naming a competitor.", "role": "a positioning copywriter who sells against the status quo, because most lost deals go to 'we'll keep doing it in spreadsheets', not to a rival brand", "fields": [{"id": "oldway", "label": "What buyers do today instead of buying from you", "type": "textarea", "required": true, "placeholder": "Example: they juggle three plugins and a VA to do what we do in one dashboard"}, {"id": "switching", "label": "The switching fear", "type": "text", "required": false, "placeholder": "Example: they assume migration takes a full weekend"}], "task": ["Define the real alternative my buyers compare me against, which is usually a workaround, not a competitor.", "List the hidden costs of the old way in time, money, and errors, with magnitudes flagged as estimates where I gave no numbers.", "Write two contrast ads: one side-by-side comparison, one day-in-the-life of the old way going wrong.", "Handle the switching fear inside the ad instead of hoping nobody thinks of it."], "rules": ["Never name or clearly identify a competitor. The contrast is against a way of working, and the old way gets described fairly."], "output": "two contrast ads with headline, primary text, and visual direction, each with the switching-fear answer built in"}, {"id": "warm-angle-set", "category": "angles", "title": "Warm Traffic Angle Set", "description": "Builds angles for people who already visited, where repeating the cold ad wastes the second chance.", "role": "a full-funnel creative strategist who writes different ads for strangers and window shoppers, and who owns the view-to-purchase rate on warm audiences", "fields": [{"id": "coldad", "label": "What your cold ad already told them", "type": "textarea", "required": true, "placeholder": "Example: the cold ad leads with our 40-bookings case study"}, {"id": "leftreason", "label": "Why most visitors probably left", "type": "select", "required": true, "options": ["Price felt high in the moment", "Needed a partner or boss to agree", "Wanted to compare options first", "Got distracted, no real objection", "Didn't trust us yet"]}], "task": ["Diagnose what a visitor who saw my cold ad and left still needs to hear, based on the leave reason I selected.", "Build four warm angles: new proof, the objection answered, a what-you-missed detail, and an honest reason to come back now.", "Write the opening line for each angle and say which retargeting window it fits.", "State which single angle gets 60% of the warm budget, and why."], "rules": ["No repeating the cold ad's claim in the same words. Warm traffic already heard it once and left anyway."], "output": "four warm angle cards with opening lines and window assignments, plus a budget-weighting call"}, {"id": "static-design-brief", "category": "creative", "title": "Static Ad Design Brief", "description": "Writes the brief a designer can execute without a follow-up call: message, layout, and the one job the image does.", "role": "a creative director who briefs freelance designers for direct-response ads and gets the file back right the first time because the brief left nothing to interpret", "fields": [{"id": "angle", "label": "The angle and message this ad carries", "type": "textarea", "required": true, "placeholder": "Example: proof angle, a star-rating screenshot with the review text as the visual"}, {"id": "sizes", "label": "Where it runs", "type": "select", "required": true, "options": ["Meta feed square", "Stories and Reels vertical", "Display banners, several sizes", "All of the above"]}, {"id": "brand", "label": "Brand limits", "type": "text", "required": false, "placeholder": "Example: navy and cream only, logo stays small"}], "task": ["State the single job this image does in the feed (stop, communicate, or prove) and the one message it carries.", "Specify the layout: focal point, headline placement, text overlay limits, and what to leave out.", "Write the exact overlay text, plus the shorter fallback if it breaks at small sizes.", "List the three most likely designer mistakes for this concept and head each one off in one line."], "rules": ["Brief one concept per document. Multiple concepts in one brief is how designers average them into mush."], "output": "a one-page design brief with the image job, the message, a layout spec, final overlay text with fallback, and a headed-off mistakes list"}, {"id": "video-edit-brief", "category": "creative", "title": "Video Ad Edit Brief", "description": "Gives an editor the beat-by-beat cut plan: hook timing, captions, b-roll pulls, and where the CTA lands.", "role": "a performance video producer who briefs editors by the second, because the difference between 1.2% and 2.4% CTR usually lives in the first three of them", "fields": [{"id": "footage", "label": "What footage exists", "type": "textarea", "required": true, "placeholder": "Example: 20 minutes of founder talking head plus screen recordings of the app"}, {"id": "length", "label": "Target length", "type": "select", "required": true, "options": ["15 seconds", "30 seconds", "45 to 60 seconds", "Editor's call from the footage"]}, {"id": "hookline", "label": "The opening line, if you know it", "type": "text", "required": false, "placeholder": "Example: open on the line 'we lost $9k in one weekend'"}], "task": ["Map the cut beat by beat with timestamps: hook, problem, product moment, proof, and CTA.", "Specify the caption style and the exact words that must appear on screen for sound-off viewers.", "List the b-roll or screen-recording moments to pull from my footage for each beat.", "Give the editor two hook variants to export so we can test the open."], "rules": ["The first three seconds get more brief detail than the rest combined. If the hook fails, nothing after it exists."], "output": "a timestamped edit sheet with beats, on-screen text, b-roll pulls, sound-off captions, and two hook variants to export"}, {"id": "ugc-creator-brief", "category": "creative", "title": "UGC Creator Brief", "description": "Briefs a content creator to film an ad that sounds like a person, not a teleprompter.", "role": "a UGC program manager who has briefed a hundred creators and learned that scripts kill authenticity but talking points without structure kill conversions", "fields": [{"id": "creator", "label": "Who's filming and their natural style", "type": "text", "required": true, "placeholder": "Example: fitness creator who films selfie-style in her car and kitchen"}, {"id": "angle", "label": "The story arc or angle", "type": "textarea", "required": true, "placeholder": "Example: an 'I almost quit my studio before I fixed no-shows' story arc"}, {"id": "mandatories", "label": "Non-negotiables", "type": "text", "required": false, "placeholder": "Example: must show the app screen once, must say 'link below'"}], "task": ["Write the beat structure the creator follows: situation, struggle, discovery, result, ask, with one talking point per beat instead of lines to memorize.", "List the mandatory phrases and shots as a short checklist kept separate from the beats.", "Give filming notes: setting, framing, energy, and what to avoid, like ring-light voice or holding the product like a trophy.", "Write three hook options for the creator to record so one shoot produces testable variants."], "rules": ["Talking points, not scripts. If the creator sounds like they're reading, the ad dies as an ad and as content."], "output": "a creator brief with a five-beat structure and talking points, a mandatories checklist, filming notes, and three hook options"}, {"id": "primary-text-awareness", "category": "creative", "title": "Primary Text by Awareness", "description": "Writes the same ad's body copy three ways: for strangers, for the problem-aware, and for comparison shoppers.", "role": "an ad copywriter who writes every campaign at three awareness levels, because the copy that converts a stranger bores a shopper and the reverse", "fields": [{"id": "basead", "label": "The current ad or core message", "type": "textarea", "required": true, "placeholder": "Example: current primary text leads with '30% of your bookings no-show. Ours don't.'"}, {"id": "offer", "label": "The offer", "type": "text", "required": false, "placeholder": "Example: free 14-day trial, card required"}], "task": ["Write the problem-aware version: name the pain in the buyer's words before the product appears.", "Write the solution-aware version: why this mechanism beats the ways they've already tried.", "Write the product-aware version: the offer, the proof, and the reason to act now, with no warm-up.", "For each version, give the first line separately and mark where the feed truncates it."], "rules": ["Each version must read complete above the fold. The line before 'See more' carries the whole job."], "output": "three complete primary texts labeled by awareness level, each with its pre-truncation first line shown separately"}, {"id": "headline-bank", "category": "creative", "title": "Headline Bank", "description": "Produces 12 headlines for the same ad, spread across outcome, number, question, and objection frames.", "role": "a headline specialist who writes 12 to test because the third-best headline usually loses to the winner by 40%, and nobody picks the winner in advance", "fields": [{"id": "ad", "label": "The ad these headlines sit on", "type": "textarea", "required": true, "placeholder": "Example: proof-led ad, the case study is a dental office that cut no-shows from 19% to 4%"}, {"id": "limit", "label": "Character limit", "type": "select", "required": true, "options": ["Meta headline, about 40 characters", "Google RSA, 30 characters", "Display, short and punchy", "No hard limit"]}], "task": ["Write 12 headlines: three outcome-led, three number-led, three question-led, and three objection-led.", "Keep every headline inside my character limit, counting characters honestly.", "Mark three picks: the safest, the boldest, and the one most likely to win with cold traffic.", "Flag any headline making a claim my proof can't back."], "rules": ["Numbers come from my context only. A made-up '87% of businesses' headline is a compliance problem, not a copy choice."], "output": "12 headlines grouped by frame with character counts shown, and the safe, bold, and predicted-winner picks marked"}, {"id": "cta-button-copy", "category": "creative", "title": "CTA and Button Copy", "description": "Matches the call-to-action strength to how ready the audience really is, from 'learn more' to 'buy now'.", "role": "a conversion copywriter who tunes CTAs by traffic temperature, because 'Book a call' shown to a stranger converts like a marriage proposal on a first date", "fields": [{"id": "destination", "label": "What happens after the click", "type": "text", "required": true, "placeholder": "Example: clicks go to a quiz that recommends a plan"}, {"id": "temperature", "label": "Who sees this", "type": "select", "required": true, "options": ["Cold, never heard of us", "Warm, visited before", "Hot, cart or pricing page visitors", "Existing customers"]}, {"id": "currentcta", "label": "Current CTA", "type": "text", "required": false, "placeholder": "Example: the button says 'Get Started'"}], "task": ["Diagnose whether my current CTA over-asks or under-asks for this temperature.", "Write five CTA options matched to the temperature, ordered from lowest to highest commitment.", "For each option, write the supporting line that sits beside the button and lowers the click's perceived risk.", "Pick the one to run and the one to test against it."], "rules": ["The CTA promises exactly what the next page delivers. 'Get your free plan' that leads to a sales call is a refund waiting to happen."], "output": "a CTA diagnosis, five options ranked by commitment with a risk-reducing line each, and a run-plus-test recommendation"}, {"id": "fatigue-reset", "category": "creative", "title": "Creative Fatigue Reset", "description": "Rebuilds a tired winning ad into fresh variants that keep the proven angle alive.", "role": "a creative strategist who refreshes winning ads before they die, because the angle usually has months of life left after the specific creative burns out", "fields": [{"id": "winner", "label": "The tired winner and its decline pattern", "type": "textarea", "required": true, "placeholder": "Example: our testimonial video ran 4 months, frequency hit 3.8, CPA doubled over 3 weeks"}, {"id": "assets", "label": "Raw material available for the refresh", "type": "text", "required": false, "placeholder": "Example: the raw interview footage plus 30 newer reviews"}], "task": ["Separate what's fatigued using my frequency and CPA pattern: the angle, the format, or just the specific execution.", "Generate four refresh variants that keep the proven angle: new opening, new format, new messenger, new proof.", "Rank the variants by production cost against expected lifespan.", "Set the rotation rule: the frequency and CPA thresholds that trigger the next refresh."], "rules": ["Don't propose abandoning the angle unless the evidence says the angle itself died. A doubled CPA at 3.8 frequency usually means the creative burned, not the message."], "output": "a fatigue diagnosis, four refresh variants ranked by cost and expected lifespan, and one written rotation trigger"}, {"id": "ad-copy-chief", "category": "creative", "title": "Ad Copy Chief", "description": "Marks up a pasted ad line by line and rewrites the weak parts without flattening the voice.", "role": "a copy chief who reviews ads before they spend, and who marks up drafts line by line because 'make it punchier' has never once helped a writer", "fields": [{"id": "material", "label": "Paste the full ad", "type": "textarea", "required": true, "placeholder": "Paste headline, primary text, and CTA. Example: headline 'Stop losing bookings' plus 90 words of body copy"}, {"id": "goal", "label": "Where it runs and what it sells", "type": "text", "required": false, "placeholder": "Example: cold Meta traffic to a $49/month tool"}], "task": ["Go through the draft line by line with a verdict per line: keep, cut, or rewrite, plus a one-line reason.", "Check the first line against the scroll test: would a stranger stop, and what exactly stops them.", "Verify every claim has support the landing page can deliver.", "Rewrite only the weak lines, in the draft's existing voice, then show the full revised ad."], "rules": ["Rewrite only the lines that failed. Wholesale rewrites erase what the draft got right and teach the writer nothing."], "output": "a line-by-line markup with verdicts and reasons, followed by the full revised ad with changes limited to flagged lines"}, {"id": "lp-wireframe", "category": "landing", "title": "Landing Page Wireframe", "description": "Lays out the page section by section, with each section assigned the objection it exists to clear.", "role": "a landing page architect who plans pages as an argument sequence, and who gets judged on conversion rate, not on how the page looks in a portfolio", "fields": [{"id": "adpromise", "label": "What the ad promises before the click", "type": "textarea", "required": true, "placeholder": "Example: the ad promises 'fill your empty Tuesday slots', the page sells a booking tool"}, {"id": "action", "label": "The one action the page asks for", "type": "text", "required": true, "placeholder": "Example: start a free trial, card required"}, {"id": "proof", "label": "Proof available for the page", "type": "textarea", "required": false, "placeholder": "Example: 3 testimonials plus one number: 31% fewer no-shows"}], "task": ["Sequence the sections top to bottom, and for each one name the visitor question or objection it answers.", "Write the above-the-fold block in full: a headline that continues the ad promise, a subhead, the CTA, and the proof element beside it.", "For every other section, give the heading plus a two-line content note.", "Mark where my proof slots in and where the proof gaps are."], "rules": ["Every section earns its place by clearing a named objection. A section that exists because competitors have one gets cut."], "output": "a top-to-bottom wireframe with a named objection per section, a fully written above-the-fold block, content notes, and flagged proof gaps"}, {"id": "message-match-audit", "category": "landing", "title": "Message Match Audit", "description": "Checks a pasted ad and landing page pair for the promise switches that make visitors bounce in five seconds.", "role": "a funnel auditor who reads the ad and the page back to back the way a first-time visitor experiences them, and who bills by the mismatch found", "fields": [{"id": "material", "label": "Paste the ad, then the page copy", "type": "textarea", "required": true, "placeholder": "Label each part. Example: AD: [full ad copy] then PAGE: [landing page copy top to bottom]"}], "task": ["Extract the promise, tone, and offer from the ad, then from the page, and lay them side by side.", "Flag every switch between the two: promise, price framing, audience, urgency, or vocabulary.", "Rate the overall match and name the single mismatch costing the most conversions.", "Rewrite the page's headline and subhead to close the biggest gap."], "rules": ["Judge only what a visitor sees in the ad and the first screen of the page. Deep-page fixes come after the handoff works."], "output": "a side-by-side extraction table, a flagged mismatch list with the costliest one named, and a rewritten headline and subhead"}, {"id": "friction-finder", "category": "landing", "title": "Conversion Friction Finder", "description": "Walks the page as a skeptical first-time visitor and logs everything that adds doubt or work before the click.", "role": "a CRO consultant who audits pages by simulating the impatient visitor, and whose findings come ranked by what testing would confirm first", "fields": [{"id": "page", "label": "The page, pasted or described in order", "type": "textarea", "required": true, "placeholder": "Example: hero with headline and autoplay video, then a features grid, then a pricing table with 3 tiers, then a 6-field form"}, {"id": "data", "label": "Any conversion numbers you have", "type": "text", "required": false, "placeholder": "Example: 3% of visitors start checkout, 60% of those finish"}], "task": ["Walk the page in visitor order and log every friction point: unclear next step, unanswered doubt, surprise cost, form burden, or a price revealed too late.", "Classify each point as doubt friction (trust) or effort friction (work).", "Rank the top five fixes by expected lift against implementation effort.", "Write the replacement copy or spec for the number one fix."], "rules": ["Friction includes what's missing, not just what's present. A pricing page with no refund answer is friction even though nothing looks wrong."], "output": "an ordered friction log with doubt or effort labels, a ranked top-five fix list, and the number one fix fully written"}, {"id": "lead-capture-upgrade", "category": "landing", "title": "Lead Capture Upgrade", "description": "Rebuilds the opt-in exchange so the visitor trades contact details for something worth having.", "role": "a lead-generation specialist who prices the opt-in like a transaction, because an email address costs the visitor real spam risk and they know it", "fields": [{"id": "current", "label": "The current opt-in and how it performs", "type": "textarea", "required": true, "placeholder": "Example: a 'Subscribe to our newsletter' box in the footer, converts under 0.5%"}, {"id": "assets", "label": "Assets you have or could build in a week", "type": "textarea", "required": false, "placeholder": "Example: a pricing calculator and a 12-point audit checklist nobody downloads"}], "task": ["Diagnose why the current exchange fails: weak asset, wrong placement, too many form fields, or value the visitor can't see.", "Propose three stronger exchanges using assets I have or can build in a week, each with its form fields kept to the minimum.", "Write the headline and button copy for the strongest one.", "Specify placement and trigger: where on the page it sits, and whether it deserves a scroll trigger or exit intent."], "rules": ["Every extra form field needs a stated reason worth the conversion drop it causes. Phone number fields need the best reason of all."], "output": "a failure diagnosis, three exchange proposals with field counts, full copy for the winner, and placement specs"}, {"id": "thank-you-page-plan", "category": "landing", "title": "Thank-You Page Plan", "description": "Turns the page after the conversion into the next sale, referral, or show-up instead of a dead end.", "role": "a lifecycle marketer who treats the thank-you page as the highest-attention moment in the funnel, since the visitor just said yes and is still leaning forward", "fields": [{"id": "conversion", "label": "What they just did", "type": "text", "required": true, "placeholder": "Example: booked a demo for later this week"}, {"id": "nextgoal", "label": "What matters most after this conversion", "type": "select", "required": true, "options": ["They show up to what they booked", "They buy a small add-on now", "They refer someone", "They consume content that pre-sells", "They complete onboarding"]}], "task": ["Write the confirmation block that settles buyer's remorse in the first two lines.", "Design the one next-step ask matched to my goal, with its copy and placement.", "Add the show-up or follow-through mechanics where relevant: calendar add, a what-to-expect line, reminder framing.", "List what to remove from the default template: social icons, nav links, and other exits that leak attention."], "rules": ["One ask per page. A thank-you page with three CTAs converts on none of them."], "output": "a complete thank-you page spec: confirmation copy, one next-step block with copy, follow-through mechanics, and a removal list"}, {"id": "landing-copy-chief", "category": "landing", "title": "Landing Copy Chief", "description": "Reviews a pasted landing page section by section and rewrites only the blocks that lose the visitor.", "role": "a copy chief for conversion pages who reads drafts once as a visitor and once as an editor, and who fixes pages by section because whole-page rewrites break what already works", "fields": [{"id": "material", "label": "Paste the full page copy in order", "type": "textarea", "required": true, "placeholder": "Top to bottom: headlines, body, button labels, and the FAQ if there is one"}, {"id": "traffic", "label": "Where visitors come from", "type": "select", "required": true, "options": ["Cold ads", "Warm retargeting", "Email list", "Search", "Mixed"]}], "task": ["Give each section a verdict: holds attention, loses attention, or creates doubt, with the reason.", "Check the headline against the traffic source: does it meet the visitor mid-thought or start from zero.", "Test every claim for support that exists somewhere on the page itself.", "Rewrite only the failing sections, in the page's existing voice, then show the revised page assembled."], "rules": ["Sections that work stay untouched, word for word. The review earns trust by what it leaves alone."], "output": "a section-by-section verdict list, then the assembled revised page with only the failing sections rewritten"}, {"id": "faq-proof-block", "category": "landing", "title": "FAQ and Proof Block", "description": "Builds the page's FAQ from real objections and places proof where doubt actually spikes.", "role": "a conversion copywriter who writes FAQs from sales calls and support tickets, not from what the company wishes people asked", "fields": [{"id": "objections", "label": "Real questions and doubts you've heard", "type": "textarea", "required": true, "placeholder": "Example: 'does it integrate with Square', 'what happens after the trial', 'can I cancel by email'"}, {"id": "proof", "label": "Proof elements available", "type": "textarea", "required": false, "placeholder": "Example: 214 reviews averaging 4.8, SOC 2 badge, 30-day refund policy"}], "task": ["Turn each objection into a question phrased the way the visitor would type it.", "Answer each in three sentences or fewer, direct answer first, nuance second.", "Assign my proof elements to the page locations where their doubt spikes: the guarantee near pricing, the security badge near the form.", "Order the FAQ by objection frequency, most common on top."], "rules": ["Answers state the uncomfortable parts plainly. An FAQ that dodges 'what does this cost' teaches visitors the whole page is spin."], "output": "an ordered FAQ with visitor-phrased questions and direct answers, plus a proof placement map for the page"}, {"id": "mobile-page-check", "category": "landing", "title": "Mobile Experience Check", "description": "Audits the page for the 80% of ad clicks arriving on a phone with one thumb and half their attention.", "role": "a mobile conversion specialist who audits pages on a phone screen first, because desktop-perfect pages routinely bury the button below four scrolls on mobile", "fields": [{"id": "page", "label": "The page, with anything heavy noted", "type": "textarea", "required": true, "placeholder": "Example: hero video autoplays, then a 7-field quote form, then testimonials in a carousel"}, {"id": "action", "label": "The main action", "type": "text", "required": false, "placeholder": "Example: a call-now button, we want phone calls"}], "task": ["Walk the page as a phone visitor: what shows in the first screen, how many scrolls reach the action, and what a thumb can mis-tap.", "Flag the mobile-specific failures: text over busy images, forms longer than the screen, tap targets too close together, load-heavy elements.", "Rank the mobile fixes by conversion impact.", "Write the first-screen spec: exactly what must be visible before any scrolling."], "rules": ["Judge by what renders in the first phone screen, roughly 650 pixels high. Everything below that point is optional viewing."], "output": "a scroll-by-scroll mobile walkthrough, flagged failures, ranked fixes, and a first-screen spec"}, {"id": "structured-test-plan", "category": "testing", "title": "Structured Test Plan", "description": "Schedules the next six weeks of tests so each one answers a question the last one raised.", "role": "a testing lead who runs one variable at a time and logs every result, because accounts that test randomly re-run the same failed experiments each quarter", "fields": [{"id": "history", "label": "What you've tested and what you haven't", "type": "textarea", "required": true, "placeholder": "Example: tested 3 audiences last month, the lookalike won, never tested creative or landing pages"}, {"id": "testbudget", "label": "Budget available for testing", "type": "text", "required": false, "placeholder": "Example: $1,200/month"}], "task": ["Rank what to test next by expected impact: offer, angle, audience, creative format, then landing page, unless my history argues for a different order.", "Design the next three tests in sequence, each with its single variable, control, minimum spend, and duration.", "State the decision rule per test: the number that declares a winner, and what happens on a tie.", "Set up a test log format so results accumulate instead of evaporating."], "rules": ["One variable per test. If my budget can't fund a clean test at my conversion volume, say which cheaper metric to read instead and what certainty that trades away."], "output": "a six-week test calendar with three sequenced test specs, decision rules, and a reusable test log template"}, {"id": "kpi-dashboard-spec", "category": "testing", "title": "Metric Dashboard Spec", "description": "Defines the five numbers worth checking weekly and the vanity metrics to stop reporting.", "role": "a marketing analyst who builds dashboards owners actually read, five numbers with targets, because 40-metric dashboards get opened once and never again", "fields": [{"id": "goal", "label": "The business result ads must produce", "type": "text", "required": true, "placeholder": "Example: leads for a $3k service, target $80 per booked call"}, {"id": "tools", "label": "Where your data lives", "type": "text", "required": false, "placeholder": "Example: Meta Ads Manager, GA4, and a HubSpot pipeline"}], "task": ["Pick the five metrics that connect spend to my goal, arranged in causal order from impression to revenue.", "Set a target and an alarm threshold for each, derived from my numbers where possible and flagged as estimates where not.", "Name the vanity metrics to drop from reports, with the one-sentence explanation for whoever asks where they went.", "Specify where each number comes from in my tools, and script the weekly 15-minute review."], "rules": ["Every metric needs a decision attached: what we do differently when the alarm trips. A number nobody acts on leaves the dashboard."], "output": "a five-metric dashboard spec with targets, alarm thresholds, data sources, a drop list, and a weekly review script"}, {"id": "scaling-readiness-call", "category": "testing", "title": "Scaling Readiness Call", "description": "Rules on whether this campaign earns more budget, or whether more spend just buys the same problems bigger.", "role": "a growth advisor who has watched founders triple budgets on two good weeks, and who requires a campaign to prove stability before it gets fed", "fields": [{"id": "numbers", "label": "Your results, week by week", "type": "textarea", "required": true, "placeholder": "Example: $4,200 spent over 6 weeks, 61 sales at $69 CPA against an $85 target, last 2 weeks trending better"}, {"id": "constraint", "label": "Operational ceiling", "type": "text", "required": false, "placeholder": "Example: fulfillment maxes out around 150 orders/month"}], "task": ["Test my numbers against the scaling gates: consistent CPA over three-plus weeks, volume above statistical noise, margin room, and operational capacity.", "Give the verdict: scale, hold, or fix first, naming the failing gate.", "If the verdict is scale, give the increment in 20 to 30% steps, the schedule between raises, and the retreat trigger.", "If the verdict is hold or fix, name exactly what must be true in 30 days to ask again."], "rules": ["Scaling multiplies what exists, including the problems. Any unstable number in my inputs blocks a scale verdict no matter how good last week looked."], "output": "a gate-by-gate assessment, a plain verdict, and either a step-up schedule with a retreat trigger or a 30-day re-qualification list"}, {"id": "account-diagnosis", "category": "testing", "title": "Account Performance Diagnosis", "description": "Finds where an underperforming account is broken by checking the layers in the order they usually fail.", "role": "a paid-media diagnostician brought into accounts after results slide, who checks tracking before touching creative because a third of 'ad problems' are measurement problems", "fields": [{"id": "symptoms", "label": "The symptoms, with numbers", "type": "textarea", "required": true, "placeholder": "Example: CPA went from $40 to $95 over 2 months, CTR held steady, site conversion rate halved"}, {"id": "changes", "label": "Everything that changed recently", "type": "textarea", "required": false, "placeholder": "Example: redesigned the landing page 9 weeks ago, raised prices 10%"}], "task": ["Order the suspects by my symptom pattern: tracking, landing page, offer, audience saturation, creative fatigue, or a platform shift.", "For each suspect, state the evidence in my numbers for and against it.", "Name the most likely failure and the 48-hour check that confirms or clears it.", "Give the fix sequence: what gets repaired first and what stays untouched until the data settles."], "rules": ["Steady CTR with falling conversion points below the click, and the diagnosis has to respect that. Follow my symptom pattern, not a generic checklist order."], "output": "a ranked suspect list with evidence per suspect, a primary diagnosis, one 48-hour confirmation check, and a fix sequence"}, {"id": "weekly-report-builder", "category": "testing", "title": "Weekly Report Builder", "description": "Turns raw campaign numbers into the report a client or boss reads in three minutes and trusts.", "role": "an agency account lead who writes weekly reports that keep clients through bad weeks, because hiding a bad number costs the account and naming it early costs nothing", "fields": [{"id": "numbers", "label": "This week's numbers and context", "type": "textarea", "required": true, "placeholder": "Example: spend $1,850, 24 leads at $77 each, last week was $61, one new creative launched Tuesday"}, {"id": "reader", "label": "Who reads this", "type": "select", "required": true, "options": ["A client who approves the budget", "My boss or leadership", "Just me and my team", "A client who's already nervous"]}], "task": ["Open with the one-line verdict: better, worse, or flat, and the number that says so.", "Report the week's key numbers against last week and against target, in a table.", "Explain any movement in plain cause and effect, separating what we know from what we suspect.", "Close with next week's actions and the single decision, if any, the reader needs to make."], "rules": ["Bad news goes in the first three lines with its cause and countermeasure. A report that buries the bad week reads as spin the moment the reader checks the dashboard."], "output": "a ready-to-send weekly report: verdict line, numbers table, cause commentary, next actions, and one decision request if needed"}, {"id": "kill-or-keep-rules", "category": "testing", "title": "Kill or Keep Rules", "description": "Writes the standing rules for when an ad gets cut, so the decision stops being a daily mood.", "role": "a media buyer who manages 60 live ads with written cut rules, because eyeballing dashboards every morning produces panic cuts and zombie ads in equal measure", "fields": [{"id": "economics", "label": "Your breakeven math", "type": "text", "required": true, "placeholder": "Example: $85 breakeven CPA, an ad needs about $150 spend before we judge it"}, {"id": "volume", "label": "Weekly conversion volume", "type": "text", "required": false, "placeholder": "Example: about 30 conversions/week across the account"}], "task": ["Set the minimum spend and conversion count an ad gets before any verdict, derived from my economics.", "Write the kill rule, the watch rule, and the scale rule as if-then statements with exact numbers.", "Define the zombie check: the rule that catches ads that never fail hard but never earn their slot.", "Specify the review cadence and what gets logged at each cut so the learning survives."], "rules": ["Rules must survive a bad Tuesday. If a rule would have killed the account's best performer during its warm-up week, loosen the early window and note it."], "output": "a one-page rulebook: judgment thresholds, kill, watch, and scale if-thens, a zombie check, and a review cadence with a cut log format"}, {"id": "cpa-target-math", "category": "testing", "title": "CPA Target Math", "description": "Works out the real maximum cost per sale from margin, repeat rate, and the fees nobody counts.", "role": "a unit-economics analyst who sets CPA targets from contribution margin, and who has seen 'profitable' campaigns lose money once refunds and processing fees enter the math", "fields": [{"id": "economics", "label": "Your numbers, as complete as you have them", "type": "textarea", "required": true, "placeholder": "Example: $120 sale price, product costs $38, 3% refunds, Stripe fees, about 30% reorder within 6 months"}], "task": ["Compute contribution margin per first sale after product cost, fees, refunds, and shipping, showing each line.", "Compute two breakeven CPAs, kept separate: first purchase only, and with realistic repeat revenue included.", "Recommend the working target CPA with a stated safety buffer and the reason for its size.", "State what each $10 of CPA above target costs per 100 sales, so overspend has a price tag."], "rules": ["Repeat-purchase value only enters the target if I gave real reorder data. Hoped-for lifetime value isn't a number."], "output": "a line-by-line margin calculation, both breakeven CPAs, a working target with buffer, and the overspend price tag"}, {"id": "creative-brief-doctor", "category": "testing", "title": "Creative Brief Doctor", "description": "Reviews a pasted creative or campaign brief and fixes the gaps that would surface as bad ads in two weeks.", "role": "a creative operations lead who reviews briefs before they reach designers and writers, because every vague brief line comes back as three rounds of revisions", "fields": [{"id": "material", "label": "Paste the full brief", "type": "textarea", "required": true, "placeholder": "The brief you're about to send to a designer, editor, writer, or creator"}], "task": ["Check the brief against what its recipient needs to execute without a call: the one job, the audience, the message, mandatories, format specs, examples, and deadline.", "Mark each brief section as clear, vague, or missing, quoting the vague lines.", "Rewrite every vague or missing section in concrete language, flagging where only I can supply the fact.", "Flag anything that contradicts itself or asks for two concepts in one deliverable."], "rules": ["Vague verdicts require the quoted line as evidence. 'Make it pop' gets quoted, not paraphrased."], "output": "a section-by-section verdict table with quoted evidence, the rewritten brief in full, and a short list of facts only I can fill in"}], "advisors": [{"id": "account-examiner", "title": "The Account Examiner", "description": "A diagnostic advisor for ad accounts where spend went up and results went sideways.", "role": "a paid-media auditor who has opened hundreds of struggling ad accounts and reads the numbers before forming any opinion about the creative", "focus": "finding why a live account underperforms and sequencing the repairs", "questions": ["monthly spend, current CPA, and the CPA that would make this account healthy", "what changed in the 60 days before results slid: pages, prices, audiences, or platform updates", "where the funnel loses people: ad click-through, page conversion, or after the lead comes in"], "deliverable": "a ranked diagnosis of the likely failure points, the checks that confirm each one, and the repair order for the next two weeks"}, {"id": "first-campaign-guide", "title": "The First Campaign Guide", "description": "A patient advisor for a first real ad campaign, built to prevent the classic $3,000 tuition payment.", "role": "a media buyer who sets up first campaigns for small businesses and measures success by whether the owner still trusts paid ads 90 days later", "focus": "planning and launching a first paid campaign without the usual first-timer losses", "questions": ["what you sell, the price, and roughly what a customer is worth over a year", "the budget you can spend monthly without stress while you learn", "what already exists: pixel, email list, landing page, creative, or none of it"], "deliverable": "a first-campaign plan with one platform, one audience, one offer, the tracking to install before anything spends, and the numbers that mean stop or continue"}, {"id": "creative-sparring-partner", "title": "The Creative Sparring Partner", "description": "An ongoing advisor for angles and hooks when the account needs fresh creative every other week.", "role": "a creative strategist who feeds high-spend accounts a steady bench of angles and judges every idea by projected thumbstop and CPA, not by cleverness", "focus": "generating and pressure-testing ad angles, hooks, and concepts before they cost production money", "questions": ["which ads won for you before and what angle each one worked", "your proof inventory: reviews, numbers, case studies, screenshots", "how fast creative fatigues in your account at current spend: days or weeks"], "deliverable": "ranked angle and hook candidates for your situation, each with the reason it should work and the cheapest way to test it"}, {"id": "scaling-referee", "title": "The Scaling Referee", "description": "A calm third party for the moment a campaign works and every instinct says pour money on it.", "role": "a growth advisor who referees scaling decisions with gates and increments, having watched winning campaigns die from budget doublings more often than from competition", "focus": "deciding when, how fast, and how far to raise budgets on a working campaign", "questions": ["your CPA week by week for the last month, not the average", "your margin room: the CPA where scaling stops being worth it", "operational limits: fulfillment, sales calls, onboarding, whatever caps volume"], "deliverable": "a scaling verdict with step sizes, the schedule between raises, the retreat trigger, and the operational ceiling to respect"}, {"id": "tracking-skeptic", "title": "The Tracking Skeptic", "description": "An advisor who assumes the numbers are lying until the setup proves otherwise.", "role": "a measurement specialist who reconciles platform-reported conversions against actual bank deposits, and who has ended many creative debates by finding a double-firing pixel", "focus": "making the account's numbers trustworthy enough to base decisions on", "questions": ["which numbers you rely on and where each comes from: platform, analytics, CRM, or the bank account", "whether platform-reported sales roughly match real sales over the same period", "what tracking exists today: pixel events, conversion API, UTMs, call tracking"], "deliverable": "a trust rating for each number you use, the biggest measurement gap, and a fix list ordered by how much each distortion costs your decisions"}, {"id": "agency-translator", "title": "The Agency Translator", "description": "An advisor for owners who pay an agency or freelancer and can't tell whether the reports mean anything.", "role": "a former agency media director who now sits on the client's side of the table, and who knows which report lines hide problems because he used to write them", "focus": "evaluating the work, reports, and results of a hired media buyer or agency", "questions": ["what you pay, what was promised, and what the last report claimed", "which metrics they report on and which ones never get mentioned", "your real numbers: spend, leads or sales, and revenue from paid traffic"], "deliverable": "a plain reading of what your agency's results actually say, the questions to ask at the next call, and the standards a replacement should be held to"}]};
+
+    const toolConfig = {
+      storageKey: "prompt-suite-theme",
+      profileKey: STUDIO.slug + "-profile",
+      manualKey: STUDIO.slug + "-manual",
+      chatGptUrl: "https://chatgpt.com/"
+    };
+    const html = document.documentElement;
+
+    /* ---------- Shared helpers ---------- */
+    function clean(value) { return String(value || "").trim(); }
+    function escapeHtml(value) {
+      return String(value || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+    async function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        return;
+      }
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.left = "-9999px";
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      textarea.remove();
+    }
+    function feedback(button, message) {
+      const original = button.dataset.originalText || button.textContent;
+      button.dataset.originalText = original;
+      button.textContent = message;
+      setTimeout(() => button.textContent = original, 1200);
+    }
+    async function copyAndOpen(button, text) {
+      try {
+        await copyText(text);
+        feedback(button, "Copied");
+        window.open(toolConfig.chatGptUrl, "_blank", "noopener,noreferrer");
+      } catch (error) {
+        feedback(button, "Copy failed");
+      }
+    }
+
+    /* ---------- Field rendering (shared by profile + workflows) ---------- */
+    function fieldHtml(field, prefix) {
+      const id = prefix + "-" + field.id;
+      const req = field.required ? ' <span class="req">*</span>' : "";
+      const helper = field.helper ? `<p class="helper">${escapeHtml(field.helper)}</p>` : "";
+      let control = "";
+      if (field.type === "textarea") {
+        control = `<textarea id="${id}" data-field="${escapeHtml(field.id)}" ${field.required ? 'aria-required="true"' : ""} placeholder="${escapeHtml(field.placeholder || "")}"></textarea>`;
+      } else if (field.type === "select") {
+        const opts = ['<option value="">Choose one</option>']
+          .concat((field.options || []).map(o => `<option value="${escapeHtml(o)}">${escapeHtml(o)}</option>`)).join("");
+        control = `<select id="${id}" data-field="${escapeHtml(field.id)}" ${field.required ? 'aria-required="true"' : ""}>${opts}</select>`;
+      } else {
+        control = `<input type="text" id="${id}" data-field="${escapeHtml(field.id)}" ${field.required ? 'aria-required="true"' : ""} placeholder="${escapeHtml(field.placeholder || "")}" />`;
+      }
+      return `<div class="field"><label for="${id}">${escapeHtml(field.label)}${req}</label>${control}${helper}</div>`;
+    }
+    function readFields(container) {
+      const values = {};
+      container.querySelectorAll("[data-field]").forEach(el => { values[el.dataset.field] = clean(el.value); });
+      return values;
+    }
+
+    /* ---------- Business profile ---------- */
+    const profileForm = document.getElementById("profileForm");
+    profileForm.innerHTML = STUDIO.profile.map(f => fieldHtml(f, "profile")).join("");
+    function loadProfile() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(toolConfig.profileKey) || "{}");
+        profileForm.querySelectorAll("[data-field]").forEach(el => {
+          if (saved[el.dataset.field]) el.value = saved[el.dataset.field];
+        });
+      } catch (error) { /* corrupted storage: start clean */ }
+    }
+    function saveProfile() {
+      localStorage.setItem(toolConfig.profileKey, JSON.stringify(readFields(profileForm)));
+    }
+    loadProfile();
+    profileForm.addEventListener("input", () => { saveProfile(); markStaleIfGenerated(); });
+    profileForm.addEventListener("change", () => { saveProfile(); markStaleIfGenerated(); });
+
+    /* ---------- Prompt assembly (the back end) ---------- */
+    const SHARED_RULES = [
+      "Work from my context above. Don't invent numbers, results, or customer quotes I didn't give you.",
+      "Plain language. No hype words, no filler sentences, no advice so generic it would fit any business."
+    ];
+    function contextLines(workflowValues, workflowFields) {
+      const lines = [];
+      STUDIO.profile.forEach(f => {
+        const v = clean(profileValues()[f.id]);
+        if (v) lines.push(`- ${f.label}: ${v}`);
+      });
+      (workflowFields || []).forEach(f => {
+        if (f.id === "material") return;
+        const v = clean(workflowValues[f.id]);
+        if (v) lines.push(`- ${f.label}: ${v}`);
+      });
+      return lines;
+    }
+    function profileValues() { return readFields(profileForm); }
+    function buildWorkflowPrompt(wf, values) {
+      const parts = [];
+      parts.push(`You are ${wf.role}.`);
+      parts.push("");
+      parts.push("MY CONTEXT");
+      parts.push(contextLines(values, wf.fields).join("\n"));
+      const material = clean(values.material);
+      if (material) {
+        parts.push("");
+        parts.push("WORK WITH THIS MATERIAL");
+        parts.push("---");
+        parts.push(material);
+        parts.push("---");
+      }
+      parts.push("");
+      parts.push("YOUR TASK");
+      wf.task.forEach((step, i) => parts.push(`${i + 1}. ${step}`));
+      parts.push("");
+      parts.push("RULES");
+      (wf.rules || []).concat(SHARED_RULES).forEach(r => parts.push(`- ${r}`));
+      parts.push("");
+      parts.push("OUTPUT");
+      parts.push(`Give me ${wf.output}.`);
+      parts.push("");
+      parts.push("Before you start: if any part of my context is too thin to do this well, ask me up to 3 specific questions first, then produce the deliverable.");
+      return parts.join("\n");
+    }
+    function buildAdvisorPrompt(adv) {
+      const parts = [];
+      parts.push(`You are ${adv.role}. Act as my ongoing advisor for ${adv.focus}.`);
+      parts.push("");
+      parts.push("MY CONTEXT");
+      const lines = contextLines({}, []);
+      parts.push(lines.length ? lines.join("\n") : "- I'll give you context as we talk.");
+      parts.push("");
+      parts.push("HOW THIS SESSION WORKS");
+      parts.push("Interview me before you advise. Ask one question at a time and wait for my answer. Start with what you most need to know, including:");
+      adv.questions.forEach(q => parts.push(`- ${q}`));
+      parts.push("");
+      parts.push(`After you have enough to work with (usually 4 to 6 answers), give me ${adv.deliverable}. Then stay in this role: I'll bring you follow-up situations and you keep advising with the same standards.`);
+      parts.push("");
+      parts.push("RULES");
+      parts.push("- One question per message while interviewing.");
+      parts.push("- Don't invent numbers or facts I didn't give you. If you assume something, say so in one line.");
+      parts.push("- Plain language. No hype, no filler, no generic advice.");
+      return parts.join("\n");
+    }
+
+    /* ---------- Tabs ---------- */
+    function revealContent(element) {
+      element.classList.remove("content-enter");
+      void element.offsetWidth;
+      element.classList.add("content-enter");
+    }
+    const tabs = document.querySelectorAll(".tab");
+    tabs.forEach(tab => tab.addEventListener("click", () => {
+      tabs.forEach(t => { t.classList.toggle("active", t === tab); t.setAttribute("aria-selected", String(t === tab)); });
+      ["workflows", "advisors", "manual"].forEach(name => {
+        document.getElementById("tab-" + name).hidden = tab.dataset.tab !== name;
+      });
+      revealContent(document.getElementById("tab-" + tab.dataset.tab));
+    }));
+
+    /* ---------- Workflow browse ---------- */
+    const catRow = document.getElementById("catRow");
+    const catNote = document.getElementById("catNote");
+    const wfGrid = document.getElementById("wfGrid");
+    const browse = document.getElementById("workflowBrowse");
+    const detail = document.getElementById("workflowDetail");
+    const wfSearch = document.getElementById("wfSearch");
+    let currentCat = STUDIO.categories[0].id;
+    let currentWf = null;
+    let generated = false;
+    let searchTerm = "";
+
+    function renderCats() {
+      catRow.innerHTML = STUDIO.categories.map(c =>
+        `<button type="button" class="cat-chip${!searchTerm && c.id === currentCat ? " active" : ""}" data-cat="${escapeHtml(c.id)}">${escapeHtml(c.title)}</button>`
+      ).join("");
+      const cat = STUDIO.categories.find(c => c.id === currentCat);
+      catNote.textContent = searchTerm ? `Showing matches across all ${STUDIO.categories.length} categories.` : (cat && cat.note ? cat.note : "");
+      catRow.querySelectorAll("[data-cat]").forEach(chip => chip.addEventListener("click", () => {
+        currentCat = chip.dataset.cat;
+        searchTerm = "";
+        wfSearch.value = "";
+        renderCats();
+        renderGrid();
+      }));
+    }
+    function renderGrid() {
+      const matches = STUDIO.workflows.filter(w => searchTerm
+        ? (w.title + " " + w.description).toLowerCase().includes(searchTerm)
+        : w.category === currentCat);
+      if (!matches.length) {
+        wfGrid.innerHTML = `<div class="no-results"><div><strong>No workflow matches that search.</strong><br />Try the artifact you need, such as audit, plan, email, or offer.</div></div>`;
+        return;
+      }
+      wfGrid.innerHTML = matches.map(w =>
+        `<button type="button" class="wf-card" data-wf="${escapeHtml(w.id)}">
+          <b>${escapeHtml(w.title)}</b>
+          <span>${escapeHtml(w.description)}</span>
+          <span class="go">Open &rarr;</span>
+        </button>`
+      ).join("");
+      wfGrid.querySelectorAll("[data-wf]").forEach(card => card.addEventListener("click", () => openWorkflow(card.dataset.wf)));
+    }
+    wfSearch.addEventListener("input", () => {
+      searchTerm = clean(wfSearch.value).toLowerCase();
+      renderCats();
+      renderGrid();
+    });
+    renderCats();
+    renderGrid();
+
+    /* ---------- Workflow detail ---------- */
+    const wfFields = document.getElementById("wfFields");
+    const wfForm = document.getElementById("wfForm");
+    const wfValidation = document.getElementById("wfValidation");
+    const wfResultWrap = document.getElementById("wfResultWrap");
+    const wfPromptEl = document.getElementById("wfPrompt");
+    const staleNote = document.getElementById("staleNote");
+
+    function openWorkflow(id) {
+      currentWf = STUDIO.workflows.find(w => w.id === id);
+      generated = false;
+      const category = STUDIO.categories.find(c => c.id === currentWf.category);
+      document.getElementById("wfMeta").textContent = category ? category.title : "Workflow";
+      document.getElementById("wfTitle").textContent = currentWf.title;
+      document.getElementById("wfDescription").textContent = currentWf.description;
+      wfFields.innerHTML = currentWf.fields.map(f => fieldHtml(f, "wf")).join("");
+      wfFields.style.display = "grid";
+      wfFields.style.gap = "15px";
+      wfValidation.classList.remove("show");
+      wfResultWrap.hidden = true;
+      staleNote.classList.remove("show");
+      browse.hidden = true;
+      detail.hidden = false;
+      revealContent(detail);
+      detail.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    document.getElementById("backToGrid").addEventListener("click", () => {
+      detail.hidden = true;
+      browse.hidden = false;
+      revealContent(browse);
+      generated = false;
+    });
+
+    function markStaleIfGenerated() {
+      if (generated) {
+        staleNote.classList.add("show");
+        wfPromptEl.style.opacity = "0.55";
+      }
+    }
+    wfForm.addEventListener("input", markStaleIfGenerated);
+    wfForm.addEventListener("change", markStaleIfGenerated);
+
+    wfForm.addEventListener("submit", event => {
+      event.preventDefault();
+      if (!currentWf) return;
+      const missing = [];
+      STUDIO.profile.filter(f => f.required).forEach(f => {
+        if (!clean(profileValues()[f.id])) missing.push(f.label);
+      });
+      const values = readFields(wfFields);
+      currentWf.fields.filter(f => f.required).forEach(f => {
+        if (!clean(values[f.id])) missing.push(f.label);
+      });
+      if (missing.length) {
+        wfValidation.textContent = "Still needed: " + missing.join(", ") + ".";
+        wfValidation.classList.add("show");
+        const firstMissingProfile = STUDIO.profile.find(f => f.required && !clean(profileValues()[f.id]));
+        const firstMissingWorkflow = currentWf.fields.find(f => f.required && !clean(values[f.id]));
+        const target = firstMissingProfile ? document.getElementById("profile-" + firstMissingProfile.id) : (firstMissingWorkflow ? document.getElementById("wf-" + firstMissingWorkflow.id) : null);
+        if (target) target.focus();
+        return;
+      }
+      wfValidation.classList.remove("show");
+      wfPromptEl.textContent = buildWorkflowPrompt(currentWf, values);
+      wfPromptEl.style.opacity = "";
+      wfResultWrap.hidden = false;
+      revealContent(wfResultWrap);
+      staleNote.classList.remove("show");
+      generated = true;
+      wfResultWrap.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+
+    document.getElementById("copyPrompt").addEventListener("click", async event => {
+      try { await copyText(wfPromptEl.textContent); feedback(event.target, "Copied"); }
+      catch (error) { feedback(event.target, "Copy failed"); }
+    });
+    document.getElementById("copyOpen").addEventListener("click", event => copyAndOpen(event.target, wfPromptEl.textContent));
+    document.getElementById("addToManual").addEventListener("click", event => {
+      addManualEntry(currentWf.title, "Workflow", wfPromptEl.textContent);
+      feedback(event.target, "Saved to manual");
+    });
+
+    /* ---------- Advisors ---------- */
+    const advGrid = document.getElementById("advGrid");
+    const advResultWrap = document.getElementById("advResultWrap");
+    const advPromptEl = document.getElementById("advPrompt");
+    let currentAdv = null;
+    advGrid.innerHTML = STUDIO.advisors.map(a =>
+      `<div class="adv-card">
+        <b>${escapeHtml(a.title)}</b>
+        <p>${escapeHtml(a.description)}</p>
+        <button class="mini primary-mini" type="button" data-adv="${escapeHtml(a.id)}">Start this session</button>
+      </div>`
+    ).join("");
+    advGrid.querySelectorAll("[data-adv]").forEach(btn => btn.addEventListener("click", () => {
+      currentAdv = STUDIO.advisors.find(a => a.id === btn.dataset.adv);
+      document.getElementById("advResultTitle").textContent = currentAdv.title;
+      advPromptEl.textContent = buildAdvisorPrompt(currentAdv);
+      advResultWrap.hidden = false;
+      revealContent(advResultWrap);
+      advResultWrap.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }));
+    document.getElementById("advCopy").addEventListener("click", async event => {
+      try { await copyText(advPromptEl.textContent); feedback(event.target, "Copied"); }
+      catch (error) { feedback(event.target, "Copy failed"); }
+    });
+    document.getElementById("advCopyOpen").addEventListener("click", event => copyAndOpen(event.target, advPromptEl.textContent));
+    document.getElementById("advAddToManual").addEventListener("click", event => {
+      addManualEntry(currentAdv.title, "Advisor", advPromptEl.textContent);
+      feedback(event.target, "Saved to manual");
+    });
+
+    /* ---------- Prompt manual ---------- */
+    const manualList = document.getElementById("manualList");
+    const manualEmpty = document.getElementById("manualEmpty");
+    const manualCount = document.getElementById("manualCount");
+    const manualTitle = document.getElementById("manualTitle");
+    let manual = [];
+    try { manual = JSON.parse(localStorage.getItem(toolConfig.manualKey) || "[]"); } catch (error) { manual = []; }
+    const savedManualTitle = localStorage.getItem(toolConfig.manualKey + "-title");
+    if (savedManualTitle) manualTitle.value = savedManualTitle;
+    manualTitle.addEventListener("input", () => localStorage.setItem(toolConfig.manualKey + "-title", manualTitle.value));
+
+    function saveManual() { localStorage.setItem(toolConfig.manualKey, JSON.stringify(manual)); }
+    function addManualEntry(title, source, text) {
+      manual.push({ id: "m" + (manual.length + 1) + "-" + text.length, title, source, text });
+      saveManual();
+      renderManual();
+    }
+    function renderManual() {
+      manualCount.textContent = manual.length ? "(" + manual.length + ")" : "";
+      manualEmpty.style.display = manual.length ? "none" : "grid";
+      manualList.innerHTML = manual.map((entry, i) =>
+        `<div class="manual-item">
+          <div class="manual-item-head">
+            <b>${i + 1}. ${escapeHtml(entry.title)}</b>
+            <span>${escapeHtml(entry.source)}</span>
+          </div>
+          <pre>${escapeHtml(entry.text)}</pre>
+          <div class="result-actions">
+            <button class="mini" type="button" data-up="${i}">Move up</button>
+            <button class="mini" type="button" data-down="${i}">Move down</button>
+            <button class="mini" type="button" data-copy="${i}">Copy</button>
+            <button class="mini" type="button" data-remove="${i}">Remove</button>
+          </div>
+        </div>`
+      ).join("");
+      manualList.querySelectorAll("[data-up]").forEach(b => b.addEventListener("click", () => {
+        const i = Number(b.dataset.up);
+        if (i > 0) { [manual[i - 1], manual[i]] = [manual[i], manual[i - 1]]; saveManual(); renderManual(); }
+      }));
+      manualList.querySelectorAll("[data-down]").forEach(b => b.addEventListener("click", () => {
+        const i = Number(b.dataset.down);
+        if (i < manual.length - 1) { [manual[i + 1], manual[i]] = [manual[i], manual[i + 1]]; saveManual(); renderManual(); }
+      }));
+      manualList.querySelectorAll("[data-copy]").forEach(b => b.addEventListener("click", async () => {
+        try { await copyText(manual[Number(b.dataset.copy)].text); feedback(b, "Copied"); }
+        catch (error) { feedback(b, "Copy failed"); }
+      }));
+      manualList.querySelectorAll("[data-remove]").forEach(b => b.addEventListener("click", () => {
+        manual.splice(Number(b.dataset.remove), 1);
+        saveManual();
+        renderManual();
+      }));
+    }
+    renderManual();
+
+    function manualDocTitle() { return clean(manualTitle.value) || STUDIO.title + " Prompt Manual"; }
+    function buildPrintArea() {
+      const printArea = document.getElementById("printArea");
+      const cover = document.createElement("div");
+      cover.className = "print-cover";
+      const h1 = document.createElement("h1");
+      h1.textContent = manualDocTitle();
+      const p = document.createElement("p");
+      p.textContent = manual.length + " prompts, built with " + STUDIO.title;
+      cover.append(h1, p);
+      printArea.replaceChildren(cover);
+      manual.forEach((entry, i) => {
+        const block = document.createElement("div");
+        block.className = "print-prompt";
+        const h2 = document.createElement("h2");
+        h2.textContent = (i + 1) + ". " + entry.title;
+        const src = document.createElement("p");
+        src.className = "print-source";
+        src.textContent = entry.source;
+        const pre = document.createElement("pre");
+        pre.textContent = entry.text;
+        block.append(h2, src, pre);
+        printArea.append(block);
+      });
+    }
+    document.getElementById("printManual").addEventListener("click", event => {
+      if (!manual.length) { feedback(event.target, "Manual is empty"); return; }
+      buildPrintArea();
+      window.print();
+    });
+    document.getElementById("downloadManual").addEventListener("click", event => {
+      if (!manual.length) { feedback(event.target, "Manual is empty"); return; }
+      const body = manual.map((entry, i) =>
+        `<section><h2>${escapeHtml((i + 1) + ". " + entry.title)}</h2><p class="src">${escapeHtml(entry.source)}</p><pre>${escapeHtml(entry.text)}</pre></section>`
+      ).join("\n");
+      const doc = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>${escapeHtml(manualDocTitle())}</title>
+<style>body{font-family:Georgia,serif;max-width:760px;margin:40px auto;padding:0 20px;color:#111;}h1{letter-spacing:-0.02em;}.src{color:#666;font-size:0.9rem;}pre{white-space:pre-wrap;word-break:break-word;font-family:"Courier New",monospace;font-size:0.85rem;line-height:1.5;border:1px solid #ccc;border-radius:8px;padding:14px;}section{margin:34px 0;}</style>
+</head><body><h1>${escapeHtml(manualDocTitle())}</h1><p class="src">${manual.length} prompts, built with ${escapeHtml(STUDIO.title)}</p>\n${body}\n</body></html>`;
+      const blob = new Blob([doc], { type: "text/html" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = STUDIO.slug + "-prompt-manual.html";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      feedback(event.target, "Downloaded");
+    });
+    document.getElementById("clearManual").addEventListener("click", event => {
+      if (!manual.length) { feedback(event.target, "Manual is empty"); return; }
+      manual = [];
+      saveManual();
+      renderManual();
+      feedback(event.target, "Cleared");
+    });
+
+    /* ---------- Theme ---------- */
+    function syncThemeButtons(theme) {
+      document.querySelectorAll("[data-theme-choice]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.themeChoice === theme)));
+    }
+    function setTheme(theme, persist = true) {
+      if (theme !== "light" && theme !== "dark") return;
+      html.setAttribute("data-theme", theme);
+      if (persist) localStorage.setItem(toolConfig.storageKey, theme);
+      syncThemeButtons(theme);
+    }
+    document.querySelectorAll("[data-theme-choice]").forEach(button => {
+      button.addEventListener("click", () => setTheme(button.dataset.themeChoice));
+    });
+    window.addEventListener("storage", event => {
+      if (event.key === toolConfig.storageKey) setTheme(event.newValue, false);
+    });
+    const savedTheme = localStorage.getItem(toolConfig.storageKey) || localStorage.getItem(STUDIO.slug + "-theme");
+    const initialTheme = savedTheme === "light" || savedTheme === "dark" ? savedTheme : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    setTheme(initialTheme);
+  </script>
+</body>
+</html>

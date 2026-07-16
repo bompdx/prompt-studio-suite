@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<!--
+  PROMPT STUDIO ENGINE
+  Built from the micro-app-builder scaffold. One file, no backend,
+  no third-party JavaScript. Data bank injected by build_studio.py
+  at the __STUDIO_DATA__ marker.
+-->
+<html lang="en" data-theme="auto">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1f7a5a" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='16'%20fill='%231f7a5a'/%3E%3Cpath%20d='M18%2021h28M18%2032h28M18%2043h18'%20stroke='white'%20stroke-width='6'%20stroke-linecap='round'/%3E%3C/svg%3E" />
+  <title>Launch Campaign Prompt Studio</title>
+  <script>try { const theme = localStorage.getItem("prompt-suite-theme"); if (theme === "light" || theme === "dark") document.documentElement.dataset.theme = theme; } catch (error) {}</script>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #16201c;
+      --muted: #607068;
+      --paper: #f2f0e9;
+      --panel: rgba(255, 254, 249, 0.94);
+      --card: #fffefa;
+      --card-strong: #ffffff;
+      --accent: #c2452f;
+      --accent-2: #d6a11f;
+      --accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
+      --line: rgba(22, 32, 28, 0.14);
+      --line-strong: rgba(22, 32, 28, 0.25);
+      --shadow: 0 24px 70px rgba(20, 31, 26, 0.10);
+      --shadow-small: 0 8px 24px rgba(20, 31, 26, 0.08);
+      --radius: 20px;
+      --max: 1240px;
+    }
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --ink: #f5f1e8;
+      --muted: #b8c4bd;
+      --paper: #0d1310;
+      --panel: rgba(19, 27, 23, 0.94);
+      --card: #17201b;
+      --card-strong: #1b2620;
+      --line: rgba(245, 241, 232, 0.13);
+      --line-strong: rgba(245, 241, 232, 0.24);
+      --shadow: 0 26px 80px rgba(0, 0, 0, 0.38);
+      --shadow-small: 0 8px 28px rgba(0, 0, 0, 0.28);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Avenir Next, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 2%, color-mix(in srgb, var(--accent) 17%, transparent), transparent 26rem),
+        radial-gradient(circle at 92% 18%, color-mix(in srgb, var(--accent-2) 15%, transparent), transparent 24rem),
+        var(--paper);
+      line-height: 1.5;
+    }
+    body::before {
+      content: ""; position: fixed; inset: 0; pointer-events: none; opacity: 0.28;
+      background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+      background-size: 64px 64px; mask-image: linear-gradient(to bottom, black, transparent 72%); z-index: -1;
+    }
+    body::after {
+      content: ""; position: fixed; width: 34rem; height: 34rem; right: -17rem; top: 20%; pointer-events: none; z-index: -1;
+      border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--accent) 14%, transparent), transparent 68%);
+      animation: ambient-drift 14s cubic-bezier(.4,0,.2,1) 2 alternate both;
+    }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; border: 0; touch-action: manipulation; }
+    button, input, select, textarea { transition: border-color 180ms ease, background 180ms ease, color 180ms ease, box-shadow 180ms ease, transform 180ms ease; }
+    :focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 55%, white); outline-offset: 3px; }
+    .skip-link { position: fixed; left: 16px; top: -80px; z-index: 1000; padding: 10px 14px; border-radius: 10px; background: var(--ink); color: var(--paper); font-weight: 800; }
+    .skip-link:focus { top: 16px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .shell { width: min(100% - 40px, var(--max)); margin: 0 auto; padding: 18px 0 40px; }
+    .topbar { position: sticky; top: 10px; z-index: 40; display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 18px; padding: 8px; border: 1px solid var(--line); border-radius: 18px; background: color-mix(in srgb, var(--panel) 88%, transparent); box-shadow: var(--shadow-small); backdrop-filter: blur(18px); }
+    .brand { display: inline-flex; align-items: center; gap: 11px; padding: 4px 8px 4px 5px; color: var(--ink); }
+    .brand-mark { position: relative; width: 34px; height: 34px; border-radius: 10px; background: var(--accent); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.2); }
+    .brand-mark::before, .brand-mark::after { content: ""; position: absolute; left: 8px; right: 8px; height: 3px; border-radius: 99px; background: white; }
+    .brand-mark::before { top: 10px; box-shadow: 0 6px 0 rgba(255,255,255,0.72); }
+    .brand-mark::after { top: 22px; right: 14px; }
+    .brand-copy { display: grid; line-height: 1.05; }
+    .brand-copy b { font-size: 0.9rem; letter-spacing: -0.01em; }
+    .brand-copy span { margin-top: 4px; color: var(--muted); font: 700 0.68rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; text-transform: uppercase; letter-spacing: 0.09em; }
+    .theme-toggle { display: inline-flex; gap: 4px; padding: 4px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+    .theme-toggle button { min-width: 54px; min-height: 36px; padding: 7px 10px; border-radius: 9px; color: var(--muted); background: transparent; font-weight: 800; font-size: 0.82rem; }
+    html[data-theme="light"] [data-theme-choice="light"], html[data-theme="dark"] [data-theme-choice="dark"] { background: var(--ink); color: var(--paper); }
+    .hero {
+      display: block;
+      align-items: stretch;
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      padding: clamp(26px, 5vw, 64px);
+      overflow: hidden;
+      position: relative;
+    }
+    .hero::after { content: ""; position: absolute; width: 260px; height: 260px; right: -120px; bottom: -150px; border-radius: 50%; border: 42px solid color-mix(in srgb, var(--accent-2) 22%, transparent); animation: ring-drift 16s ease-in-out 2 alternate both; }
+    .hero-copy { align-self: center; position: relative; z-index: 1; }
+    .kicker { margin: 0 0 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.12em; font: 900 0.72rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace; }
+    h1 { margin: 0; max-width: 780px; font-size: clamp(2.5rem, 6vw, 5.2rem); line-height: 0.92; letter-spacing: -0.06em; text-wrap: balance; }
+    .subtitle { max-width: 700px; margin: 21px 0 0; color: var(--muted); font-size: clamp(1.02rem, 2vw, 1.2rem); font-weight: 620; line-height: 1.65; }
+    .layout { display: grid; grid-template-columns: minmax(290px, 0.72fr) minmax(0, 1.45fr); gap: 20px; align-items: start; margin-top: 20px; }
+    .panel { border: 1px solid var(--line); border-radius: 24px; background: var(--panel); box-shadow: var(--shadow-small); padding: clamp(20px, 3vw, 30px); }
+    .form-panel { position: sticky; top: 84px; }
+    .section-title { margin: 0; font-size: clamp(1.35rem, 3vw, 1.8rem); line-height: 1.05; letter-spacing: -0.035em; }
+    .section-note { margin: 9px 0 20px; color: var(--muted); font-weight: 620; }
+    form { display: grid; gap: 15px; }
+    .field { display: grid; gap: 7px; }
+    label { font-weight: 850; font-size: 0.91rem; }
+    .req { color: var(--accent); }
+    .helper { margin: 0; color: var(--muted); font-size: 0.82rem; }
+    input, select, textarea { width: 100%; min-height: 48px; padding: 12px 13px; border: 1px solid var(--line-strong); border-radius: 12px; background: var(--card); color: var(--ink); }
+    input:hover, select:hover, textarea:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+    input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); outline: none; }
+    textarea { min-height: 104px; resize: vertical; }
+    .button-row, .result-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .primary, .secondary, .mini { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 15px; border-radius: 11px; font-weight: 900; }
+    .primary { background: var(--accent); color: white; box-shadow: 0 7px 18px color-mix(in srgb, var(--accent) 26%, transparent); }
+    .primary:hover { filter: brightness(1.06); transform: translateY(-1px); }
+    .secondary, .mini { border: 1px solid var(--line-strong); background: var(--card); color: var(--ink); }
+    .secondary:hover, .mini:hover { border-color: var(--accent); background: var(--accent-soft); }
+    .mini { min-height: 40px; padding: 8px 12px; font-size: 0.86rem; }
+    .mini.primary-mini { background: var(--accent); color: white; border-color: transparent; }
+    button:active { transform: scale(0.98); }
+    .validation { display: none; padding: 11px 12px; border-radius: 14px; background: rgba(180, 46, 46, 0.1); color: #b42e2e; font-weight: 800; }
+    .validation.show { display: block; }
+    .saved-note { color: var(--muted); font-size: 0.85rem; font-weight: 700; margin: 4px 0 0; }
+    .stale-note { display: none; margin-bottom: 14px; padding: 11px 12px; border-radius: 14px; background: color-mix(in srgb, var(--accent-2) 22%, var(--card)); border: 1px solid var(--line); font-weight: 800; }
+    .stale-note.show { display: block; }
+    footer { display: flex; justify-content: space-between; gap: 16px; margin-top: 24px; padding: 12px 4px; color: var(--muted); font: 700 0.75rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .entrance { animation: rise-in 420ms cubic-bezier(.16,1,.3,1) both; }
+    .content-enter { animation: content-reveal 260ms cubic-bezier(.16,1,.3,1) both; }
+    @keyframes rise-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes content-reveal { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes ring-drift { to { transform: translate3d(-24px,-18px,0) rotate(14deg); } }
+    @keyframes ambient-drift { to { transform: translate3d(-14vw,8vh,0) scale(1.12); } }
+    @media (max-width: 900px) { .hero, .layout { grid-template-columns: 1fr; } .form-panel { position: static; } }
+    @media (max-width: 640px) { .shell { width: min(100% - 22px, var(--max)); padding-top: 10px; } .topbar { top: 6px; } .brand-copy span { display: none; } .hero { padding: 27px 21px; border-radius: 22px; } h1 { font-size: clamp(2.35rem, 13vw, 3.6rem); } .primary, .secondary { width: 100%; } footer { text-align: center; display: block; } footer span { display: block; margin: 4px 0; } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+    }
+    /* ============ TYPE STYLES START ============ */
+    .tab-row { display: inline-flex; flex-wrap: wrap; gap: 4px; margin-bottom: 22px; padding: 4px; border: 1px solid var(--line); border-radius: 13px; background: color-mix(in srgb, var(--paper) 65%, transparent); }
+    .tab {
+      min-height: 40px; padding: 8px 14px; border-radius: 9px;
+      background: transparent; color: var(--muted); font-weight: 900;
+    }
+    .tab:hover { color: var(--ink); }
+    .tab.active { background: var(--card-strong); color: var(--ink); box-shadow: var(--shadow-small); }
+    .browse-toolbar { display: grid; grid-template-columns: minmax(220px, 1fr); gap: 12px; margin: 18px 0; }
+    .search-wrap { position: relative; }
+    .search-wrap::before { content: ""; position: absolute; left: 15px; top: 50%; width: 12px; height: 12px; border: 2px solid var(--muted); border-radius: 50%; transform: translateY(-62%); pointer-events: none; }
+    .search-wrap::after { content: ""; position: absolute; left: 27px; top: 29px; width: 7px; height: 2px; border-radius: 2px; background: var(--muted); transform: rotate(45deg); pointer-events: none; }
+    .search-wrap input { padding-left: 43px; }
+    .cat-row { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; }
+    .cat-chip {
+      min-height: 40px; padding: 8px 12px; border-radius: 10px; border: 1px solid var(--line);
+      background: var(--card); color: var(--muted); font-weight: 800; font-size: 0.84rem;
+    }
+    .cat-chip.active { background: var(--accent); color: #fff; border-color: transparent; }
+    .cat-note { margin: 0 0 16px; color: var(--muted); font-weight: 620; }
+    .wf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(235px, 1fr)); gap: 11px; }
+    .wf-card {
+      position: relative; min-height: 184px; text-align: left; display: grid; gap: 8px; align-content: start;
+      border: 1px solid var(--line); border-radius: 16px; padding: 17px;
+      background: var(--card); color: var(--ink); overflow: hidden;
+    }
+    .wf-card::after { content: ""; position: absolute; inset: auto 0 0; height: 3px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 200ms ease; }
+    .wf-card:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); box-shadow: var(--shadow-small); }
+    .wf-card:hover::after { transform: scaleX(1); }
+    .wf-card b { font-size: 1.04rem; letter-spacing: -0.025em; }
+    .wf-card span { color: var(--muted); font-size: 0.86rem; font-weight: 620; }
+    .wf-card .go { align-self: end; margin-top: auto; color: var(--accent); font-weight: 900; font-size: 0.82rem; }
+    .no-results { grid-column: 1 / -1; min-height: 180px; display: grid; place-items: center; padding: 24px; border: 1px dashed var(--line-strong); border-radius: 16px; text-align: center; color: var(--muted); }
+    .detail-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
+    .crumb { min-height: 44px; background: transparent; color: var(--accent); font-weight: 900; padding: 7px 0; }
+    .detail-meta { margin: 0 0 8px; color: var(--accent); font: 850 0.7rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; text-transform: uppercase; letter-spacing: 0.1em; }
+    .result-ready { display: flex; align-items: center; gap: 9px; margin: 22px 0 10px; font-weight: 900; }
+    .result-ready::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 5px var(--accent-soft); }
+    .prompt-box {
+      margin-top: 12px; border: 1px solid var(--line); border-radius: 16px;
+      background: #101713; color: #eaf2ed; padding: 18px; max-height: 460px; overflow: auto; box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+    .prompt-box pre { margin: 0; white-space: pre-wrap; word-break: break-word; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.88rem; line-height: 1.55; }
+    .result-actions { margin-top: 12px; }
+    .adv-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+    .adv-card { min-height: 190px; border: 1px solid var(--line); border-radius: 16px; padding: 17px; background: var(--card); display: grid; gap: 9px; align-content: start; }
+    .adv-card:hover { border-color: color-mix(in srgb, var(--accent) 50%, var(--line)); box-shadow: var(--shadow-small); }
+    .adv-card b { font-size: 1.05rem; }
+    .adv-card p { margin: 0; color: var(--muted); font-size: 0.9rem; font-weight: 620; }
+    .adv-card .mini { align-self: end; margin-top: auto; }
+    .empty { min-height: 200px; display: grid; place-items: center; text-align: center; border: 1px dashed var(--line); border-radius: 20px; color: var(--muted); padding: 22px; }
+    .empty strong { display: block; color: var(--ink); margin-bottom: 5px; }
+    .manual-item { border: 1px solid var(--line); border-radius: 16px; background: var(--card); padding: 15px 16px; display: grid; gap: 9px; margin-bottom: 10px; }
+    .manual-item-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+    .manual-item-head b { font-size: 1rem; }
+    .manual-item-head span { color: var(--muted); font-size: 0.82rem; font-weight: 700; }
+    .manual-item pre { margin: 0; white-space: pre-wrap; word-break: break-word; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.8rem; line-height: 1.5; max-height: 130px; overflow: auto; color: var(--muted); }
+    .manual-title-field { display: grid; gap: 7px; margin-bottom: 14px; }
+    #printArea { display: none; }
+    @media (max-width: 640px) { .tab-row { display: grid; grid-template-columns: repeat(3, 1fr); width: 100%; } .tab { padding-inline: 7px; } .wf-grid { grid-template-columns: 1fr; } .wf-card { min-height: 0; } }
+    @media print {
+      body * { visibility: hidden; }
+      #printArea, #printArea * { visibility: visible; }
+      #printArea {
+        display: block; position: absolute; inset: 0; padding: 0;
+        color: #111; background: #fff; font-family: Georgia, serif;
+      }
+      #printArea .print-cover { padding: 40vh 0 0; text-align: center; page-break-after: always; }
+      #printArea .print-cover h1 { font-size: 2.2rem; letter-spacing: 0; line-height: 1.2; }
+      #printArea .print-cover p { color: #555; }
+      #printArea .print-prompt { page-break-inside: avoid; page-break-before: always; padding: 24px 0; }
+      #printArea .print-prompt h2 { font-size: 1.2rem; margin: 0 0 4px; }
+      #printArea .print-prompt .print-source { color: #666; font-size: 0.85rem; margin: 0 0 12px; }
+      #printArea .print-prompt pre { white-space: pre-wrap; word-break: break-word; font-family: "Courier New", monospace; font-size: 0.82rem; line-height: 1.5; border: 1px solid #ccc; border-radius: 8px; padding: 14px; }
+    }
+    /* ============ TYPE STYLES END ============ */
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#studioWorkspace">Skip to the studio</a>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="index.html" aria-label="Back to Prompt Studio home" title="Prompt Studio home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-copy"><b>Prompt Studio</b><span>Prompt workbench</span></span>
+      </a>
+      <div class="theme-toggle" role="group" aria-label="Theme selection">
+        <button type="button" data-theme-choice="light" aria-pressed="false">Light</button>
+        <button type="button" data-theme-choice="dark" aria-pressed="false">Dark</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero entrance" id="hero">
+        <div class="hero-copy">
+          <h1>Launch Campaign Prompt Studio</h1>
+        </div>
+      </section>
+
+      <!-- ============ TYPE BODY START ============ -->
+      <div class="layout entrance" id="studioWorkspace">
+        <section class="panel form-panel" aria-labelledby="profileTitle">
+          <p class="kicker">Your context</p><h2 class="section-title" id="profileTitle">Your business profile</h2>
+          <form id="profileForm" novalidate></form>
+          <p class="saved-note" id="savedNote">Saved on this device as you type.</p>
+        </section>
+
+        <section class="panel">
+          <div class="tab-row" role="tablist">
+            <button class="tab active" type="button" role="tab" aria-selected="true" data-tab="workflows">Workflows</button>
+            <button class="tab" type="button" role="tab" aria-selected="false" data-tab="advisors">Advisors</button>
+            <button class="tab" type="button" role="tab" aria-selected="false" data-tab="manual">Manual <span id="manualCount"></span></button>
+          </div>
+
+          <div id="tab-workflows">
+            <div id="workflowBrowse">
+              <h2 class="section-title">Pick a workflow</h2>
+              <div class="browse-toolbar"><label class="search-wrap"><span class="sr-only">Search workflows</span><input type="search" id="wfSearch" placeholder="Search workflows" autocomplete="off" /></label></div>
+              <div class="cat-row" id="catRow"></div>
+              <p class="cat-note" id="catNote"></p>
+              <div class="wf-grid" id="wfGrid"></div>
+            </div>
+
+            <div id="workflowDetail" hidden>
+              <div class="detail-head">
+                <button class="crumb" type="button" id="backToGrid">&larr; Back to workflows</button>
+              </div>
+              <p class="detail-meta" id="wfMeta"></p>
+              <h2 class="section-title" id="wfTitle"></h2>
+              <p class="section-note" id="wfDescription"></p>
+              <form id="wfForm" novalidate>
+                <div id="wfFields"></div>
+                <div id="wfValidation" class="validation"></div>
+                <div class="button-row">
+                  <button class="primary" type="submit">Build my prompt</button>
+                </div>
+              </form>
+              <div id="wfResultWrap" hidden>
+                <div class="result-ready">Your prompt is ready</div>
+                <div id="staleNote" class="stale-note" role="status">Your inputs changed after this prompt was built. Build it again to refresh it.</div>
+                <div class="prompt-box"><pre id="wfPrompt"></pre></div>
+                <div class="result-actions">
+                  <button class="mini primary-mini" type="button" id="copyPrompt">Copy prompt</button>
+                  <button class="mini" type="button" id="copyOpen">Copy + open ChatGPT</button>
+                  <button class="mini" type="button" id="addToManual">Add to manual</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="tab-advisors" hidden>
+            <h2 class="section-title">Sit down with an advisor</h2>
+            <div class="adv-grid" id="advGrid"></div>
+            <div id="advResultWrap" hidden>
+              <h2 class="section-title" id="advResultTitle" style="margin-top:18px;"></h2>
+              <div class="prompt-box"><pre id="advPrompt"></pre></div>
+              <div class="result-actions">
+                <button class="mini primary-mini" type="button" id="advCopy">Copy prompt</button>
+                <button class="mini" type="button" id="advCopyOpen">Copy + open ChatGPT</button>
+                <button class="mini" type="button" id="advAddToManual">Add to manual</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="tab-manual" hidden>
+            <h2 class="section-title">Prompt manual</h2>
+            <p class="section-note">Save useful prompts here.</p>
+            <div class="manual-title-field field">
+              <label for="manualTitle">Manual title</label>
+              <input type="text" id="manualTitle" placeholder="Example: Q3 launch prompt playbook" />
+            </div>
+            <div id="manualEmpty" class="empty"><div><strong>Nothing saved yet</strong>Build a prompt in Workflows or Advisors, then hit "Add to manual".</div></div>
+            <div id="manualList"></div>
+            <div class="result-actions">
+              <button class="mini primary-mini" type="button" id="printManual">Print / save as PDF</button>
+              <button class="mini" type="button" id="downloadManual">Download as HTML</button>
+              <button class="mini" type="button" id="clearManual">Clear manual</button>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div id="printArea" aria-hidden="true"></div>
+      <!-- ============ TYPE BODY END ============ -->
+    </main>
+
+    <footer><span>Prompt Studio</span></footer>
+  </div>
+
+  <script>
+    const STUDIO = {"slug": "launch-campaigns", "title": "Launch Campaign Prompt Studio", "kicker": "Guided prompt system for launches", "subtitle": "Built for founders, creators, and marketers coordinating a real launch. Turn the offer, dates, proof, and channels into campaign decisions, copy briefs, and a launch manual your team can run.", "badge": "48 guided workflows", "accent": "#c2452f", "accent2": "#d6a11f", "footer": "Prompt Studio", "profile": [{"id": "business", "label": "What you sell and who buys it", "type": "textarea", "required": true, "placeholder": "Example: a $3,000 operations advisory package for owner-led manufacturers with 20 to 100 employees", "helper": "One or two sentences. Every prompt in this studio uses this."}, {"id": "audience", "label": "Your buyer in their own words", "type": "textarea", "required": false, "placeholder": "Example: 'We keep fixing the same fire every Friday' is how clients describe the problem", "helper": "Use phrases real buyers or clients say."}, {"id": "project", "label": "The offer or project you're working on now", "type": "textarea", "required": false, "placeholder": "Example: rebuilding the spring group program before enrollment opens", "helper": ""}, {"id": "goal", "label": "Your main goal for the next 90 days", "type": "text", "required": false, "placeholder": "Example: enroll 12 right-fit clients without adding more sales calls", "helper": ""}, {"id": "constraints", "label": "Voice, proof, or constraints the AI should respect", "type": "text", "required": false, "placeholder": "Example: plainspoken, no income claims, two-person delivery team", "helper": ""}], "categories": [{"id": "direction", "title": "Launch Direction", "note": "Lock the buyer, promise, offer, and target before building assets."}, {"id": "offer", "title": "Offer and Proof", "note": "Build a buying case the campaign can support honestly."}, {"id": "campaign", "title": "Campaign Map", "note": "Give every date and channel a clear job."}, {"id": "assets", "title": "Launch Assets", "note": "Turn the campaign argument into pages, emails, events, and posts."}, {"id": "performance", "title": "Control Room", "note": "Read the launch while there is still time to act."}, {"id": "review", "title": "Review and Improve", "note": "Stress-test launch material before buyers do."}], "workflows": [{"id": "launch-direction-memo", "category": "direction", "title": "Launch Direction Memo", "description": "Set the audience, offer, central promise, conversion goal, dates, and nonnegotiable choices.", "role": "launch strategist responsible for the commercial target, central argument, and campaign tradeoffs, with direct responsibility for the launch direction memo this prompt produces", "fields": [{"id": "situation", "label": "Describe the offer, audience, dates, and launch target", "type": "textarea", "required": true, "placeholder": "Example: open a 12-seat advisory cohort from September 9 to 16 to a 6,000-person email list", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this launch direction memo.", "Set the audience, offer, central promise, conversion goal, dates, and nonnegotiable choices.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished launch direction memo with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "market-timing-check", "category": "direction", "title": "Market Timing Check", "description": "Judge whether buyer motivation, season, competing events, and delivery readiness support the dates.", "role": "launch strategist responsible for the commercial target, central argument, and campaign tradeoffs, with direct responsibility for the market timing check this prompt produces", "fields": [{"id": "situation", "label": "Describe the offer, audience, dates, and launch target", "type": "textarea", "required": true, "placeholder": "Example: open a 12-seat advisory cohort from September 9 to 16 to a 6,000-person email list", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this market timing check.", "Judge whether buyer motivation, season, competing events, and delivery readiness support the dates.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished market timing check with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "buyer-motivation-map", "category": "direction", "title": "Buyer Motivation Map", "description": "Connect current buyer pressures, desired change, hesitation, and trigger events to the campaign.", "role": "launch strategist responsible for the commercial target, central argument, and campaign tradeoffs, with direct responsibility for the buyer motivation map this prompt produces", "fields": [{"id": "situation", "label": "Describe the offer, audience, dates, and launch target", "type": "textarea", "required": true, "placeholder": "Example: open a 12-seat advisory cohort from September 9 to 16 to a 6,000-person email list", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this buyer motivation map.", "Connect current buyer pressures, desired change, hesitation, and trigger events to the campaign.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished buyer motivation map with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "central-promise-test", "category": "direction", "title": "Central Promise Test", "description": "Make the promise specific, credible, desirable, and supported by the offer.", "role": "launch strategist responsible for the commercial target, central argument, and campaign tradeoffs, with direct responsibility for the central promise test this prompt produces", "fields": [{"id": "situation", "label": "Describe the offer, audience, dates, and launch target", "type": "textarea", "required": true, "placeholder": "Example: open a 12-seat advisory cohort from September 9 to 16 to a 6,000-person email list", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this central promise test.", "Make the promise specific, credible, desirable, and supported by the offer.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished central promise test with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "conversion-goal-math", "category": "direction", "title": "Conversion Goal Math", "description": "Work backward from revenue or enrollment to buyers, checkout starts, leads, and audience reach.", "role": "launch strategist responsible for the commercial target, central argument, and campaign tradeoffs, with direct responsibility for the conversion goal math this prompt produces", "fields": [{"id": "situation", "label": "Describe the offer, audience, dates, and launch target", "type": "textarea", "required": true, "placeholder": "Example: open a 12-seat advisory cohort from September 9 to 16 to a 6,000-person email list", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this conversion goal math.", "Work backward from revenue or enrollment to buyers, checkout starts, leads, and audience reach.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished conversion goal math with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "launch-type-decision", "category": "direction", "title": "Launch Type Decision", "description": "Choose live, evergreen, challenge, webinar, partner, or direct launch from the offer and audience.", "role": "launch strategist responsible for the commercial target, central argument, and campaign tradeoffs, with direct responsibility for the launch type decision this prompt produces", "fields": [{"id": "situation", "label": "Describe the offer, audience, dates, and launch target", "type": "textarea", "required": true, "placeholder": "Example: open a 12-seat advisory cohort from September 9 to 16 to a 6,000-person email list", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this launch type decision.", "Choose live, evergreen, challenge, webinar, partner, or direct launch from the offer and audience.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished launch type decision with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "readiness-gate", "category": "direction", "title": "Readiness Gate", "description": "Separate must-fix launch blockers from improvements that can wait.", "role": "launch strategist responsible for the commercial target, central argument, and campaign tradeoffs, with direct responsibility for the readiness gate this prompt produces", "fields": [{"id": "situation", "label": "Describe the offer, audience, dates, and launch target", "type": "textarea", "required": true, "placeholder": "Example: open a 12-seat advisory cohort from September 9 to 16 to a 6,000-person email list", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this readiness gate.", "Separate must-fix launch blockers from improvements that can wait.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished readiness gate with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "failure-pre-mortem", "category": "direction", "title": "Failure Pre Mortem", "description": "Name how this launch could miss and install early warnings and responses.", "role": "launch strategist responsible for the commercial target, central argument, and campaign tradeoffs, with direct responsibility for the failure pre mortem this prompt produces", "fields": [{"id": "situation", "label": "Describe the offer, audience, dates, and launch target", "type": "textarea", "required": true, "placeholder": "Example: open a 12-seat advisory cohort from September 9 to 16 to a 6,000-person email list", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this failure pre mortem.", "Name how this launch could miss and install early warnings and responses.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished failure pre mortem with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "offer-stack", "category": "offer", "title": "Offer Stack", "description": "Organize the core result, delivery, support, tools, access, and boundaries around buyer value.", "role": "offer strategist who matches promise, price, proof, risk reversal, and buyer readiness, with direct responsibility for the offer stack this prompt produces", "fields": [{"id": "situation", "label": "Describe the offer and the part buyers may doubt", "type": "textarea", "required": true, "placeholder": "Example: $1,800 cohort with six live sessions, templates, office hours, and three client results", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this offer stack.", "Organize the core result, delivery, support, tools, access, and boundaries around buyer value.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished offer stack with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "price-confidence-memo", "category": "offer", "title": "Price Confidence Memo", "description": "Explain price through value, alternatives, delivery, proof, and fit without apology.", "role": "offer strategist who matches promise, price, proof, risk reversal, and buyer readiness, with direct responsibility for the price confidence memo this prompt produces", "fields": [{"id": "situation", "label": "Describe the offer and the part buyers may doubt", "type": "textarea", "required": true, "placeholder": "Example: $1,800 cohort with six live sessions, templates, office hours, and three client results", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this price confidence memo.", "Explain price through value, alternatives, delivery, proof, and fit without apology.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished price confidence memo with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "bonus-decision", "category": "offer", "title": "Bonus Decision", "description": "Keep only bonuses that remove friction or speed the promised result.", "role": "offer strategist who matches promise, price, proof, risk reversal, and buyer readiness, with direct responsibility for the bonus decision this prompt produces", "fields": [{"id": "situation", "label": "Describe the offer and the part buyers may doubt", "type": "textarea", "required": true, "placeholder": "Example: $1,800 cohort with six live sessions, templates, office hours, and three client results", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this bonus decision.", "Keep only bonuses that remove friction or speed the promised result.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished bonus decision with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "guarantee-design", "category": "offer", "title": "Guarantee Design", "description": "Reduce a real buyer risk without promising what the seller can't control.", "role": "offer strategist who matches promise, price, proof, risk reversal, and buyer readiness, with direct responsibility for the guarantee design this prompt produces", "fields": [{"id": "situation", "label": "Describe the offer and the part buyers may doubt", "type": "textarea", "required": true, "placeholder": "Example: $1,800 cohort with six live sessions, templates, office hours, and three client results", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this guarantee design.", "Reduce a real buyer risk without promising what the seller can't control.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished guarantee design with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "proof-inventory", "category": "offer", "title": "Proof Inventory", "description": "Catalog results, demonstrations, credentials, process evidence, and missing support for each claim.", "role": "offer strategist who matches promise, price, proof, risk reversal, and buyer readiness, with direct responsibility for the proof inventory this prompt produces", "fields": [{"id": "situation", "label": "Describe the offer and the part buyers may doubt", "type": "textarea", "required": true, "placeholder": "Example: $1,800 cohort with six live sessions, templates, office hours, and three client results", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this proof inventory.", "Catalog results, demonstrations, credentials, process evidence, and missing support for each claim.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished proof inventory with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "objection-map", "category": "offer", "title": "Objection Map", "description": "Turn buyer objections into message jobs, proof needs, page placement, and follow-up.", "role": "offer strategist who matches promise, price, proof, risk reversal, and buyer readiness, with direct responsibility for the objection map this prompt produces", "fields": [{"id": "situation", "label": "Describe the offer and the part buyers may doubt", "type": "textarea", "required": true, "placeholder": "Example: $1,800 cohort with six live sessions, templates, office hours, and three client results", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this objection map.", "Turn buyer objections into message jobs, proof needs, page placement, and follow-up.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished objection map with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "scarcity-check", "category": "offer", "title": "Scarcity Check", "description": "Use only deadlines and limits that are operationally true and clearly explained.", "role": "offer strategist who matches promise, price, proof, risk reversal, and buyer readiness, with direct responsibility for the scarcity check this prompt produces", "fields": [{"id": "situation", "label": "Describe the offer and the part buyers may doubt", "type": "textarea", "required": true, "placeholder": "Example: $1,800 cohort with six live sessions, templates, office hours, and three client results", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this scarcity check.", "Use only deadlines and limits that are operationally true and clearly explained.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished scarcity check with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "faq-decision-set", "category": "offer", "title": "FAQ Decision Set", "description": "Answer the questions that block purchase, including fit, timing, work required, access, and refund terms.", "role": "offer strategist who matches promise, price, proof, risk reversal, and buyer readiness, with direct responsibility for the faq decision set this prompt produces", "fields": [{"id": "situation", "label": "Describe the offer and the part buyers may doubt", "type": "textarea", "required": true, "placeholder": "Example: $1,800 cohort with six live sessions, templates, office hours, and three client results", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this faq decision set.", "Answer the questions that block purchase, including fit, timing, work required, access, and refund terms.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished faq decision set with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "launch-timeline", "category": "campaign", "title": "Launch Timeline", "description": "Sequence prelaunch, opening, proof, objection, deadline, and follow-up work by date and owner.", "role": "campaign director who coordinates email, social, partners, events, sales pages, and operations, with direct responsibility for the launch timeline this prompt produces", "fields": [{"id": "situation", "label": "Describe the channels, dates, assets, and team capacity", "type": "textarea", "required": true, "placeholder": "Example: 14 days, email plus LinkedIn, one webinar, founder and one assistant", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this launch timeline.", "Sequence prelaunch, opening, proof, objection, deadline, and follow-up work by date and owner.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished launch timeline with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "campaign-theme", "category": "campaign", "title": "Campaign Theme", "description": "Choose a concrete organizing idea that can carry every channel without becoming a slogan.", "role": "campaign director who coordinates email, social, partners, events, sales pages, and operations, with direct responsibility for the campaign theme this prompt produces", "fields": [{"id": "situation", "label": "Describe the channels, dates, assets, and team capacity", "type": "textarea", "required": true, "placeholder": "Example: 14 days, email plus LinkedIn, one webinar, founder and one assistant", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this campaign theme.", "Choose a concrete organizing idea that can carry every channel without becoming a slogan.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished campaign theme with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "channel-job-map", "category": "campaign", "title": "Channel Job Map", "description": "Assign email, social, partners, events, page, and direct outreach separate roles.", "role": "campaign director who coordinates email, social, partners, events, sales pages, and operations, with direct responsibility for the channel job map this prompt produces", "fields": [{"id": "situation", "label": "Describe the channels, dates, assets, and team capacity", "type": "textarea", "required": true, "placeholder": "Example: 14 days, email plus LinkedIn, one webinar, founder and one assistant", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this channel job map.", "Assign email, social, partners, events, page, and direct outreach separate roles.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished channel job map with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "asset-production-board", "category": "campaign", "title": "Asset Production Board", "description": "List every required asset with owner, dependency, draft date, review date, and publish date.", "role": "campaign director who coordinates email, social, partners, events, sales pages, and operations, with direct responsibility for the asset production board this prompt produces", "fields": [{"id": "situation", "label": "Describe the channels, dates, assets, and team capacity", "type": "textarea", "required": true, "placeholder": "Example: 14 days, email plus LinkedIn, one webinar, founder and one assistant", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this asset production board.", "List every required asset with owner, dependency, draft date, review date, and publish date.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished asset production board with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "partner-campaign", "category": "campaign", "title": "Partner Campaign", "description": "Build recruitment, briefing, tracking, swipe support, reminders, and follow-up for partners.", "role": "campaign director who coordinates email, social, partners, events, sales pages, and operations, with direct responsibility for the partner campaign this prompt produces", "fields": [{"id": "situation", "label": "Describe the channels, dates, assets, and team capacity", "type": "textarea", "required": true, "placeholder": "Example: 14 days, email plus LinkedIn, one webinar, founder and one assistant", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this partner campaign.", "Build recruitment, briefing, tracking, swipe support, reminders, and follow-up for partners.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished partner campaign with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "webinar-launch-map", "category": "campaign", "title": "Webinar Launch Map", "description": "Connect registration, attendance, teaching, offer transition, replay, and follow-up.", "role": "campaign director who coordinates email, social, partners, events, sales pages, and operations, with direct responsibility for the webinar launch map this prompt produces", "fields": [{"id": "situation", "label": "Describe the channels, dates, assets, and team capacity", "type": "textarea", "required": true, "placeholder": "Example: 14 days, email plus LinkedIn, one webinar, founder and one assistant", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this webinar launch map.", "Connect registration, attendance, teaching, offer transition, replay, and follow-up.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished webinar launch map with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "social-countdown", "category": "campaign", "title": "Social Countdown", "description": "Plan posts that add buyer understanding rather than repeating the closing date.", "role": "campaign director who coordinates email, social, partners, events, sales pages, and operations, with direct responsibility for the social countdown this prompt produces", "fields": [{"id": "situation", "label": "Describe the channels, dates, assets, and team capacity", "type": "textarea", "required": true, "placeholder": "Example: 14 days, email plus LinkedIn, one webinar, founder and one assistant", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this social countdown.", "Plan posts that add buyer understanding rather than repeating the closing date.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished social countdown with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "team-run-of-show", "category": "campaign", "title": "Team Run of Show", "description": "Write the daily launch operating rhythm, decisions, reports, and escalation path.", "role": "campaign director who coordinates email, social, partners, events, sales pages, and operations, with direct responsibility for the team run of show this prompt produces", "fields": [{"id": "situation", "label": "Describe the channels, dates, assets, and team capacity", "type": "textarea", "required": true, "placeholder": "Example: 14 days, email plus LinkedIn, one webinar, founder and one assistant", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this team run of show.", "Write the daily launch operating rhythm, decisions, reports, and escalation path.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished team run of show with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "launch-email-sequence", "category": "assets", "title": "Launch Email Sequence", "description": "Map every send by reader stage, message job, proof, CTA, and date.", "role": "launch copy director accountable for message consistency from first tease through checkout, with direct responsibility for the launch email sequence this prompt produces", "fields": [{"id": "situation", "label": "Describe the asset, audience stage, and action it must earn", "type": "textarea", "required": true, "placeholder": "Example: webinar invitation email for warm subscribers who know the problem but not the program", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this launch email sequence.", "Map every send by reader stage, message job, proof, CTA, and date.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished launch email sequence with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "sales-page-wireframe", "category": "assets", "title": "Sales Page Wireframe", "description": "Order the page around promise, problem, mechanism, offer, proof, objections, price, and action.", "role": "launch copy director accountable for message consistency from first tease through checkout, with direct responsibility for the sales page wireframe this prompt produces", "fields": [{"id": "situation", "label": "Describe the asset, audience stage, and action it must earn", "type": "textarea", "required": true, "placeholder": "Example: webinar invitation email for warm subscribers who know the problem but not the program", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this sales page wireframe.", "Order the page around promise, problem, mechanism, offer, proof, objections, price, and action.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished sales page wireframe with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "webinar-outline", "category": "assets", "title": "Webinar Outline", "description": "Teach a useful shift, demonstrate the method, transition to the offer, and handle the decision.", "role": "launch copy director accountable for message consistency from first tease through checkout, with direct responsibility for the webinar outline this prompt produces", "fields": [{"id": "situation", "label": "Describe the asset, audience stage, and action it must earn", "type": "textarea", "required": true, "placeholder": "Example: webinar invitation email for warm subscribers who know the problem but not the program", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this webinar outline.", "Teach a useful shift, demonstrate the method, transition to the offer, and handle the decision.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished webinar outline with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "vsl-argument-map", "category": "assets", "title": "VSL Argument Map", "description": "Build a spoken sales argument with opening, problem, mechanism, proof, offer, and close.", "role": "launch copy director accountable for message consistency from first tease through checkout, with direct responsibility for the vsl argument map this prompt produces", "fields": [{"id": "situation", "label": "Describe the asset, audience stage, and action it must earn", "type": "textarea", "required": true, "placeholder": "Example: webinar invitation email for warm subscribers who know the problem but not the program", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this vsl argument map.", "Build a spoken sales argument with opening, problem, mechanism, proof, offer, and close.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished vsl argument map with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "open-cart-email", "category": "assets", "title": "Open Cart Email", "description": "Announce the offer by connecting the buyer's current situation to the decision now available.", "role": "launch copy director accountable for message consistency from first tease through checkout, with direct responsibility for the open cart email this prompt produces", "fields": [{"id": "situation", "label": "Describe the asset, audience stage, and action it must earn", "type": "textarea", "required": true, "placeholder": "Example: webinar invitation email for warm subscribers who know the problem but not the program", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this open cart email.", "Announce the offer by connecting the buyer's current situation to the decision now available.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished open cart email with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "proof-campaign", "category": "assets", "title": "Proof Campaign", "description": "Turn each proof asset into a message with context, limits, relevance, and a next action.", "role": "launch copy director accountable for message consistency from first tease through checkout, with direct responsibility for the proof campaign this prompt produces", "fields": [{"id": "situation", "label": "Describe the asset, audience stage, and action it must earn", "type": "textarea", "required": true, "placeholder": "Example: webinar invitation email for warm subscribers who know the problem but not the program", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this proof campaign.", "Turn each proof asset into a message with context, limits, relevance, and a next action.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished proof campaign with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "checkout-confidence", "category": "assets", "title": "Checkout Confidence", "description": "Answer final risk questions around payment, access, workload, support, and what happens next.", "role": "launch copy director accountable for message consistency from first tease through checkout, with direct responsibility for the checkout confidence this prompt produces", "fields": [{"id": "situation", "label": "Describe the asset, audience stage, and action it must earn", "type": "textarea", "required": true, "placeholder": "Example: webinar invitation email for warm subscribers who know the problem but not the program", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this checkout confidence.", "Answer final risk questions around payment, access, workload, support, and what happens next.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished checkout confidence with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "cta-bank", "category": "assets", "title": "CTA Bank", "description": "Write action lines for curiosity, registration, attendance, purchase, reply, and deadline stages.", "role": "launch copy director accountable for message consistency from first tease through checkout, with direct responsibility for the cta bank this prompt produces", "fields": [{"id": "situation", "label": "Describe the asset, audience stage, and action it must earn", "type": "textarea", "required": true, "placeholder": "Example: webinar invitation email for warm subscribers who know the problem but not the program", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this cta bank.", "Write action lines for curiosity, registration, attendance, purchase, reply, and deadline stages.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished cta bank with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "launch-dashboard", "category": "performance", "title": "Launch Dashboard", "description": "Choose leading and lagging measures with targets, owners, refresh timing, and action thresholds.", "role": "launch performance lead who watches leading indicators, finds bottlenecks, and changes only what evidence supports, with direct responsibility for the launch dashboard this prompt produces", "fields": [{"id": "situation", "label": "Describe the current launch numbers and what has happened", "type": "textarea", "required": true, "placeholder": "Example: day two, 1,900 page visits, 43 checkouts started, 11 purchases, email clicks on target", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this launch dashboard.", "Choose leading and lagging measures with targets, owners, refresh timing, and action thresholds.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished launch dashboard with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "daily-performance-read", "category": "performance", "title": "Daily Performance Read", "description": "Compare actual results with the plan and isolate the first weak link in the path.", "role": "launch performance lead who watches leading indicators, finds bottlenecks, and changes only what evidence supports, with direct responsibility for the daily performance read this prompt produces", "fields": [{"id": "situation", "label": "Describe the current launch numbers and what has happened", "type": "textarea", "required": true, "placeholder": "Example: day two, 1,900 page visits, 43 checkouts started, 11 purchases, email clicks on target", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this daily performance read.", "Compare actual results with the plan and isolate the first weak link in the path.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished daily performance read with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "email-channel-check", "category": "performance", "title": "Email Channel Check", "description": "Diagnose delivery, opens, clicks, page visits, checkout starts, and purchases without blaming copy first.", "role": "launch performance lead who watches leading indicators, finds bottlenecks, and changes only what evidence supports, with direct responsibility for the email channel check this prompt produces", "fields": [{"id": "situation", "label": "Describe the current launch numbers and what has happened", "type": "textarea", "required": true, "placeholder": "Example: day two, 1,900 page visits, 43 checkouts started, 11 purchases, email clicks on target", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this email channel check.", "Diagnose delivery, opens, clicks, page visits, checkout starts, and purchases without blaming copy first.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished email channel check with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "page-friction-check", "category": "performance", "title": "Page Friction Check", "description": "Use traffic behavior and checkout data to rank the page issues worth touching midlaunch.", "role": "launch performance lead who watches leading indicators, finds bottlenecks, and changes only what evidence supports, with direct responsibility for the page friction check this prompt produces", "fields": [{"id": "situation", "label": "Describe the current launch numbers and what has happened", "type": "textarea", "required": true, "placeholder": "Example: day two, 1,900 page visits, 43 checkouts started, 11 purchases, email clicks on target", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this page friction check.", "Use traffic behavior and checkout data to rank the page issues worth touching midlaunch.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished page friction check with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "close-plan", "category": "performance", "title": "Close Plan", "description": "Decide the final messages, support coverage, decision cutoff, and operational steps for the last 48 hours.", "role": "launch performance lead who watches leading indicators, finds bottlenecks, and changes only what evidence supports, with direct responsibility for the close plan this prompt produces", "fields": [{"id": "situation", "label": "Describe the current launch numbers and what has happened", "type": "textarea", "required": true, "placeholder": "Example: day two, 1,900 page visits, 43 checkouts started, 11 purchases, email clicks on target", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this close plan.", "Decide the final messages, support coverage, decision cutoff, and operational steps for the last 48 hours.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished close plan with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "midlaunch-adjustment", "category": "performance", "title": "Midlaunch Adjustment", "description": "Choose one evidence-backed change while protecting clean measurement and message consistency.", "role": "launch performance lead who watches leading indicators, finds bottlenecks, and changes only what evidence supports, with direct responsibility for the midlaunch adjustment this prompt produces", "fields": [{"id": "situation", "label": "Describe the current launch numbers and what has happened", "type": "textarea", "required": true, "placeholder": "Example: day two, 1,900 page visits, 43 checkouts started, 11 purchases, email clicks on target", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this midlaunch adjustment.", "Choose one evidence-backed change while protecting clean measurement and message consistency.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished midlaunch adjustment with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "feedback-capture", "category": "performance", "title": "Feedback Capture", "description": "Collect objections, questions, sales conversations, support tickets, and lost-buyer reasons during the launch.", "role": "launch performance lead who watches leading indicators, finds bottlenecks, and changes only what evidence supports, with direct responsibility for the feedback capture this prompt produces", "fields": [{"id": "situation", "label": "Describe the current launch numbers and what has happened", "type": "textarea", "required": true, "placeholder": "Example: day two, 1,900 page visits, 43 checkouts started, 11 purchases, email clicks on target", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this feedback capture.", "Collect objections, questions, sales conversations, support tickets, and lost-buyer reasons during the launch.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished feedback capture with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "launch-postmortem", "category": "performance", "title": "Launch Postmortem", "description": "Separate result, causes, unknowns, lessons, and the few changes the next launch should make.", "role": "launch performance lead who watches leading indicators, finds bottlenecks, and changes only what evidence supports, with direct responsibility for the launch postmortem this prompt produces", "fields": [{"id": "situation", "label": "Describe the current launch numbers and what has happened", "type": "textarea", "required": true, "placeholder": "Example: day two, 1,900 page visits, 43 checkouts started, 11 purchases, email clicks on target", "helper": "Give the facts the output should use. Specifics beat background."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this launch postmortem.", "Separate result, causes, unknowns, lessons, and the few changes the next launch should make.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished launch postmortem with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "launch-plan-in-chief", "category": "review", "title": "Launch Plan in Chief", "description": "Review the strategy, dates, dependencies, owners, targets, and response rules.", "role": "senior launch editor who protects the central argument while fixing gaps, repetition, and weak proof, with direct responsibility for the launch plan in chief this prompt produces", "fields": [{"id": "material", "label": "Paste the launch material you want reviewed", "type": "textarea", "required": true, "placeholder": "Paste a launch plan, email, page, webinar outline, or social sequence", "helper": "The prompt keeps your core intent and works directly from this material."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this launch plan in chief.", "Review the strategy, dates, dependencies, owners, targets, and response rules.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished launch plan in chief with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "sales-page-in-chief", "category": "review", "title": "Sales Page in Chief", "description": "Review a launch page for argument order, proof, offer clarity, objections, price, and CTA.", "role": "senior launch editor who protects the central argument while fixing gaps, repetition, and weak proof, with direct responsibility for the sales page in chief this prompt produces", "fields": [{"id": "material", "label": "Paste the launch material you want reviewed", "type": "textarea", "required": true, "placeholder": "Paste a launch plan, email, page, webinar outline, or social sequence", "helper": "The prompt keeps your core intent and works directly from this material."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this sales page in chief.", "Review a launch page for argument order, proof, offer clarity, objections, price, and CTA.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished sales page in chief with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "email-sequence-review", "category": "review", "title": "Email Sequence Review", "description": "Find repetition, missing arguments, weak transitions, timing problems, and mismatched CTAs.", "role": "senior launch editor who protects the central argument while fixing gaps, repetition, and weak proof, with direct responsibility for the email sequence review this prompt produces", "fields": [{"id": "material", "label": "Paste the launch material you want reviewed", "type": "textarea", "required": true, "placeholder": "Paste a launch plan, email, page, webinar outline, or social sequence", "helper": "The prompt keeps your core intent and works directly from this material."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this email sequence review.", "Find repetition, missing arguments, weak transitions, timing problems, and mismatched CTAs.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished email sequence review with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "webinar-in-chief", "category": "review", "title": "Webinar in Chief", "description": "Review a webinar for teaching value, retention, demonstration, offer transition, and close.", "role": "senior launch editor who protects the central argument while fixing gaps, repetition, and weak proof, with direct responsibility for the webinar in chief this prompt produces", "fields": [{"id": "material", "label": "Paste the launch material you want reviewed", "type": "textarea", "required": true, "placeholder": "Paste a launch plan, email, page, webinar outline, or social sequence", "helper": "The prompt keeps your core intent and works directly from this material."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this webinar in chief.", "Review a webinar for teaching value, retention, demonstration, offer transition, and close.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished webinar in chief with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "vsl-in-chief", "category": "review", "title": "VSL in Chief", "description": "Strengthen a video sales letter without padding the runtime or inflating claims.", "role": "senior launch editor who protects the central argument while fixing gaps, repetition, and weak proof, with direct responsibility for the vsl in chief this prompt produces", "fields": [{"id": "material", "label": "Paste the launch material you want reviewed", "type": "textarea", "required": true, "placeholder": "Paste a launch plan, email, page, webinar outline, or social sequence", "helper": "The prompt keeps your core intent and works directly from this material."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this vsl in chief.", "Strengthen a video sales letter without padding the runtime or inflating claims.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished vsl in chief with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "social-campaign-review", "category": "review", "title": "Social Campaign Review", "description": "Test whether the social sequence builds understanding or merely counts down.", "role": "senior launch editor who protects the central argument while fixing gaps, repetition, and weak proof, with direct responsibility for the social campaign review this prompt produces", "fields": [{"id": "material", "label": "Paste the launch material you want reviewed", "type": "textarea", "required": true, "placeholder": "Paste a launch plan, email, page, webinar outline, or social sequence", "helper": "The prompt keeps your core intent and works directly from this material."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this social campaign review.", "Test whether the social sequence builds understanding or merely counts down.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished social campaign review with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "checkout-review", "category": "review", "title": "Checkout Review", "description": "Find final-step confusion, risk, trust gaps, and operational surprises before payment.", "role": "senior launch editor who protects the central argument while fixing gaps, repetition, and weak proof, with direct responsibility for the checkout review this prompt produces", "fields": [{"id": "material", "label": "Paste the launch material you want reviewed", "type": "textarea", "required": true, "placeholder": "Paste a launch plan, email, page, webinar outline, or social sequence", "helper": "The prompt keeps your core intent and works directly from this material."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this checkout review.", "Find final-step confusion, risk, trust gaps, and operational surprises before payment.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished checkout review with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}, {"id": "evergreen-conversion-plan", "category": "review", "title": "Evergreen Conversion Plan", "description": "Turn a live launch into an ongoing path while removing false deadlines and live-only dependencies.", "role": "senior launch editor who protects the central argument while fixing gaps, repetition, and weak proof, with direct responsibility for the evergreen conversion plan this prompt produces", "fields": [{"id": "material", "label": "Paste the launch material you want reviewed", "type": "textarea", "required": true, "placeholder": "Paste a launch plan, email, page, webinar outline, or social sequence", "helper": "The prompt keeps your core intent and works directly from this material."}, {"id": "evidence", "label": "Numbers, evidence, or limits that should shape the answer", "type": "textarea", "required": false, "placeholder": "Example: two weeks, $4,000 budget, three client quotes, legal review required", "helper": "Skip this if the field above already covers it."}], "task": ["Read my context and isolate the facts, constraints, and unknowns that matter to this evergreen conversion plan.", "Turn a live launch into an ongoing path while removing false deadlines and live-only dependencies.", "Make the choices explicit. Rank options where a decision is needed, and tie every recommendation to something in my context.", "Flag missing evidence and assumptions separately so I can review them before using the result."], "rules": ["Don't pad the deliverable with a general introduction or a summary that repeats it.", "When two reasonable choices compete, state the tradeoff and make one recommendation."], "output": "a finished evergreen conversion plan with the decision or artifact first, supporting reasoning, next actions, and a short assumptions check"}], "advisors": [{"id": "launch-director", "title": "The Launch Director", "description": "Makes the hard campaign choices before the calendar fills up.", "role": "a launch director responsible for target, timing, message, channel roles, and team capacity", "focus": "setting launch direction and tradeoffs", "questions": ["the commercial target and dates", "what the audience already knows"], "deliverable": "a launch direction memo, rejected options, milestones, and top risks"}, {"id": "offer-room", "title": "The Offer Room", "description": "Tests whether the buying case can carry the launch.", "role": "an offer strategist who challenges promise, proof, price, risk, and fit", "focus": "strengthening a launch offer", "questions": ["the exact paid result or access", "the claims with the strongest proof"], "deliverable": "a rebuilt offer case, proof gaps, objections, and the first fixes"}, {"id": "campaign-producer", "title": "The Campaign Producer", "description": "Coordinates assets, owners, dates, and dependencies.", "role": "a campaign producer who turns launch strategy into a runable production board", "focus": "planning launch production and operations", "questions": ["the fixed launch dates", "the people and hours available"], "deliverable": "a production plan with owners, dependencies, review gates, and risks"}, {"id": "message-editor", "title": "The Message Editor", "description": "Keeps every asset carrying the same central argument.", "role": "a launch message editor who aligns email, page, social, events, and checkout", "focus": "building and reviewing launch messaging", "questions": ["the central promise", "the strongest buyer objection"], "deliverable": "a message map, asset jobs, proof placement, and inconsistencies to fix"}, {"id": "control-room", "title": "The Control Room", "description": "Reads what is happening now and recommends the next move.", "role": "a launch analyst who traces leading indicators to the first controllable bottleneck", "focus": "diagnosing a live launch", "questions": ["today's results against target", "what changed from the plan"], "deliverable": "a ranked diagnosis, one immediate action, watch points, and a no-change list"}, {"id": "evergreen-planner", "title": "The Evergreen Planner", "description": "Keeps what worked after the live deadline is gone.", "role": "an evergreen conversion strategist who replaces live energy with useful triggers, proof, and follow-up", "focus": "turning launch assets into an ongoing campaign", "questions": ["which live moments drove action", "what depends on dates, live access, or founder presence"], "deliverable": "an evergreen path, asset reuse plan, honest timing triggers, and test order"}]};
+
+    const toolConfig = {
+      storageKey: "prompt-suite-theme",
+      profileKey: STUDIO.slug + "-profile",
+      manualKey: STUDIO.slug + "-manual",
+      chatGptUrl: "https://chatgpt.com/"
+    };
+    const html = document.documentElement;
+
+    /* ---------- Shared helpers ---------- */
+    function clean(value) { return String(value || "").trim(); }
+    function escapeHtml(value) {
+      return String(value || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+    async function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        return;
+      }
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.left = "-9999px";
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      textarea.remove();
+    }
+    function feedback(button, message) {
+      const original = button.dataset.originalText || button.textContent;
+      button.dataset.originalText = original;
+      button.textContent = message;
+      setTimeout(() => button.textContent = original, 1200);
+    }
+    async function copyAndOpen(button, text) {
+      try {
+        await copyText(text);
+        feedback(button, "Copied");
+        window.open(toolConfig.chatGptUrl, "_blank", "noopener,noreferrer");
+      } catch (error) {
+        feedback(button, "Copy failed");
+      }
+    }
+
+    /* ---------- Field rendering (shared by profile + workflows) ---------- */
+    function fieldHtml(field, prefix) {
+      const id = prefix + "-" + field.id;
+      const req = field.required ? ' <span class="req">*</span>' : "";
+      const helper = field.helper ? `<p class="helper">${escapeHtml(field.helper)}</p>` : "";
+      let control = "";
+      if (field.type === "textarea") {
+        control = `<textarea id="${id}" data-field="${escapeHtml(field.id)}" ${field.required ? 'aria-required="true"' : ""} placeholder="${escapeHtml(field.placeholder || "")}"></textarea>`;
+      } else if (field.type === "select") {
+        const opts = ['<option value="">Choose one</option>']
+          .concat((field.options || []).map(o => `<option value="${escapeHtml(o)}">${escapeHtml(o)}</option>`)).join("");
+        control = `<select id="${id}" data-field="${escapeHtml(field.id)}" ${field.required ? 'aria-required="true"' : ""}>${opts}</select>`;
+      } else {
+        control = `<input type="text" id="${id}" data-field="${escapeHtml(field.id)}" ${field.required ? 'aria-required="true"' : ""} placeholder="${escapeHtml(field.placeholder || "")}" />`;
+      }
+      return `<div class="field"><label for="${id}">${escapeHtml(field.label)}${req}</label>${control}${helper}</div>`;
+    }
+    function readFields(container) {
+      const values = {};
+      container.querySelectorAll("[data-field]").forEach(el => { values[el.dataset.field] = clean(el.value); });
+      return values;
+    }
+
+    /* ---------- Business profile ---------- */
+    const profileForm = document.getElementById("profileForm");
+    profileForm.innerHTML = STUDIO.profile.map(f => fieldHtml(f, "profile")).join("");
+    function loadProfile() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(toolConfig.profileKey) || "{}");
+        profileForm.querySelectorAll("[data-field]").forEach(el => {
+          if (saved[el.dataset.field]) el.value = saved[el.dataset.field];
+        });
+      } catch (error) { /* corrupted storage: start clean */ }
+    }
+    function saveProfile() {
+      localStorage.setItem(toolConfig.profileKey, JSON.stringify(readFields(profileForm)));
+    }
+    loadProfile();
+    profileForm.addEventListener("input", () => { saveProfile(); markStaleIfGenerated(); });
+    profileForm.addEventListener("change", () => { saveProfile(); markStaleIfGenerated(); });
+
+    /* ---------- Prompt assembly (the back end) ---------- */
+    const SHARED_RULES = [
+      "Work from my context above. Don't invent numbers, results, or customer quotes I didn't give you.",
+      "Plain language. No hype words, no filler sentences, no advice so generic it would fit any business."
+    ];
+    function contextLines(workflowValues, workflowFields) {
+      const lines = [];
+      STUDIO.profile.forEach(f => {
+        const v = clean(profileValues()[f.id]);
+        if (v) lines.push(`- ${f.label}: ${v}`);
+      });
+      (workflowFields || []).forEach(f => {
+        if (f.id === "material") return;
+        const v = clean(workflowValues[f.id]);
+        if (v) lines.push(`- ${f.label}: ${v}`);
+      });
+      return lines;
+    }
+    function profileValues() { return readFields(profileForm); }
+    function buildWorkflowPrompt(wf, values) {
+      const parts = [];
+      parts.push(`You are ${wf.role}.`);
+      parts.push("");
+      parts.push("MY CONTEXT");
+      parts.push(contextLines(values, wf.fields).join("\n"));
+      const material = clean(values.material);
+      if (material) {
+        parts.push("");
+        parts.push("WORK WITH THIS MATERIAL");
+        parts.push("---");
+        parts.push(material);
+        parts.push("---");
+      }
+      parts.push("");
+      parts.push("YOUR TASK");
+      wf.task.forEach((step, i) => parts.push(`${i + 1}. ${step}`));
+      parts.push("");
+      parts.push("RULES");
+      (wf.rules || []).concat(SHARED_RULES).forEach(r => parts.push(`- ${r}`));
+      parts.push("");
+      parts.push("OUTPUT");
+      parts.push(`Give me ${wf.output}.`);
+      parts.push("");
+      parts.push("Before you start: if any part of my context is too thin to do this well, ask me up to 3 specific questions first, then produce the deliverable.");
+      return parts.join("\n");
+    }
+    function buildAdvisorPrompt(adv) {
+      const parts = [];
+      parts.push(`You are ${adv.role}. Act as my ongoing advisor for ${adv.focus}.`);
+      parts.push("");
+      parts.push("MY CONTEXT");
+      const lines = contextLines({}, []);
+      parts.push(lines.length ? lines.join("\n") : "- I'll give you context as we talk.");
+      parts.push("");
+      parts.push("HOW THIS SESSION WORKS");
+      parts.push("Interview me before you advise. Ask one question at a time and wait for my answer. Start with what you most need to know, including:");
+      adv.questions.forEach(q => parts.push(`- ${q}`));
+      parts.push("");
+      parts.push(`After you have enough to work with (usually 4 to 6 answers), give me ${adv.deliverable}. Then stay in this role: I'll bring you follow-up situations and you keep advising with the same standards.`);
+      parts.push("");
+      parts.push("RULES");
+      parts.push("- One question per message while interviewing.");
+      parts.push("- Don't invent numbers or facts I didn't give you. If you assume something, say so in one line.");
+      parts.push("- Plain language. No hype, no filler, no generic advice.");
+      return parts.join("\n");
+    }
+
+    /* ---------- Tabs ---------- */
+    function revealContent(element) {
+      element.classList.remove("content-enter");
+      void element.offsetWidth;
+      element.classList.add("content-enter");
+    }
+    const tabs = document.querySelectorAll(".tab");
+    tabs.forEach(tab => tab.addEventListener("click", () => {
+      tabs.forEach(t => { t.classList.toggle("active", t === tab); t.setAttribute("aria-selected", String(t === tab)); });
+      ["workflows", "advisors", "manual"].forEach(name => {
+        document.getElementById("tab-" + name).hidden = tab.dataset.tab !== name;
+      });
+      revealContent(document.getElementById("tab-" + tab.dataset.tab));
+    }));
+
+    /* ---------- Workflow browse ---------- */
+    const catRow = document.getElementById("catRow");
+    const catNote = document.getElementById("catNote");
+    const wfGrid = document.getElementById("wfGrid");
+    const browse = document.getElementById("workflowBrowse");
+    const detail = document.getElementById("workflowDetail");
+    const wfSearch = document.getElementById("wfSearch");
+    let currentCat = STUDIO.categories[0].id;
+    let currentWf = null;
+    let generated = false;
+    let searchTerm = "";
+
+    function renderCats() {
+      catRow.innerHTML = STUDIO.categories.map(c =>
+        `<button type="button" class="cat-chip${!searchTerm && c.id === currentCat ? " active" : ""}" data-cat="${escapeHtml(c.id)}">${escapeHtml(c.title)}</button>`
+      ).join("");
+      const cat = STUDIO.categories.find(c => c.id === currentCat);
+      catNote.textContent = searchTerm ? `Showing matches across all ${STUDIO.categories.length} categories.` : (cat && cat.note ? cat.note : "");
+      catRow.querySelectorAll("[data-cat]").forEach(chip => chip.addEventListener("click", () => {
+        currentCat = chip.dataset.cat;
+        searchTerm = "";
+        wfSearch.value = "";
+        renderCats();
+        renderGrid();
+      }));
+    }
+    function renderGrid() {
+      const matches = STUDIO.workflows.filter(w => searchTerm
+        ? (w.title + " " + w.description).toLowerCase().includes(searchTerm)
+        : w.category === currentCat);
+      if (!matches.length) {
+        wfGrid.innerHTML = `<div class="no-results"><div><strong>No workflow matches that search.</strong><br />Try the artifact you need, such as audit, plan, email, or offer.</div></div>`;
+        return;
+      }
+      wfGrid.innerHTML = matches.map(w =>
+        `<button type="button" class="wf-card" data-wf="${escapeHtml(w.id)}">
+          <b>${escapeHtml(w.title)}</b>
+          <span>${escapeHtml(w.description)}</span>
+          <span class="go">Open &rarr;</span>
+        </button>`
+      ).join("");
+      wfGrid.querySelectorAll("[data-wf]").forEach(card => card.addEventListener("click", () => openWorkflow(card.dataset.wf)));
+    }
+    wfSearch.addEventListener("input", () => {
+      searchTerm = clean(wfSearch.value).toLowerCase();
+      renderCats();
+      renderGrid();
+    });
+    renderCats();
+    renderGrid();
+
+    /* ---------- Workflow detail ---------- */
+    const wfFields = document.getElementById("wfFields");
+    const wfForm = document.getElementById("wfForm");
+    const wfValidation = document.getElementById("wfValidation");
+    const wfResultWrap = document.getElementById("wfResultWrap");
+    const wfPromptEl = document.getElementById("wfPrompt");
+    const staleNote = document.getElementById("staleNote");
+
+    function openWorkflow(id) {
+      currentWf = STUDIO.workflows.find(w => w.id === id);
+      generated = false;
+      const category = STUDIO.categories.find(c => c.id === currentWf.category);
+      document.getElementById("wfMeta").textContent = category ? category.title : "Workflow";
+      document.getElementById("wfTitle").textContent = currentWf.title;
+      document.getElementById("wfDescription").textContent = currentWf.description;
+      wfFields.innerHTML = currentWf.fields.map(f => fieldHtml(f, "wf")).join("");
+      wfFields.style.display = "grid";
+      wfFields.style.gap = "15px";
+      wfValidation.classList.remove("show");
+      wfResultWrap.hidden = true;
+      staleNote.classList.remove("show");
+      browse.hidden = true;
+      detail.hidden = false;
+      revealContent(detail);
+      detail.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    document.getElementById("backToGrid").addEventListener("click", () => {
+      detail.hidden = true;
+      browse.hidden = false;
+      revealContent(browse);
+      generated = false;
+    });
+
+    function markStaleIfGenerated() {
+      if (generated) {
+        staleNote.classList.add("show");
+        wfPromptEl.style.opacity = "0.55";
+      }
+    }
+    wfForm.addEventListener("input", markStaleIfGenerated);
+    wfForm.addEventListener("change", markStaleIfGenerated);
+
+    wfForm.addEventListener("submit", event => {
+      event.preventDefault();
+      if (!currentWf) return;
+      const missing = [];
+      STUDIO.profile.filter(f => f.required).forEach(f => {
+        if (!clean(profileValues()[f.id])) missing.push(f.label);
+      });
+      const values = readFields(wfFields);
+      currentWf.fields.filter(f => f.required).forEach(f => {
+        if (!clean(values[f.id])) missing.push(f.label);
+      });
+      if (missing.length) {
+        wfValidation.textContent = "Still needed: " + missing.join(", ") + ".";
+        wfValidation.classList.add("show");
+        const firstMissingProfile = STUDIO.profile.find(f => f.required && !clean(profileValues()[f.id]));
+        const firstMissingWorkflow = currentWf.fields.find(f => f.required && !clean(values[f.id]));
+        const target = firstMissingProfile ? document.getElementById("profile-" + firstMissingProfile.id) : (firstMissingWorkflow ? document.getElementById("wf-" + firstMissingWorkflow.id) : null);
+        if (target) target.focus();
+        return;
+      }
+      wfValidation.classList.remove("show");
+      wfPromptEl.textContent = buildWorkflowPrompt(currentWf, values);
+      wfPromptEl.style.opacity = "";
+      wfResultWrap.hidden = false;
+      revealContent(wfResultWrap);
+      staleNote.classList.remove("show");
+      generated = true;
+      wfResultWrap.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+
+    document.getElementById("copyPrompt").addEventListener("click", async event => {
+      try { await copyText(wfPromptEl.textContent); feedback(event.target, "Copied"); }
+      catch (error) { feedback(event.target, "Copy failed"); }
+    });
+    document.getElementById("copyOpen").addEventListener("click", event => copyAndOpen(event.target, wfPromptEl.textContent));
+    document.getElementById("addToManual").addEventListener("click", event => {
+      addManualEntry(currentWf.title, "Workflow", wfPromptEl.textContent);
+      feedback(event.target, "Saved to manual");
+    });
+
+    /* ---------- Advisors ---------- */
+    const advGrid = document.getElementById("advGrid");
+    const advResultWrap = document.getElementById("advResultWrap");
+    const advPromptEl = document.getElementById("advPrompt");
+    let currentAdv = null;
+    advGrid.innerHTML = STUDIO.advisors.map(a =>
+      `<div class="adv-card">
+        <b>${escapeHtml(a.title)}</b>
+        <p>${escapeHtml(a.description)}</p>
+        <button class="mini primary-mini" type="button" data-adv="${escapeHtml(a.id)}">Start this session</button>
+      </div>`
+    ).join("");
+    advGrid.querySelectorAll("[data-adv]").forEach(btn => btn.addEventListener("click", () => {
+      currentAdv = STUDIO.advisors.find(a => a.id === btn.dataset.adv);
+      document.getElementById("advResultTitle").textContent = currentAdv.title;
+      advPromptEl.textContent = buildAdvisorPrompt(currentAdv);
+      advResultWrap.hidden = false;
+      revealContent(advResultWrap);
+      advResultWrap.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }));
+    document.getElementById("advCopy").addEventListener("click", async event => {
+      try { await copyText(advPromptEl.textContent); feedback(event.target, "Copied"); }
+      catch (error) { feedback(event.target, "Copy failed"); }
+    });
+    document.getElementById("advCopyOpen").addEventListener("click", event => copyAndOpen(event.target, advPromptEl.textContent));
+    document.getElementById("advAddToManual").addEventListener("click", event => {
+      addManualEntry(currentAdv.title, "Advisor", advPromptEl.textContent);
+      feedback(event.target, "Saved to manual");
+    });
+
+    /* ---------- Prompt manual ---------- */
+    const manualList = document.getElementById("manualList");
+    const manualEmpty = document.getElementById("manualEmpty");
+    const manualCount = document.getElementById("manualCount");
+    const manualTitle = document.getElementById("manualTitle");
+    let manual = [];
+    try { manual = JSON.parse(localStorage.getItem(toolConfig.manualKey) || "[]"); } catch (error) { manual = []; }
+    const savedManualTitle = localStorage.getItem(toolConfig.manualKey + "-title");
+    if (savedManualTitle) manualTitle.value = savedManualTitle;
+    manualTitle.addEventListener("input", () => localStorage.setItem(toolConfig.manualKey + "-title", manualTitle.value));
+
+    function saveManual() { localStorage.setItem(toolConfig.manualKey, JSON.stringify(manual)); }
+    function addManualEntry(title, source, text) {
+      manual.push({ id: "m" + (manual.length + 1) + "-" + text.length, title, source, text });
+      saveManual();
+      renderManual();
+    }
+    function renderManual() {
+      manualCount.textContent = manual.length ? "(" + manual.length + ")" : "";
+      manualEmpty.style.display = manual.length ? "none" : "grid";
+      manualList.innerHTML = manual.map((entry, i) =>
+        `<div class="manual-item">
+          <div class="manual-item-head">
+            <b>${i + 1}. ${escapeHtml(entry.title)}</b>
+            <span>${escapeHtml(entry.source)}</span>
+          </div>
+          <pre>${escapeHtml(entry.text)}</pre>
+          <div class="result-actions">
+            <button class="mini" type="button" data-up="${i}">Move up</button>
+            <button class="mini" type="button" data-down="${i}">Move down</button>
+            <button class="mini" type="button" data-copy="${i}">Copy</button>
+            <button class="mini" type="button" data-remove="${i}">Remove</button>
+          </div>
+        </div>`
+      ).join("");
+      manualList.querySelectorAll("[data-up]").forEach(b => b.addEventListener("click", () => {
+        const i = Number(b.dataset.up);
+        if (i > 0) { [manual[i - 1], manual[i]] = [manual[i], manual[i - 1]]; saveManual(); renderManual(); }
+      }));
+      manualList.querySelectorAll("[data-down]").forEach(b => b.addEventListener("click", () => {
+        const i = Number(b.dataset.down);
+        if (i < manual.length - 1) { [manual[i + 1], manual[i]] = [manual[i], manual[i + 1]]; saveManual(); renderManual(); }
+      }));
+      manualList.querySelectorAll("[data-copy]").forEach(b => b.addEventListener("click", async () => {
+        try { await copyText(manual[Number(b.dataset.copy)].text); feedback(b, "Copied"); }
+        catch (error) { feedback(b, "Copy failed"); }
+      }));
+      manualList.querySelectorAll("[data-remove]").forEach(b => b.addEventListener("click", () => {
+        manual.splice(Number(b.dataset.remove), 1);
+        saveManual();
+        renderManual();
+      }));
+    }
+    renderManual();
+
+    function manualDocTitle() { return clean(manualTitle.value) || STUDIO.title + " Prompt Manual"; }
+    function buildPrintArea() {
+      const printArea = document.getElementById("printArea");
+      const cover = document.createElement("div");
+      cover.className = "print-cover";
+      const h1 = document.createElement("h1");
+      h1.textContent = manualDocTitle();
+      const p = document.createElement("p");
+      p.textContent = manual.length + " prompts, built with " + STUDIO.title;
+      cover.append(h1, p);
+      printArea.replaceChildren(cover);
+      manual.forEach((entry, i) => {
+        const block = document.createElement("div");
+        block.className = "print-prompt";
+        const h2 = document.createElement("h2");
+        h2.textContent = (i + 1) + ". " + entry.title;
+        const src = document.createElement("p");
+        src.className = "print-source";
+        src.textContent = entry.source;
+        const pre = document.createElement("pre");
+        pre.textContent = entry.text;
+        block.append(h2, src, pre);
+        printArea.append(block);
+      });
+    }
+    document.getElementById("printManual").addEventListener("click", event => {
+      if (!manual.length) { feedback(event.target, "Manual is empty"); return; }
+      buildPrintArea();
+      window.print();
+    });
+    document.getElementById("downloadManual").addEventListener("click", event => {
+      if (!manual.length) { feedback(event.target, "Manual is empty"); return; }
+      const body = manual.map((entry, i) =>
+        `<section><h2>${escapeHtml((i + 1) + ". " + entry.title)}</h2><p class="src">${escapeHtml(entry.source)}</p><pre>${escapeHtml(entry.text)}</pre></section>`
+      ).join("\n");
+      const doc = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>${escapeHtml(manualDocTitle())}</title>
+<style>body{font-family:Georgia,serif;max-width:760px;margin:40px auto;padding:0 20px;color:#111;}h1{letter-spacing:-0.02em;}.src{color:#666;font-size:0.9rem;}pre{white-space:pre-wrap;word-break:break-word;font-family:"Courier New",monospace;font-size:0.85rem;line-height:1.5;border:1px solid #ccc;border-radius:8px;padding:14px;}section{margin:34px 0;}</style>
+</head><body><h1>${escapeHtml(manualDocTitle())}</h1><p class="src">${manual.length} prompts, built with ${escapeHtml(STUDIO.title)}</p>\n${body}\n</body></html>`;
+      const blob = new Blob([doc], { type: "text/html" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = STUDIO.slug + "-prompt-manual.html";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      feedback(event.target, "Downloaded");
+    });
+    document.getElementById("clearManual").addEventListener("click", event => {
+      if (!manual.length) { feedback(event.target, "Manual is empty"); return; }
+      manual = [];
+      saveManual();
+      renderManual();
+      feedback(event.target, "Cleared");
+    });
+
+    /* ---------- Theme ---------- */
+    function syncThemeButtons(theme) {
+      document.querySelectorAll("[data-theme-choice]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.themeChoice === theme)));
+    }
+    function setTheme(theme, persist = true) {
+      if (theme !== "light" && theme !== "dark") return;
+      html.setAttribute("data-theme", theme);
+      if (persist) localStorage.setItem(toolConfig.storageKey, theme);
+      syncThemeButtons(theme);
+    }
+    document.querySelectorAll("[data-theme-choice]").forEach(button => {
+      button.addEventListener("click", () => setTheme(button.dataset.themeChoice));
+    });
+    window.addEventListener("storage", event => {
+      if (event.key === toolConfig.storageKey) setTheme(event.newValue, false);
+    });
+    const savedTheme = localStorage.getItem(toolConfig.storageKey) || localStorage.getItem(STUDIO.slug + "-theme");
+    const initialTheme = savedTheme === "light" || savedTheme === "dark" ? savedTheme : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    setTheme(initialTheme);
+  </script>
+</body>
+</html>
