@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#1f7a5a" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='16'%20fill='%231f7a5a'/%3E%3Cpath%20d='M18%2021h28M18%2032h28M18%2043h18'%20stroke='white'%20stroke-width='6'%20stroke-linecap='round'/%3E%3C/svg%3E" />
   <title>Prompt Studio Suite</title>
+  <script>try { const theme=localStorage.getItem('prompt-suite-theme'); if(theme==='light'||theme==='dark') document.documentElement.dataset.theme=theme; } catch(error) {}</script>
   <style>
     :root { color-scheme:light; --ink:#16201c; --muted:#607068; --paper:#f2f0e9; --panel:#fffefa; --line:rgba(22,32,28,.14); --shadow:0 24px 70px rgba(20,31,26,.11); }
     html[data-theme="dark"] { color-scheme:dark; --ink:#f5f1e8; --muted:#b8c4bd; --paper:#0d1310; --panel:#17201b; --line:rgba(245,241,232,.13); --shadow:0 28px 80px rgba(0,0,0,.38); }
@@ -117,7 +118,8 @@
   <footer><span>Prompt Studio Suite</span></footer>
 </div><script>
   const root=document.documentElement,buttons=document.querySelectorAll('[data-theme]');
-  function setTheme(theme){root.dataset.theme=theme;localStorage.setItem('prompt-suite-theme',theme);buttons.forEach(b=>b.classList.toggle('active',b.dataset.theme===theme));}
+  function setTheme(theme,persist=true){if(theme!=='light'&&theme!=='dark')return;root.dataset.theme=theme;if(persist)localStorage.setItem('prompt-suite-theme',theme);buttons.forEach(b=>b.classList.toggle('active',b.dataset.theme===theme));}
   buttons.forEach(b=>b.addEventListener('click',()=>setTheme(b.dataset.theme)));
+  window.addEventListener('storage',event=>{if(event.key==='prompt-suite-theme')setTheme(event.newValue,false);});
   setTheme(localStorage.getItem('prompt-suite-theme')||((matchMedia('(prefers-color-scheme:dark)').matches)?'dark':'light'));
 </script></body></html>

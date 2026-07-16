@@ -12,6 +12,7 @@
   <meta name="theme-color" content="#1f7a5a" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='16'%20fill='%231f7a5a'/%3E%3Cpath%20d='M18%2021h28M18%2032h28M18%2043h18'%20stroke='white'%20stroke-width='6'%20stroke-linecap='round'/%3E%3C/svg%3E" />
   <title>{{APP_TITLE}}</title>
+  <script>try { const theme = localStorage.getItem("prompt-suite-theme"); if (theme === "light" || theme === "dark") document.documentElement.dataset.theme = theme; } catch (error) {}</script>
   <style>
     :root {
       color-scheme: light;
@@ -335,7 +336,7 @@
     const STUDIO = /*__STUDIO_DATA__*/ null;
 
     const toolConfig = {
-      storageKey: STUDIO.slug + "-theme",
+      storageKey: "prompt-suite-theme",
       profileKey: STUDIO.slug + "-profile",
       manualKey: STUDIO.slug + "-manual",
       chatGptUrl: "https://chatgpt.com/"
@@ -785,17 +786,21 @@
     function syncThemeButtons(theme) {
       document.querySelectorAll("[data-theme-choice]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.themeChoice === theme)));
     }
+    function setTheme(theme, persist = true) {
+      if (theme !== "light" && theme !== "dark") return;
+      html.setAttribute("data-theme", theme);
+      if (persist) localStorage.setItem(toolConfig.storageKey, theme);
+      syncThemeButtons(theme);
+    }
     document.querySelectorAll("[data-theme-choice]").forEach(button => {
-      button.addEventListener("click", () => {
-        html.setAttribute("data-theme", button.dataset.themeChoice);
-        localStorage.setItem(toolConfig.storageKey, button.dataset.themeChoice);
-        syncThemeButtons(button.dataset.themeChoice);
-      });
+      button.addEventListener("click", () => setTheme(button.dataset.themeChoice));
     });
-    const savedTheme = localStorage.getItem(toolConfig.storageKey);
+    window.addEventListener("storage", event => {
+      if (event.key === toolConfig.storageKey) setTheme(event.newValue, false);
+    });
+    const savedTheme = localStorage.getItem(toolConfig.storageKey) || localStorage.getItem(STUDIO.slug + "-theme");
     const initialTheme = savedTheme === "light" || savedTheme === "dark" ? savedTheme : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-    html.setAttribute("data-theme", initialTheme);
-    syncThemeButtons(initialTheme);
+    setTheme(initialTheme);
   </script>
 </body>
 </html>
